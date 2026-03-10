@@ -6,6 +6,7 @@
     <title>Liyi Gao | Brand Builder & Product Manager</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 字体升级：Playfair Display 作为 Display 大标题，DM Sans 作为 Body -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -99,18 +100,6 @@
         .btn-solid:hover { background:var(--accent); box-shadow:0 6px 20px rgba(194,142,117,.35); }
         .btn-accent { background:var(--accent); color:#fff; box-shadow:0 4px 14px rgba(194,142,117,.3); }
         .btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(194,142,117,.45); }
-
-        /* 语言切换器样式 */
-        .lang-switcher-inline {
-            display: flex; gap: 4px; margin-right: 8px;
-        }
-        .lang-switcher-inline a {
-            text-decoration: none; color: var(--muted); font-size: 0.85rem; font-weight: 600;
-            padding: 4px 8px; border-radius: 12px; transition: all 0.2s;
-        }
-        .lang-switcher-inline a:hover, .lang-switcher-inline a.active {
-            background: var(--text); color: var(--bg);
-        }
 
         /* CV 下拉 */
         .cv-dropdown { position:relative; }
@@ -402,6 +391,26 @@
         }
         .footer-copy { font-size:.85rem; color:var(--muted); text-align:center; }
 
+        /* 语言切换器 */
+        .lang-switcher {
+            display:flex; align-items:center;
+            border:1.5px solid var(--border); border-radius:40px;
+            overflow:hidden; background:var(--surface);
+        }
+        .lang-btn {
+            padding:.4rem .85rem; font-size:.82rem; font-weight:600;
+            font-family:'DM Sans',sans-serif; letter-spacing:.5px;
+            color:var(--muted); text-decoration:none;
+            transition:background .2s, color .2s;
+            white-space:nowrap;
+        }
+        .lang-btn:hover { color:var(--accent); }
+        .lang-btn.active {
+            background:var(--accent); color:#fff; border-radius:40px;
+        }
+        .lang-btn + .lang-btn { border-left:1px solid var(--border); }
+        .lang-btn.active + .lang-btn { border-left:none; }
+
         /* ========= RESPONSIVE ========= */
         @media(max-width:900px) {
             .hero { grid-template-columns:1fr; gap:2.5rem; padding:3rem 5%; min-height:auto; }
@@ -420,33 +429,35 @@
 </head>
 <body>
 
+<!-- 跑马灯背景 -->
 <div class="marquee-bg" aria-hidden="true">
     BRAND BUILDER · CONSUMER CENTRIC · GO-TO-MARKET · BRAND BUILDER · CONSUMER CENTRIC · GO-TO-MARKET ·&nbsp;
 </div>
 
+<!-- ===== NAV ===== -->
 <nav>
     <div class="nav-brand">
         <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
         <span>Audencia GE Program (PGE)</span>
     </div>
     <div class="nav-ctas">
-        
-        <div class="lang-switcher-inline">
-            <a href="index.html" class="active">EN</a>
-            <a href="resume_fr.html">FR</a>
-            <a href="resume_cn.html">中</a>
+        <!-- 语言切换 -->
+        <div class="lang-switcher">
+            <a href="pro.html" class="lang-btn active" data-lang="en">EN</a>
+            <a href="pro_fr.html" class="lang-btn" data-lang="fr">FR</a>
+            <a href="pro_zh.html" class="lang-btn" data-lang="zh">中文</a>
         </div>
-
         <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
             <span>Contact</span>
         </a>
-        <div class="cv-dropdown">
-            <button class="btn btn-solid">
+        <!-- CV 下拉菜单 -->
+        <div class="cv-dropdown" id="nav-cv-dropdown">
+            <button class="btn btn-solid" id="cv-toggle-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download CV ▾
             </button>
-            <div class="cv-menu">
+            <div class="cv-menu" id="cv-menu">
                 <a href="Liyi_GAO_Product_assistant.pdf" download>
                     <span class="cv-flag">🇬🇧</span> English CV
                 </a>
@@ -461,8 +472,10 @@
 
 <div data-theme="theme-light" class="theme-trigger"></div>
 
+<!-- ===== HERO ===== -->
 <header class="hero">
     <div class="hero-left">
+        <!-- 可用状态胶囊 -->
         <div class="avail-badge reveal">
             <span class="avail-dot"></span>
             Available · Internship from July 2026
@@ -475,26 +488,16 @@
             Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
         </p>
 
+        <!-- Hero CTA 组 -->
         <div class="hero-ctas reveal delay-2">
             <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
                 liyi.gao.dm@gmail.com
             </a>
-            <div class="cv-dropdown">
-                <button class="btn btn-ghost">
-                    ↓ Download CV ▾
-                </button>
-                <div class="cv-menu">
-                    <a href="Liyi_GAO_Product_assistant.pdf" download>
-                        <span class="cv-flag">🇬🇧</span> English CV
-                    </a>
-                    <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>
-                        <span class="cv-flag">🇫🇷</span> CV en Français
-                    </a>
-                </div>
-            </div>
+            <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
         </div>
 
+        <!-- 技能标签 -->
         <div class="skill-tags reveal delay-2">
             <div class="skill-pill">🇨🇳 Mandarin</div>
             <div class="skill-pill">🇫🇷 French C1</div>
@@ -514,12 +517,14 @@
     </div>
 </header>
 
+<!-- ===== DIARY 视差文字 ===== -->
 <section class="diary-container" id="diary-container">
     <div class="diary-sticky">
         <h2 class="diary-text" id="diary-text">It all started<br>with empathy.</h2>
     </div>
 </section>
 
+<!-- ===== 成长时间轴 ===== -->
 <section class="timeline-wrap">
     <h2 class="heading reveal" style="font-size:clamp(1.8rem,3.5vw,2.8rem); margin-bottom:2.5rem;">
         Self-Growth & Entrepreneurial Journey
@@ -528,6 +533,7 @@
         <div class="tl-line"></div>
         <div class="tl-dot" id="tl-dot"></div>
 
+        <!-- Phase 1: 2013 -->
         <div class="tl-node reveal">
             <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle" style="top:0;right:0;width:130px;transform:rotate(8deg);" alt="">
             <p class="label">Phase 1 (2013) · Consumer Insights & Early Prototyping</p>
@@ -540,6 +546,7 @@
             </div>
         </div>
 
+        <!-- Phase 1: 2015 -->
         <div class="tl-node reveal">
             <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle" style="top:15%;right:-10px;width:150px;transform:rotate(-6deg);" alt="">
             <p class="label">Phase 1 (2015) · Brand Positioning</p>
@@ -554,9 +561,309 @@
 
         <div data-theme="theme-brand" class="theme-trigger" style="position:absolute;top:55%;"></div>
 
+        <!-- Phase 2: 2022 -->
         <div class="tl-node reveal">
             <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa31d4774d.webp" alt="O2O Logo" style="width:72px;height:72px;object-fit:contain;background:#fff;border-radius:14px;padding:5px;margin-bottom:1.5rem;border:1.5px solid var(--border);">
             <p class="label">Phase 2 (2022) · Architecting a Campus O2O Retail Network</p>
             <h3>Architecting a Campus O2O Network</h3>
             <ul class="pro-bullets" style="list-style:none;padding:0;">
-                <li><strong>Founded</strong> a new digital business ecosystem with online ordering and offline delivery, initially focusing on fresh fruit
+                <li><strong>Founded</strong> a new digital business ecosystem with online ordering and offline delivery, initially focusing on fresh fruit and successfully scaling to high-margin fruit by-products.</li>
+                <li><strong>Directed</strong> end-to-end operations, taking full ownership of procurement, SKU selection, team coordination, and daily customer service management.</li>
+                <li><strong>Forged</strong> strategic partnerships with student clubs and local coffee shops, effectively securing offline pop-up spaces and co-hosting promotional events.</li>
+            </ul>
+            <div class="kpi-badge">Designed high-conversion materials across <strong>1,000+ private-domain users</strong></div>
+            <div class="kpi-row" style="margin-top:1.5rem;">
+                <div class="kpi"><div class="kpi-num">400+</div><div class="kpi-label">Monthly Active Users</div></div>
+                <div class="kpi"><div class="kpi-num">80%</div><div class="kpi-label">Repurchase Rate</div></div>
+                <div class="kpi"><div class="kpi-num">&lt;5%</div><div class="kpi-label">Perishable Waste</div></div>
+            </div>
+            <div class="gallery-container">
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp"><figcaption>Dedicated dorm-level shelf system.</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp"><figcaption>Data-driven order collection.</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp"><figcaption>Frictionless UI.</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp"><figcaption>High-retention CRM.</figcaption></figure>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div data-theme="theme-dark" class="theme-trigger"></div>
+
+<!-- ===== 过渡散落图 ===== -->
+<div class="transition-band" id="trans-band">
+    <div class="transition-words">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
+    <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:340px;height:240px;">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:270px;height:340px;">
+</div>
+
+<!-- ===== 职业经历 ===== -->
+<section class="exp-section">
+    <h2 class="display exp-title reveal">Sharpening the<br><em>Professional Arsenal</em></h2>
+
+    <div class="exp-cards">
+
+        <!-- Wealthfields -->
+        <div class="pro-card reveal">
+            <div class="pro-header">
+                <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="pro-logo">
+                <div>
+                    <div class="pro-meta">Canton, China · Mar 2025 – Jun 2025</div>
+                    <h4>Wealthfields Lohmann (FMCG)</h4>
+                </div>
+            </div>
+            <p class="pro-focus">Focus: 360° Brand Partnerships & Go-to-Market</p>
+            <ul class="pro-bullets">
+                <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
+                <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
+                <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
+            </ul>
+            <div class="gallery-container">
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>Marathon Live</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>50k+ Stream</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>Event Setup</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>Offline Sales</figcaption></figure>
+            </div>
+        </div>
+
+        <!-- MMA -->
+        <div class="pro-card reveal delay-1">
+            <div class="pro-header">
+                <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="pro-logo">
+                <div>
+                    <div class="pro-meta">Canton, China · Jan 2023 – Aug 2023</div>
+                    <h4>MMA Brand Services Pte. Ltd.</h4>
+                </div>
+            </div>
+            <p class="pro-focus">Focus: Product Lifecycle Management & E-Commerce Strategy</p>
+            <ul class="pro-bullets">
+                <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
+                <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
+            </ul>
+            <div class="gallery-container">
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
+            </div>
+        </div>
+
+        <!-- TAL -->
+        <div class="pro-card reveal">
+            <div class="pro-header">
+                <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="pro-logo">
+                <div>
+                    <div class="pro-meta">Guangzhou, China · Nov 2023 – Jun 2024</div>
+                    <h4>TAL Education Group</h4>
+                </div>
+            </div>
+            <p class="pro-focus">Focus: EdTech & Audience Engagement</p>
+            <ul class="pro-bullets">
+                <li><strong>Public Speaking:</strong> Delivered high-pressure live presentations to large audiences, achieving <strong>#1 performance</strong> among new instructors.</li>
+                <li><strong>Knowledge Synthesis:</strong> Deconstructed complex Olympiad Math logic into simplified, engaging content.</li>
+                <li><strong>CRM & Retention:</strong> Secured a <strong>100% renewal rate</strong> through proactive client relationship management.</li>
+            </ul>
+            <div class="gallery-container">
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>Top Performance</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>Live Presentation</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>Engagement</figcaption></figure>
+            </div>
+        </div>
+
+        <!-- ACE -->
+        <div class="pro-card reveal delay-1">
+            <div class="pro-header">
+                <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="pro-logo">
+                <div>
+                    <div class="pro-meta">Nantes, France · Ongoing</div>
+                    <h4>Audencia Entrepreneur Club (ACE)</h4>
+                </div>
+            </div>
+            <p class="pro-focus">Focus: PR, External Communication & Resource Orchestration</p>
+            <ul class="pro-bullets">
+                <li><strong>Spearheaded</strong> external communications for the "DARE" initiative, successfully pitching and securing <strong>high-profile industry guest speakers</strong>.</li>
+                <li><strong>Directed</strong> cross-functional collaboration across departments, aligning core messaging.</li>
+                <li><strong>Produced</strong> high-impact visual media assets and integrated promotional campaigns.</li>
+            </ul>
+            <div class="gallery-container">
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Event Planning</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>Coordination</figcaption></figure>
+                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE Execution</figcaption></figure>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== AI Demo ===== -->
+<section class="demo-section reveal">
+    <div class="ai-card">
+        <div>
+            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566301faa.webp" class="doodle" style="top:-16px;left:-16px;width:90px;" alt="">
+            <p class="label">Current Exploration · Agile Prototyping</p>
+            <h3>Building the<br>Skincare Copilot</h3>
+            <p>I treat AI as a strategic co-pilot. By translating my consumer intuition into structured logic, I rapidly coded and deployed this functional web application.</p>
+            <p>Designed to solve the real pain point of overwhelming skincare choices — providing personalized routine analysis and reducing cognitive load for beauty consumers.</p>
+            <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
+                Experience the Live Prototype ↗
+            </a>
+        </div>
+        <div class="browser">
+            <div class="browser-bar">
+                <div class="b-dot"></div>
+                <div class="b-dot"></div>
+                <div class="b-dot"></div>
+            </div>
+            <iframe src="https://lygao-ducky.github.io/skincare_assistant/index.html" title="Skincare Copilot"></iframe>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Hobbies ===== -->
+<section class="hobbies-section reveal">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle" style="top:5%;left:2%;width:160px;transform:rotate(10deg);" alt="">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle" style="bottom:15%;right:3%;width:150px;transform:rotate(-12deg);" alt="">
+
+    <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.6rem);text-align:center;">When I'm not in front of my laptop...</h2>
+    <p style="text-align:center;color:var(--muted);margin-top:.8rem;">Maintaining the "hardware" and optimizing the "flow state".</p>
+
+    <div class="polaroid-grid">
+        <div class="polaroid">
+            <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing">
+            <h4>Aviron</h4>
+            <p>That pure magic of perfect team sync. And when I'm solo? Just me, a boat, chasing the wind.</p>
+        </div>
+        <div class="polaroid">
+            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" style="object-position:top;">
+            <h4>Randonnée</h4>
+            <p>Scrambling up rocky trails for that one epic view. Leg burn? Yes. Worth it? Always.</p>
+        </div>
+        <div class="polaroid">
+            <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming">
+            <h4>Swimming</h4>
+            <p>No sweat to wipe away — just the pure, carefree joy of uninhibited movement.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-contact">
+        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+            liyi.gao.dm@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
+        <div class="cv-dropdown footer-cv">
+            <button class="btn btn-ghost">↓ Download CV ▾</button>
+            <div class="cv-menu">
+                <a href="Liyi_GAO_Product_assistant.pdf" download><span class="cv-flag">🇬🇧</span> English CV</a>
+                <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download><span class="cv-flag">🇫🇷</span> CV en Français</a>
+            </div>
+        </div>
+    </div>
+    <p class="footer-copy">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
+</footer>
+
+<script>
+// ---- 1. Reveal 动画 ----
+function revealOnScroll() {
+    document.querySelectorAll('.reveal, .reveal-left').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('active');
+    });
+}
+window.addEventListener('scroll', revealOnScroll, { passive:true });
+revealOnScroll();
+
+// ---- 2. Diary 视差文字 ----
+const diaryCont = document.getElementById('diary-container');
+const diaryTxt  = document.getElementById('diary-text');
+window.addEventListener('scroll', () => {
+    if (!diaryCont || !diaryTxt) return;
+    const rect = diaryCont.getBoundingClientRect();
+    const wh   = window.innerHeight;
+    let p = Math.max(0, Math.min(1, -rect.top / (rect.height - wh)));
+    let scale   = 0.65 + Math.pow(p, .5) * 0.4;
+    let opacity = p < 0.15 ? p / 0.15 : p < 0.82 ? 1 : 1 - (p - 0.82) / 0.18;
+    diaryTxt.style.opacity   = Math.max(0, Math.min(1, opacity));
+    diaryTxt.style.transform = `scale(${scale})`;
+}, { passive:true });
+
+// ---- 3. 散落图特效（居中偏移，不飞出屏幕） ----
+const transBand = document.getElementById('trans-band');
+const si1 = document.getElementById('s1');
+const si2 = document.getElementById('s2');
+const si3 = document.getElementById('s3');
+window.addEventListener('scroll', () => {
+    if (!transBand) return;
+    const r = transBand.getBoundingClientRect();
+    const wh = window.innerHeight;
+    let p = Math.max(0, Math.min(1, 1 - r.bottom / (wh + r.height)));
+    let o = Math.sin(p * Math.PI);
+    [si1,si2,si3].forEach(img => { if(img) img.style.opacity = o; });
+    // 以中心为原点做小幅偏移（单位px），不会飞出屏幕
+    if(si1) si1.style.transform = `translate(calc(-50% + ${(-180 + p*120)}px), calc(-50% + ${(60 - p*120)}px)) rotate(${-12+p*4}deg)`;
+    if(si2) si2.style.transform = `translate(calc(-50% + ${(20 - p*60)}px), calc(-50% + ${(-80 + p*80)}px)) rotate(${4-p*8}deg)`;
+    if(si3) si3.style.transform = `translate(calc(-50% + ${(160 - p*100)}px), calc(-50% + ${(40 - p*60)}px)) rotate(${12-p*12}deg)`;
+}, { passive:true });
+
+// ---- 4. 主题切换 ----
+const themeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) document.body.className = e.target.dataset.theme; });
+}, { rootMargin:'-50% 0px -50% 0px' });
+document.querySelectorAll('.theme-trigger').forEach(t => themeObs.observe(t));
+
+// ---- 5. 时间轴圆点跟随 ----
+const tlInner = document.getElementById('tl-inner');
+const tlDot   = document.getElementById('tl-dot');
+window.addEventListener('scroll', () => {
+    if (!tlInner || !tlDot) return;
+    const r = tlInner.getBoundingClientRect();
+    let pct = (window.innerHeight / 2 - r.top) / r.height;
+    tlDot.style.top = (Math.min(Math.max(pct,0),1) * 100) + '%';
+}, { passive:true });
+
+// ---- 6. CV 下拉 — 统一事件绑定，无冲突 ----
+(function() {
+    // 给所有 cv-dropdown 的 button 绑定点击
+    document.querySelectorAll('.cv-dropdown button').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var dropdown = btn.closest('.cv-dropdown');
+            var menu = dropdown.querySelector('.cv-menu');
+            var isOpen = dropdown.classList.contains('open');
+
+            // 先关闭所有
+            document.querySelectorAll('.cv-dropdown.open').forEach(function(d) {
+                d.classList.remove('open');
+            });
+
+            if (!isOpen) {
+                // 计算定位（fixed 模式）
+                var btnRect = btn.getBoundingClientRect();
+                menu.style.top  = (btnRect.bottom + 8) + 'px';
+                var left = btnRect.left;
+                var menuW = 230;
+                if (left + menuW > window.innerWidth - 16) {
+                    left = window.innerWidth - menuW - 16;
+                }
+                menu.style.left = left + 'px';
+                dropdown.classList.add('open');
+            }
+        });
+    });
+
+    // 点击其他地方关闭
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.cv-dropdown.open').forEach(function(d) {
+            d.classList.remove('open');
+        });
+    });
+
+    // 滚动时关闭
+    window.addEventListener('scroll', function() {
+        document.querySelectorAll('.cv-dropdown.open').forEach(function(d) {
+            d.classList.remove('open');
+        });
+    }, { passive: true });
+})();
+</script>
+</body>
+</html>
