@@ -104,15 +104,15 @@
         /* CV 下拉 */
         .cv-dropdown { position:relative; }
         .cv-menu {
-            position:absolute; top:calc(100% + 8px); right:0;
+            position:fixed; /* 用 fixed 避免被其他层级遮挡/遮住下方内容 */
             background:var(--surface); border:1px solid var(--border);
             border-radius:14px; overflow:hidden;
-            box-shadow:0 16px 40px rgba(0,0,0,.12);
-            min-width:220px; opacity:0; transform:translateY(-8px) scale(.97);
+            box-shadow:0 16px 40px rgba(0,0,0,.18);
+            min-width:230px; opacity:0; transform:translateY(-8px) scale(.97);
             pointer-events:none; transition:all .25s cubic-bezier(.16,1,.3,1);
-            z-index:200;
+            z-index:9999;
         }
-        .cv-dropdown:hover .cv-menu, .cv-dropdown.open .cv-menu {
+        .cv-dropdown.open .cv-menu {
             opacity:1; transform:translateY(0) scale(1); pointer-events:all;
         }
         .cv-menu a {
@@ -284,17 +284,27 @@
             margin:4rem 0;
         }
         .transition-words {
-            position:absolute; top:40%; left:50%; transform:translate(-50%,-50%);
+            position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
             font-family:'Space Grotesk',sans-serif; font-size:clamp(2.2rem,4.5vw,4.5rem);
             font-weight:800; color:var(--text); opacity:.07;
             text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase;
             white-space:nowrap;
         }
-        .scatter { position:absolute; border-radius:14px; object-fit:cover; border:4px solid var(--surface); box-shadow:0 20px 40px rgba(0,0,0,.14); opacity:0; z-index:2; }
+        /* 散落图：初始在中心附近，由JS驱动偏移 */
+        .scatter {
+            position:absolute;
+            /* 初始锚点：左50% 上50%，JS用translate偏移 */
+            left:50%; top:50%;
+            border-radius:14px; object-fit:cover;
+            border:4px solid var(--surface);
+            box-shadow:0 20px 40px rgba(0,0,0,.14);
+            opacity:0; z-index:2;
+            transform:translate(-50%,-50%); /* 默认居中 */
+        }
 
         /* ========= 职业经历卡片 ========= */
         .exp-section { padding:0 5% 5rem; max-width:1280px; margin:0 auto; }
-        .exp-title { font-size:clamp(2.2rem,4vw,3.4rem); text-align:center; margin-bottom:3.5rem; }
+        .exp-title { font-size:clamp(2.8rem,4.5vw,4rem); text-align:center; margin-bottom:3.5rem; font-style:italic; }
 
         .exp-cards { display:flex; flex-direction:column; gap:2.5rem; }
         .pro-card {
@@ -323,33 +333,36 @@
         .gallery-container img { height:260px; width:auto; object-fit:cover; border-radius:12px; border:1px solid var(--border); }
 
         /* ========= AI DEMO ========= */
-        .demo-section { padding:0 5% 5rem; max-width:1280px; margin:0 auto; }
+        .demo-section { padding:0 5% 5rem; max-width:1280px; margin:0 auto; position:relative; z-index:10; }
         .ai-card {
             display:grid; grid-template-columns:1fr 1.15fr; gap:4rem;
             align-items:center; background:var(--surface);
             border:1.5px solid var(--border); border-radius:28px;
-            padding:4rem; box-shadow:0 20px 50px rgba(0,0,0,.05);
-            position:relative; overflow:hidden;
+            padding:4rem; box-shadow:0 20px 50px rgba(0,0,0,.06);
+            position:relative; overflow:hidden; isolation:isolate;
         }
         .ai-card::before {
             content:''; position:absolute; top:-40%; right:-10%;
             width:420px; height:420px; border-radius:50%;
             background:radial-gradient(circle, var(--accent-lt) 0%, transparent 70%);
-            opacity:.4; pointer-events:none;
+            opacity:.5; pointer-events:none; z-index:0;
         }
+        .ai-card > * { position:relative; z-index:1; }
         .ai-card h3 { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:800; margin:.5rem 0 1.2rem; }
         .ai-card p  { color:var(--muted); font-size:1.05rem; line-height:1.75; }
         .ai-card p + p { margin-top:.8rem; }
 
-        /* 浏览器 Mockup */
+        /* 浏览器 Mockup — 完全不透明，隔绝背景水印 */
         .browser {
             border:1.5px solid var(--border); border-radius:14px; overflow:hidden;
-            box-shadow:0 24px 60px rgba(0,0,0,.14); background:var(--bg);
+            box-shadow:0 24px 60px rgba(0,0,0,.14);
+            background:#FFFFFF; /* 纯白，不继承变量，确保不透明 */
+            position:relative; z-index:2;
         }
-        .browser-bar { height:36px; background:rgba(0,0,0,.05); display:flex; align-items:center; padding-left:14px; gap:7px; border-bottom:1px solid var(--border); }
+        .browser-bar { height:36px; background:#F0EDEA; display:flex; align-items:center; padding-left:14px; gap:7px; border-bottom:1px solid var(--border); }
         .b-dot { width:11px; height:11px; border-radius:50%; }
         .b-dot:nth-child(1){background:#ff5f56;} .b-dot:nth-child(2){background:#ffbd2e;} .b-dot:nth-child(3){background:#27c93f;}
-        .browser iframe { width:100%; height:400px; border:none; display:block; }
+        .browser iframe { width:100%; height:400px; border:none; display:block; background:#fff; }
 
         /* ========= HOBBIES ========= */
         .hobbies-section { padding:4rem 5%; max-width:1280px; margin:0 auto; position:relative; }
@@ -477,7 +490,8 @@
             <div class="skill-pill">🇬🇧 English C2</div>
             <div class="skill-pill">SQL</div>
             <div class="skill-pill">Google Analytics</div>
-            <div class="skill-pill">TikTok Ocean Engine</div>
+            <div class="skill-pill">Microsoft Office</div>
+            <div class="skill-pill">PowerPoint</div>
         </div>
     </div>
 
@@ -758,7 +772,7 @@ window.addEventListener('scroll', () => {
     diaryTxt.style.transform = `scale(${scale})`;
 }, { passive:true });
 
-// ---- 3. 散落图特效 ----
+// ---- 3. 散落图特效（居中偏移，不飞出屏幕） ----
 const transBand = document.getElementById('trans-band');
 const si1 = document.getElementById('s1');
 const si2 = document.getElementById('s2');
@@ -770,9 +784,10 @@ window.addEventListener('scroll', () => {
     let p = Math.max(0, Math.min(1, 1 - r.bottom / (wh + r.height)));
     let o = Math.sin(p * Math.PI);
     [si1,si2,si3].forEach(img => { if(img) img.style.opacity = o; });
-    if(si1) si1.style.transform = `translate(${-100+p*80}%, ${100-p*150}%) rotate(${-15+p*5}deg)`;
-    if(si2) si2.style.transform = `translate(${10-p*20}%, ${-100+p*100}%) rotate(${5-p*10}deg)`;
-    if(si3) si3.style.transform = `translate(${100-p*70}%, ${20-p*50}%) rotate(${15-p*15}deg)`;
+    // 以中心为原点做小幅偏移（单位px），不会飞出屏幕
+    if(si1) si1.style.transform = `translate(calc(-50% + ${(-180 + p*120)}px), calc(-50% + ${(60 - p*120)}px)) rotate(${-12+p*4}deg)`;
+    if(si2) si2.style.transform = `translate(calc(-50% + ${(20 - p*60)}px), calc(-50% + ${(-80 + p*80)}px)) rotate(${4-p*8}deg)`;
+    if(si3) si3.style.transform = `translate(calc(-50% + ${(160 - p*100)}px), calc(-50% + ${(40 - p*60)}px)) rotate(${12-p*12}deg)`;
 }, { passive:true });
 
 // ---- 4. 主题切换 ----
@@ -791,12 +806,42 @@ window.addEventListener('scroll', () => {
     tlDot.style.top = (Math.min(Math.max(pct,0),1) * 100) + '%';
 }, { passive:true });
 
-// ---- 6. CV 下拉 关闭逻辑 ----
-document.addEventListener('click', e => {
-    if (!e.target.closest('.cv-dropdown')) {
-        document.querySelectorAll('.cv-dropdown.open').forEach(d => d.classList.remove('open'));
+// ---- 6. CV 下拉 定位 + 关闭逻辑 ----
+function positionCVMenu(dropdown) {
+    const btn = dropdown.querySelector('.btn');
+    const menu = dropdown.querySelector('.cv-menu');
+    if (!btn || !menu) return;
+    const rect = btn.getBoundingClientRect();
+    menu.style.top  = (rect.bottom + 8) + 'px';
+    menu.style.left = rect.left + 'px';
+    // 防止超出右边界
+    const menuW = 230;
+    if (rect.left + menuW > window.innerWidth - 16) {
+        menu.style.left = (window.innerWidth - menuW - 16) + 'px';
     }
+}
+
+document.querySelectorAll('.cv-dropdown button').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const dropdown = btn.closest('.cv-dropdown');
+        const isOpen = dropdown.classList.contains('open');
+        // 关闭所有
+        document.querySelectorAll('.cv-dropdown.open').forEach(d => d.classList.remove('open'));
+        if (!isOpen) {
+            positionCVMenu(dropdown);
+            dropdown.classList.add('open');
+        }
+    });
 });
+
+document.addEventListener('click', () => {
+    document.querySelectorAll('.cv-dropdown.open').forEach(d => d.classList.remove('open'));
+});
+
+window.addEventListener('scroll', () => {
+    document.querySelectorAll('.cv-dropdown.open').forEach(d => d.classList.remove('open'));
+}, { passive:true });
 </script>
 </body>
 </html>
