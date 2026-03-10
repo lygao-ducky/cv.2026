@@ -249,13 +249,17 @@ strong { font-weight:600; color:var(--accent); }
   width:100%; height:auto; overflow:visible; display:block;
 }
 
-/* Map node buttons */
+/* Map node buttons — transform-origin at centre, will-change avoids repaint flicker */
 .map-node {
-  cursor:pointer; transition:transform .25s cubic-bezier(.16,1,.3,1);
+  cursor:pointer;
+  transform-origin: center center;
+  transform-box: fill-box;
+  will-change: transform;
+  transition: transform .28s cubic-bezier(.16,1,.3,1);
 }
-.map-node:hover { transform:scale(1.15); }
-.map-node:hover .node-ring { stroke:var(--accent); }
-.node-ring { transition:stroke .25s; }
+.map-node:hover { transform: scale(1.18); }
+.map-node:hover .node-ring { stroke: var(--accent); stroke-width: 2.5; }
+.node-ring { transition: stroke .25s, stroke-width .25s; }
 
 /* Story popup */
 .story-popup {
@@ -306,12 +310,12 @@ strong { font-weight:600; color:var(--accent); }
 
 .drawer {
   position:fixed; top:0; right:0; bottom:0; z-index:401;
-  width:min(520px, 95vw);
+  width:min(680px, 96vw);
   background:var(--card-bg);
-  box-shadow:-24px 0 60px rgba(0,0,0,.12);
+  box-shadow:-24px 0 80px rgba(0,0,0,.16);
   transform:translateX(100%);
   transition:transform .4s cubic-bezier(.16,1,.3,1);
-  overflow-y:auto; padding:2.5rem;
+  overflow-y:auto; padding:3rem;
   border-radius:24px 0 0 24px;
 }
 .drawer.open { transform:translateX(0); }
@@ -351,7 +355,21 @@ strong { font-weight:600; color:var(--accent); }
 .o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 12px 32px var(--accent-glow); }
 .o2o-trigger:hover::after { opacity:1; }
 .o2o-tag { display:inline-flex; align-items:center; gap:.4rem; }
-.o2o-open-hint { display:flex; align-items:center; gap:.4rem; color:var(--accent); font-size:.85rem; font-weight:600; margin-top:1rem; }
+.o2o-open-hint {
+  display:inline-flex; align-items:center; gap:.6rem;
+  color:#fff; font-size:.92rem; font-weight:700; margin-top:1.4rem;
+  background:var(--accent); padding:.65rem 1.4rem; border-radius:40px;
+  box-shadow:0 4px 18px var(--accent-glow);
+  transition:background .2s, box-shadow .2s, transform .2s;
+  letter-spacing:.3px;
+}
+.o2o-trigger:hover .o2o-open-hint {
+  background:var(--accent-dk);
+  box-shadow:0 8px 28px rgba(41,151,255,.4);
+  transform:translateX(4px);
+}
+.o2o-open-hint svg { transition:transform .2s; }
+.o2o-trigger:hover .o2o-open-hint svg { transform:translateX(4px); }
 
 /* ============================================================
    ACCORDION — Professional Arsenal
@@ -375,11 +393,11 @@ strong { font-weight:600; color:var(--accent); }
 .accordion-header::-webkit-details-marker { display:none; }
 .accordion-header:hover { background:var(--accent-lt); }
 
-.acc-logo { width:52px; height:52px; object-fit:contain; background:#fff; padding:4px; border-radius:12px; border:1.5px solid var(--border); flex-shrink:0; }
+.acc-logo { width:56px; height:56px; object-fit:contain; background:#fff; padding:4px; border-radius:12px; border:1.5px solid var(--border); flex-shrink:0; }
 .acc-meta { flex:1; min-width:0; }
-.acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.15rem; font-weight:700; line-height:1.2; }
-.acc-period  { font-size:.8rem; color:var(--accent); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:.2rem; }
-.acc-focus   { font-size:.88rem; color:var(--muted); }
+.acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.25rem; font-weight:700; line-height:1.25; }
+.acc-period  { font-size:.85rem; color:var(--accent); font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:.25rem; }
+.acc-focus   { font-size:.97rem; color:var(--muted); font-weight:500; margin-top:.2rem; }
 .acc-chevron {
   width:28px; height:28px; border-radius:50%; flex-shrink:0;
   border:1.5px solid var(--border); background:var(--bg);
@@ -394,10 +412,10 @@ strong { font-weight:600; color:var(--accent); }
   max-height:0; overflow:hidden;
   transition:max-height .5s cubic-bezier(.16,1,.3,1);
 }
-.accordion-item.open .accordion-body { max-height:800px; }
-.accordion-inner { padding:0 1.8rem 1.8rem; border-top:1px solid var(--border); }
-.acc-bullets { padding-left:1.1rem; color:var(--muted); font-size:.97rem; margin:1.2rem 0; }
-.acc-bullets li { margin-bottom:.75rem; line-height:1.65; }
+.accordion-item.open .accordion-body { max-height:1000px; }
+.accordion-inner { padding:0 1.8rem 2rem; border-top:1px solid var(--border); }
+.acc-bullets { padding-left:1.2rem; color:var(--text); font-size:1.02rem; margin:1.4rem 0; }
+.acc-bullets li { margin-bottom:.9rem; line-height:1.75; }
 
 .acc-gallery { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x mandatory; margin-top:1rem; }
 .acc-gallery::-webkit-scrollbar { display:none; }
@@ -473,20 +491,100 @@ strong { font-weight:600; color:var(--accent); }
 .browser iframe { width:100%; height:380px; border:none; display:block; background:#fff; }
 
 /* ============================================================
-   HOBBIES POLAROID
+   HOBBIES — overlapping stack cards, click to expand
    ============================================================ */
 #hobbies { background:var(--bg); }
-.polaroid-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2rem; margin-top:3rem; }
-.polaroid {
-  background:#fff; padding:14px 14px 30px;
-  border-radius:4px; box-shadow:0 10px 28px rgba(0,0,0,.09);
-  transform:rotate(-2deg); transition:transform .4s cubic-bezier(.175,.885,.32,1.275);
+
+.hobby-stack {
+  position:relative;
+  height:380px;
+  margin-top:3rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.polaroid:nth-child(even) { transform:rotate(2.5deg); }
-.polaroid:hover { transform:scale(1.06) rotate(0); z-index:10; }
-.polaroid img { width:100%; height:210px; object-fit:cover; display:block; border:1px solid #eee; }
-.polaroid h4 { font-family:'Space Grotesk',sans-serif; font-size:1.05rem; color:#111; text-align:center; margin-top:14px; }
-.polaroid p  { font-size:.8rem; color:#777; text-align:center; margin-top:5px; line-height:1.5; }
+
+.hobby-card {
+  position:absolute;
+  width:260px;
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 16px 48px rgba(0,0,0,.12);
+  overflow:hidden;
+  cursor:pointer;
+  transition:
+    transform .45s cubic-bezier(.16,1,.3,1),
+    width .45s cubic-bezier(.16,1,.3,1),
+    box-shadow .35s;
+  will-change:transform,width;
+}
+
+/* Default stack positions */
+.hobby-card:nth-child(1) { transform:rotate(-6deg) translateX(-170px) translateY(20px); z-index:1; }
+.hobby-card:nth-child(2) { transform:rotate(0deg) translateX(0px) translateY(0px);     z-index:2; }
+.hobby-card:nth-child(3) { transform:rotate(6deg)  translateX(170px) translateY(20px); z-index:1; }
+
+/* Hover: lift and straighten */
+.hobby-card:hover { box-shadow:0 28px 64px rgba(0,0,0,.2); z-index:10 !important; }
+.hobby-card:nth-child(1):hover { transform:rotate(-2deg) translateX(-170px) translateY(-12px) scale(1.06); }
+.hobby-card:nth-child(2):hover { transform:rotate(0deg) translateX(0px) translateY(-14px) scale(1.06); }
+.hobby-card:nth-child(3):hover { transform:rotate(2deg) translateX(170px) translateY(-12px) scale(1.06); }
+
+/* Active/clicked: expand to full detail */
+.hobby-card.active {
+  width:340px;
+  z-index:20 !important;
+}
+.hobby-card:nth-child(1).active { transform:rotate(0deg) translateX(-180px) translateY(-20px) scale(1.1); }
+.hobby-card:nth-child(2).active { transform:rotate(0deg) translateX(0px)    translateY(-20px) scale(1.1); }
+.hobby-card:nth-child(3).active { transform:rotate(0deg) translateX(180px)  translateY(-20px) scale(1.1); }
+
+.hobby-img {
+  width:100%; height:200px; object-fit:cover;
+  display:block;
+  transition:height .4s cubic-bezier(.16,1,.3,1);
+}
+.hobby-card.active .hobby-img { height:180px; }
+
+.hobby-body {
+  padding:14px 16px 18px;
+}
+.hobby-body h4 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.05rem; font-weight:700; color:var(--text);
+  margin-bottom:6px;
+}
+.hobby-body p {
+  font-size:.88rem; color:var(--muted);
+  line-height:1.6;
+  max-height:0; overflow:hidden;
+  transition:max-height .4s cubic-bezier(.16,1,.3,1), opacity .4s;
+  opacity:0;
+}
+.hobby-card.active .hobby-body p,
+.hobby-card:hover .hobby-body p {
+  max-height:120px;
+  opacity:1;
+}
+
+/* Mobile: vertical scroll layout */
+@media(max-width:700px) {
+  .hobby-stack {
+    height:auto;
+    flex-direction:column;
+    align-items:center;
+    gap:1.2rem;
+  }
+  .hobby-card {
+    position:relative;
+    width:100% !important;
+    max-width:340px;
+    transform:none !important;
+  }
+  .hobby-card.active { transform:none !important; }
+  .hobby-card:hover { transform:translateY(-6px) !important; }
+  .hobby-body p { max-height:120px; opacity:1; }
+}
 
 /* Doodle stickers */
 .doodle { position:absolute; pointer-events:none; opacity:.12; mix-blend-mode:multiply; z-index:0; }
@@ -525,9 +623,8 @@ footer {
   .nav-right .btn span { display:none; }
   .floating-nav { bottom:16px; padding:5px 6px; }
   .fnav-item { padding:.4rem .65rem; font-size:.62rem; }
-  .drawer { width:100vw; border-radius:24px 24px 0 0; top:auto; height:90vh; }
+  .drawer { width:100vw; border-radius:24px 24px 0 0; top:auto; height:90vh; transform:translateY(100%); }
   .drawer.open { transform:translateY(0); }
-  .drawer { transform:translateY(100%); top:auto; }
   .accordion-header { padding:1.2rem; gap:.9rem; }
   .acc-logo { width:44px; height:44px; }
 }
@@ -628,7 +725,7 @@ footer {
     </div>
     <div class="hero-right">
       <div class="hero-img-wrap">
-        <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad689ba1d37.webp" alt="Liyi Gao">
+        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a37a0f8db.webp" alt="Liyi Gao">
       </div>
       <div class="hero-name-overlay">Liyi GAO</div>
     </div>
@@ -683,23 +780,26 @@ footer {
 
       <!-- NODE 1: 2013 grandma stall -->
       <g class="map-node" data-story="s2013" transform="translate(240,100)">
-        <circle cx="0" cy="0" r="28" fill="white" stroke="#E0E0E0" stroke-width="2" class="node-ring"/>
-        <text x="0" y="6" text-anchor="middle" font-size="22">🥦</text>
-        <text x="0" y="26" text-anchor="middle" font-size="11" fill="#1D1D1F" font-weight="600">2013</text>
+        <circle cx="0" cy="0" r="30" fill="white" stroke="#E0E0E0" stroke-width="2" class="node-ring"/>
+        <clipPath id="clip2013"><circle cx="0" cy="0" r="24"/></clipPath>
+        <image href="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e78d031.webp" x="-24" y="-24" width="48" height="48" clip-path="url(#clip2013)" preserveAspectRatio="xMidYMid slice"/>
+        <text x="0" y="48" text-anchor="middle" font-size="11" fill="#1D1D1F" font-family="Space Grotesk, sans-serif" font-weight="700">2013</text>
       </g>
 
       <!-- NODE 2: 2015 stationery -->
       <g class="map-node" data-story="s2015" transform="translate(440,240)">
-        <circle cx="0" cy="0" r="28" fill="white" stroke="#E0E0E0" stroke-width="2" class="node-ring"/>
-        <text x="0" y="6" text-anchor="middle" font-size="22">✏️</text>
-        <text x="0" y="26" text-anchor="middle" font-size="11" fill="#1D1D1F" font-weight="600">2015</text>
+        <circle cx="0" cy="0" r="30" fill="white" stroke="#E0E0E0" stroke-width="2" class="node-ring"/>
+        <clipPath id="clip2015"><circle cx="0" cy="0" r="24"/></clipPath>
+        <image href="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" x="-24" y="-24" width="48" height="48" clip-path="url(#clip2015)" preserveAspectRatio="xMidYMid slice"/>
+        <text x="0" y="48" text-anchor="middle" font-size="11" fill="#1D1D1F" font-family="Space Grotesk, sans-serif" font-weight="700">2015</text>
       </g>
 
       <!-- NODE 3: 2022 O2O -->
       <g class="map-node" data-story="s2022" transform="translate(640,100)">
-        <circle cx="0" cy="0" r="28" fill="white" stroke="#E0E0E0" stroke-width="2" class="node-ring"/>
-        <text x="0" y="6" text-anchor="middle" font-size="22">📦</text>
-        <text x="0" y="26" text-anchor="middle" font-size="11" fill="#1D1D1F" font-weight="600">2022</text>
+        <circle cx="0" cy="0" r="30" fill="white" stroke="#E0E0E0" stroke-width="2" class="node-ring"/>
+        <clipPath id="clip2022"><circle cx="0" cy="0" r="24"/></clipPath>
+        <image href="https://picui.ogmua.cn/s1/2026/03/09/69aee89aee031.webp" x="-24" y="-24" width="48" height="48" clip-path="url(#clip2022)" preserveAspectRatio="xMidYMid slice"/>
+        <text x="0" y="48" text-anchor="middle" font-size="11" fill="#1D1D1F" font-family="Space Grotesk, sans-serif" font-weight="700">2022</text>
       </g>
 
       <!-- START marker -->
@@ -807,9 +907,9 @@ footer {
 <!-- ===== PROFESSIONAL ARSENAL — ACCORDION ===== -->
 <section id="arsenal" class="section-full" style="padding-bottom:5rem;">
   <div style="max-width:1280px;margin:0 auto;padding:0 5%;">
-    <div class="section-title-block reveal">
-      <p class="label">Experience</p>
-      <h2 class="display" style="font-size:clamp(2.2rem,4vw,3.4rem);font-style:italic;">Sharpening the<br><em>Professional Arsenal</em></h2>
+    <div class="section-title-block reveal" style="text-align:center;margin-bottom:3.5rem;">
+      <p class="label" style="margin-bottom:.5rem;">Experience</p>
+      <h2 class="display" style="font-size:clamp(2.4rem,4.5vw,3.8rem);font-style:italic;line-height:1.1;">Sharpening the<br><em style="color:var(--accent);">Professional Arsenal</em></h2>
     </div>
 
     <div class="accordion-container">
@@ -953,21 +1053,27 @@ footer {
     <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">When I'm not in front of my laptop...</h2>
     <p>Maintaining the "hardware" and optimizing the "flow state".</p>
   </div>
-  <div class="polaroid-grid">
-    <div class="polaroid">
-      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing">
-      <h4>Aviron</h4>
-      <p>That pure magic of perfect team sync. And when I'm solo? Just me, a boat, chasing the wind.</p>
+  <div class="hobby-stack">
+    <div class="hobby-card" id="hc1">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing" class="hobby-img">
+      <div class="hobby-body">
+        <h4>🚣 Aviron</h4>
+        <p>That pure magic of perfect team sync. And when I'm solo? Just me, a boat, chasing the wind.</p>
+      </div>
     </div>
-    <div class="polaroid">
-      <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" style="object-position:top;">
-      <h4>Randonnée</h4>
-      <p>Scrambling up rocky trails for that one epic view. Leg burn? Yes. Worth it? Always.</p>
+    <div class="hobby-card" id="hc2">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" class="hobby-img" style="object-position:top;">
+      <div class="hobby-body">
+        <h4>🥾 Randonnée</h4>
+        <p>Scrambling up rocky trails for that one epic view. Leg burn? Yes. Worth it? Always.</p>
+      </div>
     </div>
-    <div class="polaroid">
-      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming">
-      <h4>Swimming</h4>
-      <p>Honestly? I love it because there's no sweat to wipe away! Just the pure, carefree joy of uninhibited movement.</p>
+    <div class="hobby-card" id="hc3">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming" class="hobby-img">
+      <div class="hobby-body">
+        <h4>🏊 Swimming</h4>
+        <p>Honestly? I love it because there's no sweat to wipe away! Just the pure, carefree joy of uninhibited movement.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1049,15 +1155,12 @@ window.addEventListener('scroll', function(){
 }, {passive:true});
 
 /* ================================================================
-   4. ACCORDION
+   4. ACCORDION — allow multiple open, independent toggle
    ================================================================ */
 document.querySelectorAll('.accordion-header').forEach(function(header){
   header.addEventListener('click', function(){
     var item = header.closest('.accordion-item');
-    var isOpen = item.classList.contains('open');
-    // close all
-    document.querySelectorAll('.accordion-item.open').forEach(function(i){ i.classList.remove('open'); });
-    if(!isOpen) item.classList.add('open');
+    item.classList.toggle('open');
   });
 });
 
@@ -1157,6 +1260,17 @@ document.addEventListener('keydown', function(e){
       p.classList.remove('open'); document.body.style.overflow='';
     });
   }
+});
+
+/* ================================================================
+   10. HOBBY CARDS — click to expand/collapse
+   ================================================================ */
+document.querySelectorAll('.hobby-card').forEach(function(card){
+  card.addEventListener('click', function(){
+    var wasActive = card.classList.contains('active');
+    document.querySelectorAll('.hobby-card').forEach(function(c){ c.classList.remove('active'); });
+    if(!wasActive) card.classList.add('active');
+  });
 });
 </script>
 </body>
