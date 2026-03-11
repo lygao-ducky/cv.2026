@@ -12,15 +12,16 @@
    DESIGN TOKENS — Warm Silver & Ice Blue System
    ============================================================ */
 :root {
-  --bg:          #F8F7F5; 
-  --card-bg:     #FFFFFF; 
-  --text:        #2C2C2E; 
-  --muted:       #8E8E93; 
+  --bg:          #F8F7F5;
+  --card-bg:     #FFFFFF;
+  --text:        #2C2C2E;
+  --muted:       #8E8E93;
   --border:      rgba(0,0,0,0.06);
-  --accent:      #2997FF; 
+  --accent:      #2997FF;
   --accent-glow: rgba(41,151,255,0.15);
   --accent-dk:   #0071E3;
   --accent-lt:   rgba(41,151,255,0.06);
+  --timeline-bg: rgba(0,0,0,0.10);
   --surface2:    #F2F2F7;
   --nav-bg:      rgba(248,247,245,0.85);
 }
@@ -28,15 +29,15 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 *:focus { outline: none; }
 
-/* 锁定基准字号 */
-html { scroll-behavior: smooth; font-size: 15px; } 
+html { scroll-behavior: smooth; font-size: 15px; width: 100%; height: 100%; }
 
-/* [🔥 修复 Sticky 失效的罪魁祸首] 移除 body 的 overflow-x: hidden */
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', -apple-system, sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
   margin: 0;
 }
 
@@ -73,93 +74,28 @@ strong { font-weight:600; color:var(--accent); }
 .btn-solid:hover { background:var(--accent); }
 .btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.3); } }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.4; } }
 
-/* 全局透明涂鸦贴纸：作为极淡的水印背景 */
-.doodle-sticker { 
-  position: absolute; height: auto; 
-  z-index: -1; pointer-events: none; 
-  mix-blend-mode: multiply; opacity: 0.06; 
+/* 全局涂鸦贴纸 */
+.doodle-sticker {
+  position: absolute; height: auto;
+  z-index: -1; pointer-events: none;
+  mix-blend-mode: multiply; opacity: 0.06;
   filter: grayscale(100%);
 }
 
 .section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
 p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
-/* 防止页面撑破的基础设置 */
-.overflow-protector {
-    max-width: 100vw;
-    overflow-x: hidden;
-}
-
-/* 全屏跑马灯 */
-.marquee-bg {
-  position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
-}
-@keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-/* ============================================================
-   [🔥 修复] TOP NAV
-   ============================================================ */
-.top-nav {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 5%; 
-  position: sticky; top: 0; /* 恢复 Sticky 效果 */
-  z-index: 2000; 
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  background:var(--nav-bg); border-bottom:1px solid var(--border);
-}
-.nav-brand { display:flex; align-items:center; gap:.8rem; }
-.nav-brand img { height:26px; object-fit:contain; }
-.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
-.nav-right { display:flex; align-items:center; gap:.7rem; }
-
-/* 语言切换 */
-.lang-switcher {
-  display:flex; align-items:center;
-  border:1.5px solid var(--border); border-radius:40px;
-  overflow:hidden; background:var(--card-bg);
-}
-.lang-btn {
-  padding:.35rem .8rem; font-size:.78rem; font-weight:600;
-  color:var(--muted); text-decoration:none;
-  transition:background .2s, color .2s;
-}
-.lang-btn:hover { color:var(--accent); }
-.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
-
-/* CV dropdown */
-.cv-dropdown { position:relative; }
-.cv-menu {
-  position:absolute; top:calc(100% + 10px); right:0;
-  background:var(--card-bg); border:1px solid var(--border);
-  border-radius:12px; overflow:hidden;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
-  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
-  pointer-events:none; transition:all .22s; z-index:9999;
-}
-.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
-.cv-menu a { display:flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; text-decoration:none; color:var(--text); font-size:.85rem; font-weight:500; transition:background .2s; }
-.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
-.cv-menu a + a { border-top:1px solid var(--border); }
-
-/* ============================================================
-   FLOATING BOTTOM NAV
-   ============================================================ */
-.floating-nav {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:50px; padding:6px 10px; box-shadow:0 10px 30px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.05);
-}
-.fnav-item {
-  display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.65rem; font-weight:600; transition:all .22s; min-width:52px;
-}
-.fnav-item svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
-
 /* ============================================================
    PAGE INTRO
    ============================================================ */
 #page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
-.intro-strip { 
-    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+.intro-strip {
+  flex:1; background:rgba(180,180,188,0.65);
+  backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2);
+  border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0);
+  transition:transform .8s cubic-bezier(.76,0,.24,1);
 }
 .intro-strip:nth-child(1){ transition-delay:.00s; }
 .intro-strip:nth-child(2){ transition-delay:.05s; }
@@ -170,36 +106,115 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 #page-intro.done .intro-strip { transform:translateY(-100%); }
 #page-intro.gone { display:none; }
 
-.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width: 100%;}
+.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width:100%; }
 .intro-brand.fade { opacity:0; }
-.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,6vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
+.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,6vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow:0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
 .intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
 @keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
 
 /* ============================================================
+   TOP NAV — [FIX 2] 全部胶囊 pill 风格
+   ============================================================ */
+.top-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 5%; position:sticky; top:0; z-index:2000;
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  background:var(--nav-bg); border-bottom:1px solid var(--border);
+}
+.nav-brand { display:flex; align-items:center; gap:.8rem; }
+.nav-brand img { height:26px; object-fit:contain; }
+.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing:.5px; }
+.nav-right { display:flex; align-items:center; gap:10px; }
+
+/* Language Pill */
+.lang-switcher {
+  display:flex; align-items:center;
+  background:#FFFFFF; border:1px solid var(--border); border-radius:40px;
+  padding:3px; gap:2px;
+}
+.lang-btn {
+  padding:.35rem .9rem; font-size:.78rem; font-weight:600;
+  color:var(--muted); text-decoration:none; border-radius:40px; transition:all .2s;
+}
+.lang-btn.active { background:var(--accent); color:#fff; }
+
+/* Download CV Pill — FIX 2 */
+.cv-dropdown { position:relative; }
+.nav-cv-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:.45rem 1.1rem; font-size:.82rem; font-weight:600;
+  background:#FFFFFF; color:var(--text);
+  border:1px solid var(--border); border-radius:40px;
+  cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif;
+  white-space:nowrap;
+}
+.nav-cv-btn:hover { border-color:var(--muted); background:var(--surface2); }
+.nav-cv-btn svg { opacity:.6; }
+
+.cv-menu {
+  position:absolute; top:calc(100% + 10px); right:0;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,.08);
+  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
+  pointer-events:none; transition:all .22s; z-index:9999;
+}
+.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.cv-menu a { display:flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; text-decoration:none; color:var(--text); font-size:.85rem; font-weight:500; transition:background .2s; }
+.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
+.cv-menu a + a { border-top:1px solid var(--border); }
+
+/* LinkedIn Pill — FIX 2 */
+.nav-linkedin-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:.45rem 1.1rem; font-size:.82rem; font-weight:600;
+  background:var(--accent); color:#fff;
+  border-radius:40px; border:none; text-decoration:none;
+  transition:all .2s; box-shadow:0 4px 12px var(--accent-glow);
+  font-family:'DM Sans',sans-serif; white-space:nowrap;
+}
+.nav-linkedin-btn:hover { background:var(--accent-dk); transform:translateY(-1px); }
+
+/* ============================================================
+   FLOATING BOTTOM NAV
+   ============================================================ */
+.floating-nav {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:300;
+  display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:50px;
+  padding:6px 10px; box-shadow:0 10px 30px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.05);
+}
+.fnav-item {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  padding:.5rem 1rem; border-radius:40px; text-decoration:none;
+  color:var(--muted); font-size:.65rem; font-weight:600; transition:all .22s; min-width:52px;
+}
+.fnav-item svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
+
+/* ============================================================
    HERO SECTION
    ============================================================ */
-.hero { 
-    display:grid; grid-template-columns:1.1fr 1fr; 
-    align-items:center; gap:4rem; 
-    min-height:80vh; padding:4rem 5% 1rem; 
-    max-width:1040px; margin:0 auto; position:relative; z-index:10; 
+.hero {
+  display:grid; grid-template-columns:1.1fr 1fr;
+  align-items:center; gap:4rem;
+  min-height:80vh; padding:4rem 5% 1rem;
+  max-width:1040px; margin:0 auto; position:relative; z-index:10;
 }
-.hero-left { position:relative; }
-.hero-right { position:relative; width: 100%; max-width: 400px; margin-left: auto; }
-        
+.hero-left { position:relative; max-width:540px; }
+.hero-right { position:relative; width:100%; max-width:420px; margin-left:auto; }
+
 .hero-kicker { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:1.2rem; border-left:3px solid var(--accent); padding-left:10px; }
-.hero-h1 { font-size:clamp(2.5rem, 4vw, 3.5rem); margin-bottom:1rem; }
+.hero-h1 { font-size:clamp(2.5rem,4vw,3.5rem); margin-bottom:1rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
-.hero-desc { font-size:1.05rem; color:var(--text); max-width:480px; margin-bottom:2rem; line-height:1.7; }
+.hero-desc { font-size:1.05rem; color:var(--text); margin-bottom:2rem; line-height:1.7; }
 
-.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem;}
+.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem; }
 .skill-pill { padding:.3rem .8rem; border:1px solid var(--border); border-radius:6px; font-size:.75rem; font-weight:500; background:var(--card-bg); color:var(--text); transition:border-color .2s; }
-.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow: 0 2px 8px var(--accent-glow);}
+.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow:0 2px 8px var(--accent-glow); }
 
-.hero-img-wrap { width:100%; height:55vh; max-height: 520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);}
+.hero-img-wrap { width:100%; height:55vh; max-height:520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border:1px solid var(--border); }
 .hero-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center 20%; transform:scale(1.15); animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; }
-.hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(3rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
+.hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.8rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
 
 @keyframes expandImg { to { clip-path:inset(0 0 0 0 round 20px); } }
 @keyframes scaleImg  { to { transform:scale(1); } }
@@ -208,7 +223,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 /* ============================================================
    DIARY PARALLAX (Empathy)
    ============================================================ */
-.diary-container { height:150vh; position:relative; z-index:15; margin-bottom: -5vh;}
+.diary-container { height:150vh; position:relative; z-index:15; margin-bottom:-5vh; }
 .diary-sticky { position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .diary-text {
   font-size:clamp(2rem,4.5vw,4rem); font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
@@ -217,61 +232,61 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 }
 
 /* ============================================================
-   STORY SECTION: INLINE EXPANSION 
+   STORY SECTION: INLINE EXPANSION
    ============================================================ */
-#story  { background:var(--bg); padding-bottom: 4rem; position: relative;}
+#story { background:var(--bg); padding-bottom:4rem; position:relative; }
 
-.story-header { text-align: center; margin-bottom: 3rem; }
+.story-header { text-align:center; margin-bottom:3rem; }
 .story-header .st-eyebrow { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:.6rem; }
 .story-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color:var(--text); }
 .story-header .st-sub { font-size:.9rem; color:var(--muted); margin-top:.5rem; }
 
-.timeline-wrapper { position: relative; max-width: 800px; margin: 0 auto; padding: 0 5%; }
-.timeline-spine { position: absolute; left: calc(5% + 38px); top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--accent); opacity: 0.25; z-index: 1;}
+.timeline-wrapper { position:relative; max-width:800px; margin:0 auto; padding:0 5%; }
+.timeline-spine { position:absolute; left:calc(5% + 38px); top:0; bottom:0; width:0; border-left:2px dashed var(--accent); opacity:.25; z-index:1; }
 
-.snode { position: relative; margin-bottom: 2rem; z-index: 2; }
-.snode-dot { position: absolute; left: 32px; top: 25px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); z-index: 3; transition: all 0.3s; }
-.snode.open .snode-dot { background: var(--accent); box-shadow: 0 0 0 6px var(--accent-glow); }
+.snode { position:relative; margin-bottom:2.5rem; z-index:2; }
+.snode-dot { position:absolute; left:32px; top:25px; width:12px; height:12px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); box-shadow:0 0 0 4px var(--accent-glow); z-index:3; transition:all .3s; }
+.snode.open .snode-dot { background:var(--accent); box-shadow:0 0 0 6px var(--accent-glow); }
 
-.snode-trigger { display: flex; align-items: center; gap: 1.5rem; padding-left: 70px; cursor: pointer; transition: opacity 0.3s; }
-.snode-trigger:hover { opacity: 0.8; }
-.snode-icon { width: 64px; height: 64px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); box-shadow: 0 8px 16px rgba(0,0,0,0.03); padding: 6px; flex-shrink: 0; transition: transform 0.3s, border-color 0.3s; }
-.snode-icon img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-.snode.open .snode-icon { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px var(--accent-glow); }
+.snode-trigger { display:flex; align-items:center; gap:1.5rem; padding-left:70px; cursor:pointer; transition:opacity .3s; }
+.snode-trigger:hover { opacity:.8; }
+.snode-icon { width:64px; height:64px; border-radius:14px; background:var(--card-bg); border:1px solid var(--border); box-shadow:0 8px 16px rgba(0,0,0,0.03); padding:6px; flex-shrink:0; transition:transform .3s, border-color .3s; }
+.snode-icon img { width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply; }
+.snode.open .snode-icon { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 10px 20px var(--accent-glow); }
 
-.snode-info { display: flex; flex-direction: column; gap: 2px; }
-.snode-year { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
-.snode-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
-.snode-hint { font-size: 0.75rem; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; transition: color 0.3s; margin-top: 2px;}
-.snode-hint::before { content: '→'; transition: transform 0.3s; }
-.snode.open .snode-hint { color: var(--accent); }
-.snode.open .snode-hint::before { transform: rotate(90deg); }
+.snode-info { display:flex; flex-direction:column; gap:2px; }
+.snode-year { font-family:'Space Grotesk',sans-serif; font-size:.7rem; font-weight:800; color:var(--accent); letter-spacing:1px; text-transform:uppercase; }
+.snode-title { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700; color:var(--text); line-height:1.2; }
+.snode-hint { font-size:.75rem; color:var(--muted); display:inline-flex; align-items:center; gap:4px; transition:color .3s; margin-top:2px; }
+.snode-hint::before { content:'→'; transition:transform .3s; }
+.snode.open .snode-hint { color:var(--accent); }
+.snode.open .snode-hint::before { transform:rotate(90deg); }
 
 /* Inline Accordion Expansion */
-.snode-expansion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 70px; }
-.snode.open .snode-expansion { grid-template-rows: 1fr; }
-.snode-expansion-inner { overflow: hidden; }
+.snode-expansion { display:grid; grid-template-rows:0fr; transition:grid-template-rows .4s cubic-bezier(.16,1,.3,1); margin-left:70px; }
+.snode.open .snode-expansion { grid-template-rows:1fr; }
+.snode-expansion-inner { overflow:hidden; }
 
 .snode-detail-card {
-    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
-    padding: 1.5rem; margin-top: 1rem; margin-bottom: 0.5rem;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.04);
+  background:var(--card-bg); border:1px solid var(--border); border-radius:16px;
+  padding:1.5rem; margin-top:1rem; margin-bottom:.5rem;
+  box-shadow:0 15px 30px rgba(0,0,0,0.04);
 }
-.snode-detail-card p { font-size: 0.95rem; color: var(--text); line-height: 1.6; margin-bottom: 1.2rem; }
+.snode-detail-card p { font-size:.95rem; color:var(--text); line-height:1.6; margin-bottom:1.2rem; }
 
-.snode-gallery { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
-.snode-gallery::-webkit-scrollbar { height: 3px; }
-.snode-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 3px; }
-.snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
-.snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; }
-.snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
-.snode-gallery figcaption { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; }
+.snode-gallery { display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
+.snode-gallery::-webkit-scrollbar { height:3px; }
+.snode-gallery::-webkit-scrollbar-track { background:var(--surface2); border-radius:3px; }
+.snode-gallery::-webkit-scrollbar-thumb { background:var(--muted); border-radius:3px; }
+.snode-gallery figure { flex:0 0 auto; scroll-snap-align:center; margin:0; }
+.snode-gallery img { height:160px; width:auto; max-width:240px; object-fit:cover; border-radius:10px; border:1px solid var(--border); }
+.snode-gallery figcaption { font-size:.7rem; color:var(--muted); margin-top:6px; text-align:center; }
 
-/* Bridge Wavy Line */
-.snode-wave-container { text-align: center; margin: 0; line-height: 0; position: relative; z-index: 1;}
-.snode-wave-container svg { height: 30px; margin-left: calc(96px - 12px); display: block; } 
+/* Bridge */
+.snode-wave-container { text-align:center; margin:0; line-height:0; position:relative; z-index:1; }
+.snode-wave-container svg { height:30px; margin-left:calc(96px - 12px); display:block; }
 
-.story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin: 1.5rem 0 2rem; opacity:.6; }
+.story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin:1.5rem 0 2rem; opacity:.6; }
 .story-bridge-v2 .sbv-line { width:2px; height:40px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
 .story-bridge-v2 .sbv-label { font-size:.7rem; font-weight:600; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
 
@@ -280,31 +295,33 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
    ============================================================ */
 .o2o-trigger {
   background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
-  padding:2rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
-  max-width: 900px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  padding:2.5rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1);
+  position:relative; overflow:hidden; max-width:900px; margin:0 auto;
+  box-shadow:0 10px 30px rgba(0,0,0,0.03);
 }
-.o2o-trigger::before {
+.o2o-trigger::after {
   content:''; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 60%); opacity:0; transition:opacity .3s;
+  background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%);
+  opacity:0; transition:opacity .3s; pointer-events:none;
 }
-.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 15px 35px var(--accent-glow); }
-.o2o-trigger:hover::before { opacity:1; }
+.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-4px) scale(1.01); box-shadow:0 15px 35px var(--accent-glow); }
+.o2o-trigger:hover::after { opacity:1; }
 .o2o-inner { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; position:relative; z-index:1; }
 .o2o-icon  { width:64px; height:64px; object-fit:contain; background:#fff; border-radius:14px; padding:5px; border:1px solid var(--border); flex-shrink:0; }
 .o2o-text  { flex:1; min-width:0; }
 .o2o-open-hint {
   display:inline-flex; align-items:center; gap:.5rem;
-  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.2rem;
+  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.5rem;
   background:var(--accent); padding:.6rem 1.2rem; border-radius:40px;
   box-shadow:0 4px 12px var(--accent-glow); transition:background .2s, transform .2s;
 }
-.o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(4px); }
+.o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(5px); }
 
 /* Drawer */
 .drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
 .drawer-overlay.open { opacity:1; pointer-events:all; }
 .drawer {
-  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw); /* [🔥加宽抽屉，平铺4图] */
+  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px,96vw);
   background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
   transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
   overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
@@ -316,101 +333,85 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
   margin-bottom:1.5rem; transition:background .2s;
 }
 .drawer-close:hover { background:var(--border); }
-.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin:.5rem 0 1rem; line-height: 1.2;}
+.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin:.5rem 0 1rem; line-height:1.2; }
 .drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.2rem 0; }
 .drawer .kpi { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:1rem; }
 .drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:800; color:var(--accent); line-height:1; }
 .drawer .kpi-label { font-size:.75rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
-.kpi-badge { display:inline-block; padding:.5rem 1rem; background:var(--accent-lt); color:var(--accent); border-radius:8px; font-weight:600; font-size:.85rem; margin:.8rem 0; border: 1px solid rgba(41, 151, 255, 0.15);}
-
+.kpi-badge { display:inline-block; padding:.5rem 1rem; background:var(--accent-lt); color:var(--accent); border-radius:8px; font-weight:600; font-size:.85rem; margin:.8rem 0; border:1px solid rgba(41,151,255,.15); }
 .drawer-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; }
 .drawer-bullets li { margin-bottom:.6rem; line-height:1.6; }
-/* 平铺 4 张图的画廊 */
-.drawer-gallery { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:2rem; }
+.drawer-gallery { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:1.5rem; }
 .drawer-gallery figure { margin:0; }
-.drawer-gallery img { width:100%; height:140px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
-.drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center;}
-
+.drawer-gallery img { width:100%; height:130px; object-fit:cover; border-radius:10px; border:1px solid var(--border); }
+.drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align:center; }
 
 /* ============================================================
-   TRANSITION SCATTER BAND & BIG TITLE
+   TRANSITION SCATTER BAND
    ============================================================ */
-/* 用 overflow-protector 包裹会撑爆屏幕的散落区 */
-.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); width: 100vw; margin-left: calc(-50vw + 50%);}
-.transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
+.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); }
+.transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1; }
 .scatter { position:absolute; left:50%; top:50%; border-radius:12px; object-fit:cover; border:5px solid var(--card-bg); box-shadow:0 15px 30px rgba(0,0,0,.08); opacity:0; z-index:2; transform:translate(-50%,-50%); }
 
-.arsenal-header { text-align:center; margin-bottom:2.5rem; padding-top: 3rem; }
+.arsenal-header { text-align:center; margin-bottom:2.5rem; padding-top:3rem; }
 .arsenal-header p.label { margin-bottom:.4rem; }
-.arsenal-header h2 { font-size:clamp(2rem,3.5vw,3rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; color: var(--text);}
+.arsenal-header h2 { font-size:clamp(2rem,3.5vw,3rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; color:var(--text); }
 
 /* ============================================================
    ACCORDION — Professional Arsenal
    ============================================================ */
 #arsenal { background:var(--bg); padding-bottom:4rem; }
-.accordion-container { display:flex; flex-direction:column; gap:.8rem; max-width:900px; margin: 0 auto; position:relative;}
-.accordion-item { 
-    background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; 
-    transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s; position:relative; 
+.accordion-container { display:flex; flex-direction:column; gap:.8rem; max-width:900px; margin:0 auto; position:relative; }
+.accordion-item {
+  background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden;
+  transition:transform .3s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .3s; position:relative;
 }
-/* 悬浮渐变与放大光效 */
-.accordion-item::after { 
-    content:''; position:absolute; inset:0; border-radius:16px; 
-    background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%); 
-    opacity:0; transition:opacity .3s; pointer-events: none; 
+.accordion-item::after {
+  content:''; position:absolute; inset:0; border-radius:16px;
+  background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%);
+  opacity:0; transition:opacity .3s; pointer-events:none;
 }
 .accordion-item:hover { transform:translateY(-4px) scale(1.01); border-color:var(--accent); box-shadow:0 15px 30px var(--accent-glow); }
 .accordion-item:hover::after { opacity:1; }
-
-.accordion-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk)); opacity:0; transition:opacity .3s; }
 .accordion-item.open { transform:none; border-color:rgba(41,151,255,.3); box-shadow:0 8px 30px rgba(41,151,255,.06); }
-.accordion-item.open::before { opacity:1; }
 .accordion-item.open::after { opacity:0; }
 
-.accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; position:relative; z-index:2;}
-
+.accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; position:relative; z-index:2; }
 .acc-logo { width:50px; height:50px; object-fit:contain; background:var(--bg); padding:5px; border-radius:12px; border:1px solid var(--border); flex-shrink:0; }
 .acc-meta { flex:1; min-width:0; }
 .acc-period  { font-size:.75rem; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:.2rem; }
 .acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700; line-height:1.2; margin-bottom:.3rem; }
 .acc-focus { display:inline-block; font-size:.75rem; font-weight:600; color:var(--text-muted); background:var(--surface2); border-radius:40px; padding:.2rem .6rem; }
-
-/* Click to expand hint */
-.acc-hint { font-size: 0.75rem; font-weight: 600; color: var(--accent); opacity: 0; transition: opacity 0.3s; padding-right: 1rem;}
-.accordion-item:hover .acc-hint { opacity: 1; }
-.accordion-item.open .acc-hint { opacity: 0; }
-
+.acc-hint { font-size:.75rem; font-weight:600; color:var(--accent); opacity:0; transition:opacity .3s; padding-right:1rem; }
+.accordion-item:hover .acc-hint { opacity:1; }
+.accordion-item.open .acc-hint { opacity:0; }
 .acc-chevron { width:28px; height:28px; border-radius:50%; flex-shrink:0; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; transition:transform .3s; }
-.accordion-item.open .acc-chevron { transform:rotate(180deg); background:var(--accent); border-color:var(--accent); color:#fff;}
+.accordion-item.open .acc-chevron { transform:rotate(180deg); background:var(--accent); border-color:var(--accent); color:#fff; }
 .acc-chevron svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
-
-.accordion-body { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.16,1,.3,1); position:relative; z-index:2;}
+.accordion-body { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.16,1,.3,1); position:relative; z-index:2; }
 .accordion-item.open .accordion-body { max-height:1000px; }
 .accordion-inner { padding:0 1.5rem 2rem calc(1.5rem + 50px + 1rem); }
 .acc-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; margin-bottom:1.2rem; }
 .acc-bullets li { margin-bottom:.6rem; line-height:1.6; }
-
 .acc-gallery { display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
-.acc-gallery::-webkit-scrollbar { height: 4px; }
-.acc-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
-.acc-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
+.acc-gallery::-webkit-scrollbar { height:4px; }
+.acc-gallery::-webkit-scrollbar-track { background:var(--surface2); border-radius:4px; }
+.acc-gallery::-webkit-scrollbar-thumb { background:var(--muted); border-radius:4px; }
 .acc-gallery figure { flex:0 0 auto; scroll-snap-align:center; }
-.acc-gallery img { height:160px; width:auto; max-width:240px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
-.acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center;}
+.acc-gallery img { height:160px; width:auto; max-width:240px; object-fit:cover; border-radius:10px; border:1px solid var(--border); }
+.acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center; }
 
 /* ============================================================
    AI DEMO
    ============================================================ */
-#demo { background:var(--bg); position:relative;}
-.ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3rem; position:relative; overflow:hidden; isolation:isolate; max-width:1040px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
+#demo { background:var(--bg); position:relative; }
+.ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3rem; position:relative; overflow:hidden; isolation:isolate; max-width:1040px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04); }
 .ai-card::before { content:''; position:absolute; top:-30%; right:-5%; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events:none; }
-.demo-doodle { position:absolute; bottom:15px; right:20px; width:100px; z-index:-1; opacity:0.06; mix-blend-mode:multiply; transform:rotate(10deg); filter:grayscale(100%); pointer-events: none;}
-
+.demo-doodle { position:absolute; bottom:15px; right:20px; width:100px; z-index:-1; opacity:.06; mix-blend-mode:multiply; transform:rotate(10deg); filter:grayscale(100%); pointer-events:none; }
 .ai-card > div { position:relative; z-index:1; }
 .ai-card h3 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; margin:.4rem 0 .8rem; line-height:1.2; }
 .ai-card p  { color:var(--text); font-size:.95rem; line-height:1.7; }
 .ai-card p+p { margin-top:.6rem; }
-
 .browser { border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.08); background:#fff; min-width:0; }
 .browser-bar { height:30px; background:#F2F2F2; display:flex; align-items:center; padding-left:12px; gap:6px; border-bottom:1px solid var(--border); }
 .b-dot { width:10px; height:10px; border-radius:50%; }
@@ -420,9 +421,9 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 /* ============================================================
    HOBBIES
    ============================================================ */
-#hobbies { background:var(--bg); position:relative; padding-bottom: 5rem;}
-.hobby-stack { display:flex; gap:12px; margin-top:2.5rem; height:380px; align-items:stretch; max-width:1040px; margin: 2.5rem auto 0;}
-.hobby-card { flex:1; border-radius:16px; overflow:hidden; position:relative; cursor:pointer; transition:flex .5s cubic-bezier(.16,1,.3,1), box-shadow .4s; box-shadow:0 8px 24px rgba(0,0,0,.05); min-width:0; border: 1px solid var(--border);}
+#hobbies { background:var(--bg); position:relative; padding-bottom:5rem; }
+.hobby-stack { display:flex; gap:12px; height:380px; align-items:stretch; max-width:1040px; margin:2.5rem auto 0; }
+.hobby-card { flex:1; border-radius:16px; overflow:hidden; position:relative; cursor:pointer; transition:flex .5s cubic-bezier(.16,1,.3,1), box-shadow .4s; box-shadow:0 8px 24px rgba(0,0,0,.05); min-width:0; border:1px solid var(--border); }
 .hobby-stack:hover .hobby-card { flex:.4; }
 .hobby-stack:hover .hobby-card:hover { flex:2; box-shadow:0 15px 40px rgba(0,0,0,.1); }
 .hobby-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
@@ -430,22 +431,21 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .hobby-gradient { position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.1) 50%, transparent 100%); transition:opacity .4s; }
 .hobby-body { position:absolute; bottom:0; left:0; right:0; padding:1.2rem; color:#fff; }
 .hobby-body h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.hobby-body p { font-size:.85rem; line-height:1.5; opacity:0; transform:translateY(8px); transition:opacity .4s .1s, transform .4s .1s; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; color:rgba(255,255,255,0.9);}
+.hobby-body p { font-size:.85rem; line-height:1.5; opacity:0; transform:translateY(8px); transition:opacity .4s .1s, transform .4s .1s; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; color:rgba(255,255,255,0.9); }
 .hobby-stack .hobby-card:hover .hobby-body p { opacity:1; transform:translateY(0); }
 
-
 /* ============================================================
-   [🔥 修复] CV FLIP SECTION
+   CV FLIP SECTION
    ============================================================ */
 .cv-flip-section { padding:6rem 5%; max-width:1040px; margin:0 auto; position:relative; }
 .cv-flip-header { text-align:center; margin-bottom:4rem; }
-.cv-flip-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,4vw,3.2rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color: var(--text); }
+.cv-flip-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,4vw,3.2rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color:var(--text); }
 .cv-switcher { display:flex; justify-content:center; gap:.5rem; margin-bottom:3rem; }
 .cv-tab { padding:.55rem 1.4rem; border-radius:40px; font-size:.88rem; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:var(--card-bg); color:var(--muted); transition:all .22s; }
 .cv-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 16px var(--accent-glow); }
 .cv-book-wrap { perspective:1800px; display:flex; justify-content:center; align-items:center; }
-.cv-book { position:relative; width:min(560px, 90vw); }
-.cv-page { width:100%; border-radius:12px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,.15), -8px 0 24px rgba(0,0,0,.06); cursor:pointer; transform-origin:left center; transition:transform .6s cubic-bezier(.16,1,.3,1), opacity .4s; position:relative; border: 1px solid var(--border);}
+.cv-book { position:relative; width:min(560px,90vw); }
+.cv-page { width:100%; border-radius:12px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,.15), -8px 0 24px rgba(0,0,0,.06); cursor:pointer; transform-origin:left center; transition:transform .6s cubic-bezier(.16,1,.3,1), opacity .4s; position:relative; border:1px solid var(--border); }
 .cv-page img { width:100%; display:block; border-radius:12px; }
 .cv-page::after { content:''; position:absolute; inset:0; border-radius:12px; background:linear-gradient(to right, rgba(0,0,0,.08) 0%, transparent 15%); pointer-events:none; }
 .cv-page:hover { transform:rotate3d(0,1,0,-8deg); }
@@ -471,17 +471,17 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
    ============================================================ */
 @media (max-width:860px) {
   .hero { grid-template-columns:1fr; gap:2rem; padding:2rem 5% 1.5rem; min-height:auto; }
-  .hero-right { order:-1; max-width: 100%; }
-  .hero-img-wrap { height:60vw; max-height:none;}
-  
-  .snode { padding-left: 50px; margin-bottom: 1.5rem;}
-  .timeline-spine { left: calc(5% + 15px); }
-  .snode-dot { left: 9px; top: 22px;}
-  .snode-trigger { padding-left: 0; gap: 1rem; }
-  .snode-icon { width: 56px; height: 56px; }
-  .snode-expansion { margin-left: 0; }
-  .snode-detail-card { padding: 1.2rem; }
-  
+  .hero-right { order:-1; max-width:100%; }
+  .hero-img-wrap { height:60vw; max-height:none; }
+
+  .snode { padding-left:50px; margin-bottom:1.5rem; }
+  .timeline-spine { left:calc(5% + 15px); }
+  .snode-dot { left:9px; top:22px; }
+  .snode-trigger { padding-left:0; gap:1rem; }
+  .snode-icon { width:56px; height:56px; }
+  .snode-expansion { margin-left:0; }
+  .snode-detail-card { padding:1.2rem; }
+
   .drawer { width:100vw; border-radius:24px 24px 0 0; top:auto; height:90vh; transform:translateY(100%); }
   .drawer.open { transform:translateY(0); }
   .drawer-gallery { grid-template-columns:1fr 1fr; }
@@ -489,12 +489,13 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   .ai-card { grid-template-columns:1fr; padding:2rem; gap:2rem; }
   .browser iframe { height:300px; }
   .nav-brand span { display:none; }
-  .floating-nav { bottom:12px; padding:6px 8px; width:90%; justify-content:space-between;}
-  .fnav-item { padding:.4rem .6rem; font-size:.6rem; min-width:40px;}
-  
+  .nav-linkedin-btn span { display:none; }
+  .floating-nav { bottom:12px; padding:6px 8px; width:90%; justify-content:space-between; }
+  .fnav-item { padding:.4rem .6rem; font-size:.6rem; min-width:40px; }
+
   .accordion-header { padding:1.2rem; gap:.8rem; }
-  .acc-hint { display: none;} /* 手机上隐藏 Click to expand */
-  .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
+  .acc-hint { display:none; }
+  .accordion-inner { padding:0 1.2rem 2rem 1.2rem; }
   .acc-logo { width:44px; height:44px; }
   .hobby-stack { flex-direction:column; height:auto; }
   .hobby-card { flex:none; height:180px; }
@@ -519,7 +520,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <div class="intro-role">Brand Builder &amp; Product Manager</div>
 </div>
 
-<div class="overflow-protector"> <nav class="top-nav">
+<nav class="top-nav">
   <div class="nav-brand">
     <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
     <span>Audencia GE Program (PGE)</span>
@@ -530,15 +531,22 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
       <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
     </div>
-    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none; /* hidden on small screen if needed */">Contact</a>
+    <!-- FIX 2: Download CV as pill button -->
     <div class="cv-dropdown" id="nav-cv">
-      <button class="btn btn-ghost">Download CV ▾</button>
+      <button class="nav-cv-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download CV
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
       <div class="cv-menu">
         <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
         <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
       </div>
     </div>
-    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="nav-linkedin-btn">
+      LinkedIn
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+    </a>
   </div>
 </nav>
 
@@ -568,13 +576,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 <section id="hero" class="section-wrapper">
   <div class="hero">
     <div class="hero-left reveal">
-      <div class="avail-badge">
-        <span class="avail-dot"></span>
-        Internship from July 2026
-      </div>
-      <h1 class="display hero-h1">
-        The Evolution<br>of a <em>Brand Builder.</em>
-      </h1>
+      <div class="hero-kicker">Audencia PGE | Internship from July 2026</div>
+      <h1 class="display hero-h1">The Evolution<br>of a <em>Brand Builder.</em></h1>
       <p class="hero-desc reveal delay-1">
         Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
       </p>
@@ -583,10 +586,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
           liyi.gao.dm@gmail.com
         </a>
-        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-            LinkedIn ↗
-        </a>
+        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost" style="background:#fff;">LinkedIn ↗</a>
       </div>
       <div class="skill-tags reveal delay-2">
         <div class="skill-pill">🇨🇳 Mandarin</div>
@@ -614,8 +614,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 </div>
 
 <section id="story">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle-sticker" style="top:5%; right:5%; width:180px; transform:rotate(15deg);" alt="Doodle">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="Doodle">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle-sticker" style="top:5%; right:5%; width:180px; transform:rotate(15deg);" alt="">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="">
 
   <div class="story-header reveal">
     <p class="st-eyebrow">Journey</p>
@@ -628,7 +628,6 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 
     <div class="snode reveal" id="node-2013">
       <div class="snode-dot"></div>
-      
       <div class="snode-trigger" onclick="toggleSnode('node-2013')">
         <div class="snode-icon">
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e78d031.webp" alt="2013">
@@ -639,7 +638,6 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <span class="snode-hint">Click to expand</span>
         </div>
       </div>
-
       <div class="snode-expansion">
         <div class="snode-expansion-inner">
           <div class="snode-detail-card">
@@ -655,33 +653,34 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     </div>
 
     <div class="snode-wave-container">
-        <svg width="2" height="30" viewBox="0 0 2 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1,0 L1,30" stroke="#2997FF" stroke-width="2" stroke-dasharray="4,4" opacity=".45"/>
-        </svg>
+      <svg width="2" height="30" viewBox="0 0 2 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1,0 L1,30" stroke="#2997FF" stroke-width="2" stroke-dasharray="4,4" opacity=".45"/>
+      </svg>
     </div>
 
+    <!-- FIX 3: DTC title updated + FIX 4: 3rd photo restored -->
     <div class="snode reveal delay-1" id="node-2015">
       <div class="snode-dot"></div>
-      
       <div class="snode-trigger" onclick="toggleSnode('node-2015')">
         <div class="snode-icon">
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
         </div>
         <div class="snode-info">
           <span class="snode-year">2015 · Brand Positioning</span>
-          <h3 class="snode-title heading">DTC Stationery</h3>
+          <h3 class="snode-title heading">The Flea Market Pop-Up</h3>
           <span class="snode-hint">Click to expand</span>
         </div>
       </div>
-
       <div class="snode-expansion">
         <div class="snode-expansion-inner">
           <div class="snode-detail-card">
-            <p>Spotted the early trend of Japanese stationery. By <strong>curating high-quality items</strong> and unifying the visual display, I created a distinct brand vibe at a flea market. I learned that aesthetics is a growth lever — and that the experience around the product is the product.</p>
+            <!-- FIX 3: Professional + playful DTC description -->
+            <p>Who knew a weekend flea market stall could be a masterclass in DTC brand strategy? I spotted the Japanese stationery trend early, <strong>curated a tight product selection</strong>, and built an immersive visual display that made a folding table feel like a concept store. The result: price-sensitive shoppers paid a premium — and came back. First proof that <strong>aesthetics is a legitimate growth lever</strong>, and that the experience around the product IS the product.</p>
             <div class="snode-gallery">
+              <!-- FIX 4: All 3 photos present and correct -->
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt=""><figcaption>Trend curation</figcaption></figure>
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt=""><figcaption>Visual display</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa98149e08.webp" alt=""><figcaption>Merchandising</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp" alt=""><figcaption>Merchandising</figcaption></figure>
             </div>
           </div>
         </div>
@@ -739,135 +738,135 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   </div>
 </div>
 
+<!-- FIX 1: Scatter band — s3 position corrected to stay right-of-center -->
 <div class="transition-band" id="trans-band">
   <div class="transition-words heading">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
-  <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:350px;height:250px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:280px;height:350px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:260px;height:180px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:300px;height:200px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:240px;height:300px;">
 </div>
 
 <div class="arsenal-header reveal" id="arsenal">
-    <p class="label" style="margin-bottom:.4rem;">Experience</p>
-    <h2 class="display">Sharpening My Senses:<br><em style="color:var(--accent);">Professional Experience</em></h2>
+  <p class="label" style="margin-bottom:.4rem;">Experience</p>
+  <h2 class="display">Sharpening My Senses:<br><em style="color:var(--accent);">Professional Experience</em></h2>
 </div>
 
 <section class="section-wrapper" style="padding-top:0; padding-bottom:5rem;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566379bac.webp" class="doodle-sticker" style="top:5%; left:2%; width:200px;" alt="Doodle">
-
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566379bac.webp" class="doodle-sticker" style="top:5%; left:2%; width:200px;" alt="">
   <div class="accordion-container">
 
-      <div class="accordion-item reveal">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Canton, China · Mar 2025 – Jun 2025</div>
-            <div class="acc-company heading">Wealthfields Lohmann (FMCG)</div>
-            <div class="acc-focus">360° Brand Partnerships & Go-to-Market</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+    <div class="accordion-item reveal">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">Canton, China · Mar 2025 – Jun 2025</div>
+          <div class="acc-company heading">Wealthfields Lohmann (FMCG)</div>
+          <div class="acc-focus">360° Brand Partnerships &amp; Go-to-Market</div>
         </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
-              <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
-              <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>Marathon Live</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>50k+ Stream</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>Event Setup</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>Offline Sales</figcaption></figure>
-            </div>
+        <span class="acc-hint">Click to expand ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong>.</li>
+            <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
+            <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>Marathon Live</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>50k+ Stream</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>Event Setup</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>Offline Sales</figcaption></figure>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="accordion-item reveal delay-1">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Canton, China · Jan 2023 – Aug 2023</div>
-            <div class="acc-company heading">MMA Brand Services Pte. Ltd.</div>
-            <div class="acc-focus">Product Lifecycle Management & E-Commerce Strategy</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+    <div class="accordion-item reveal delay-1">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">Canton, China · Jan 2023 – Aug 2023</div>
+          <div class="acc-company heading">MMA Brand Services Pte. Ltd.</div>
+          <div class="acc-focus">Product Lifecycle Management &amp; E-Commerce Strategy</div>
         </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
-              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
-            </div>
+        <span class="acc-hint">Click to expand ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
+            <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong>.</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="accordion-item reveal">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Guangzhou, China · Nov 2023 – Jun 2024</div>
-            <div class="acc-company heading">TAL Education Group</div>
-            <div class="acc-focus">EdTech & Audience Engagement</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+    <div class="accordion-item reveal">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">Guangzhou, China · Nov 2023 – Jun 2024</div>
+          <div class="acc-company heading">TAL Education Group</div>
+          <div class="acc-focus">EdTech &amp; Audience Engagement</div>
         </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Public Speaking:</strong> Delivered high-pressure live presentations to large audiences, achieving <strong>#1 performance</strong> among new instructors.</li>
-              <li><strong>Knowledge Synthesis:</strong> Deconstructed complex Olympiad Math logic into simplified, engaging content.</li>
-              <li><strong>CRM & Retention:</strong> Secured a <strong>100% renewal rate</strong> through proactive client relationship management.</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>Top Performance</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>Live Presentation</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>Engagement</figcaption></figure>
-            </div>
+        <span class="acc-hint">Click to expand ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>Public Speaking:</strong> Delivered high-pressure live presentations to large audiences, achieving <strong>#1 performance</strong> among new instructors.</li>
+            <li><strong>Knowledge Synthesis:</strong> Deconstructed complex Olympiad Math logic into simplified, engaging content.</li>
+            <li><strong>CRM &amp; Retention:</strong> Secured a <strong>100% renewal rate</strong> through proactive client relationship management.</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>Top Performance</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>Live Presentation</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>Engagement</figcaption></figure>
           </div>
         </div>
       </div>
-      
-      <div class="accordion-item reveal delay-1">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Nantes, France · Ongoing</div>
-            <div class="acc-company heading">Audencia Entrepreneur Club (ACE)</div>
-            <div class="acc-focus">PR, External Communication & Resource Orchestration</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+    </div>
+
+    <div class="accordion-item reveal delay-1">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">Nantes, France · Ongoing</div>
+          <div class="acc-company heading">Audencia Entrepreneur Club (ACE)</div>
+          <div class="acc-focus">PR, External Communication &amp; Resource Orchestration</div>
         </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Spearheaded</strong> external communications for the "DARE" initiative, successfully pitching and securing <strong>high-profile industry guest speakers</strong>.</li>
-              <li><strong>Directed</strong> cross-functional collaboration across departments, aligning core messaging.</li>
-              <li><strong>Produced</strong> high-impact visual media assets and integrated promotional campaigns.</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Event Planning</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>Coordination</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE Execution</figcaption></figure>
-            </div>
+        <span class="acc-hint">Click to expand ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>Spearheaded</strong> external communications for the "DARE" initiative, successfully pitching and securing <strong>high-profile industry guest speakers</strong>.</li>
+            <li><strong>Directed</strong> cross-functional collaboration across departments, aligning core messaging.</li>
+            <li><strong>Produced</strong> high-impact visual media assets and integrated promotional campaigns.</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Event Planning</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>Coordination</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE Execution</figcaption></figure>
           </div>
         </div>
       </div>
+    </div>
 
   </div>
 </section>
 
 <section id="demo" class="section-wrapper reveal">
   <div class="ai-card">
-    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566301faa.webp" class="demo-doodle" alt="Coding Doodle">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566301faa.webp" class="demo-doodle" alt="">
     <div>
       <p class="label">Current Exploration · Agile Prototyping</p>
       <h3 class="display">Building the<br>Skincare Copilot</h3>
@@ -886,11 +885,10 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   </div>
 </section>
 
-<section id="hobbies" class="section-wrapper reveal hobbies-section">
+<section id="hobbies" class="section-wrapper reveal">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle-sticker" style="top:5%;left:2%;width:150px;transform:rotate(10deg);" alt="">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle-sticker" style="bottom:10%;right:2%;width:140px;transform:rotate(-12deg);" alt="">
-  
-  <div class="section-title-block" style="text-align:center; padding-top: 0; margin-bottom: 2rem;">
+  <div class="section-title-block" style="text-align:center; padding-top:0; margin-bottom:2rem;">
     <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">When I'm not in front of my laptop...</h2>
     <p>Maintaining the "hardware" and optimizing the "flow state".</p>
   </div>
@@ -928,16 +926,14 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     <h2 class="display">My CV,<br><em style="color:var(--accent);">at a glance</em></h2>
     <div style="display:inline-flex;align-items:center;gap:.6rem;margin:1.2rem 0 .4rem;padding:.6rem 1.4rem;background:var(--accent-lt);border:1.5px solid rgba(41,151,255,.25);border-radius:40px;">
       <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;display:inline-block;"></span>
-      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px; text-transform: uppercase;">Actively seeking internship · Available from July 2026</span>
+      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">Actively seeking internship · Available from July 2026</span>
     </div>
     <p style="margin-top:.6rem;">Click to preview full CV · Download below</p>
   </div>
-
   <div class="cv-switcher">
     <button class="cv-tab active" data-cv="en" onclick="switchCV('en')">🇬🇧 English</button>
     <button class="cv-tab" data-cv="fr" onclick="switchCV('fr')">🇫🇷 Français</button>
   </div>
-
   <div class="cv-book-wrap">
     <div class="cv-book">
       <div class="cv-page" id="cv-page-en" onclick="openCVLight('en')">
@@ -948,7 +944,6 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       </div>
     </div>
   </div>
-
   <div class="cv-download-row">
     <a href="Liyi_GAO_Product_assistant.pdf" download class="btn btn-accent">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -964,7 +959,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 <div class="cv-lightbox" id="cv-lightbox" onclick="closeCVLight()">
   <img src="" alt="CV Preview" id="cv-lightbox-img">
   <button class="cv-lightbox-close" onclick="closeCVLight()">✕</button>
-  <div class="cv-lightbox-hint" style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 0.8rem;">Click anywhere to close</div>
+  <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:.8rem;">Click anywhere to close</div>
 </div>
 
 <footer>
@@ -975,20 +970,18 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     </a>
     <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
   </div>
-  <p class="footer-copy" style="margin-top: 1rem;">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
+  <p class="footer-copy" style="margin-top:1rem;">Crafted with AI assistance &amp; human intuition. © 2026 Liyi GAO.</p>
 </footer>
 
-</div><script>
+<script>
 /* ================================================================
-   1. PAGE INTRO — Fixed Accordion Strip Reveal (Anti-Lock)
+   1. PAGE INTRO
    ================================================================ */
 (function(){
   var intro = document.getElementById('page-intro');
   var brand = document.getElementById('intro-brand');
   if(!intro) return;
-  
   document.body.style.overflow = 'hidden';
-
   function startIntro(){
     setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
     setTimeout(function(){ intro.classList.add('done'); }, 1000);
@@ -1000,13 +993,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       });
     }, 2000);
   }
-
-  if(document.readyState === 'complete'){
-    startIntro();
-  } else {
-    window.addEventListener('load', startIntro);
-    setTimeout(startIntro, 2000); 
-  }
+  if(document.readyState === 'complete'){ startIntro(); }
+  else { window.addEventListener('load', startIntro); setTimeout(startIntro, 2000); }
 })();
 
 /* ================================================================
@@ -1028,50 +1016,49 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 })();
 
 /* ================================================================
-   3. DIARY PARALLAX — Empathy Animation
+   3. DIARY PARALLAX
    ================================================================ */
 (function(){
   var diaryCont = document.getElementById('diary-container');
   var diaryTxt  = document.getElementById('diary-text');
-  
+  var locked = false;
   function update(){
-    if(!diaryCont||!diaryTxt) return;
+    if(!diaryCont||!diaryTxt||locked) return;
     var rect = diaryCont.getBoundingClientRect();
     var wh   = window.innerHeight;
     var total = rect.height - wh;
-    
     var p = Math.max(0, Math.min(1, -rect.top / total));
-    
-    var translateY = 50 * (1 - p*2); 
-    if (translateY < 0) translateY = 0; 
-    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; 
-    
-    var opacity = 0;
-    if (p < 0.25) { opacity = p * 4; } 
-    else if (p < 0.8) { opacity = 1; } 
-    else { opacity = 1 - (p - 0.8) * 5; }
-
-    diaryTxt.style.opacity   = Math.max(opacity, 0);
-    diaryTxt.style.transform = `translateY(${translateY}px) scale(${scale})`;
+    var translateY = Math.max(0, 50 * (1 - p*2));
+    var scale = 0.9 + Math.pow(p, 0.6) * 0.15;
+    var opacity = p < 0.25 ? p * 4 : 1;
+    diaryTxt.style.opacity   = opacity;
+    diaryTxt.style.transform = 'translateY('+translateY+'px) scale('+scale+')';
+    if(p >= 0.25){ locked = true; }
   }
-  
   window.addEventListener('scroll', update, {passive:true});
   update();
+  setTimeout(function(){
+    if(!locked && diaryTxt){
+      diaryTxt.style.opacity = '1';
+      diaryTxt.style.transform = 'translateY(0px) scale(1)';
+      locked = true;
+    }
+  }, 3000);
 })();
 
 /* ================================================================
    4. INLINE STORY ACCORDION TOGGLE
    ================================================================ */
 function toggleSnode(id) {
-    const node = document.getElementById(id);
-    if (!node) return;
-    const wasOpen = node.classList.contains('open');
-    document.querySelectorAll('.snode').forEach(n => n.classList.remove('open'));
-    if (!wasOpen) { node.classList.add('open'); }
+  var node = document.getElementById(id);
+  if(!node) return;
+  var wasOpen = node.classList.contains('open');
+  document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('open'); });
+  if(!wasOpen) node.classList.add('open');
 }
 
 /* ================================================================
-   5. SCATTER BAND
+   5. SCATTER BAND — FIX 1: s3 stays right-of-center
    ================================================================ */
 (function(){
   var transBand = document.getElementById('trans-band');
@@ -1084,9 +1071,10 @@ function toggleSnode(id) {
     var p=Math.max(0,Math.min(1,1-r.bottom/(wh+r.height)));
     var o=Math.sin(p*Math.PI);
     [si1,si2,si3].forEach(function(img){ if(img) img.style.opacity=o; });
-    if(si1) si1.style.transform='translate(calc(-50% + '+(-170+p*110)+'px),calc(-50% + '+(55-p*110)+'px)) rotate('+(-12+p*4)+'deg)';
-    if(si2) si2.style.transform='translate(calc(-50% + '+(15-p*55)+'px),calc(-50% + '+(-75+p*75)+'px)) rotate('+(4-p*8)+'deg)';
-    if(si3) si3.style.transform='translate(calc(-50% + '+(155-p*95)+'px),calc(-50% + '+(35-p*55)+'px)) rotate('+(12-p*12)+'deg)';
+    /* FIX 1: s3 X stays positive (right side) — was flying left at high scroll */
+    if(si1) si1.style.transform='translate(calc(-50% + '+(-140+p*70)+'px),calc(-50% + '+(50-p*100)+'px)) rotate('+(-10+p*4)+'deg)';
+    if(si2) si2.style.transform='translate(calc(-50% + '+(10-p*30)+'px),calc(-50% + '+(-60+p*60)+'px)) rotate('+(4-p*6)+'deg)';
+    if(si3) si3.style.transform='translate(calc(-50% + '+(140-p*50)+'px),calc(-50% + '+(30-p*50)+'px)) rotate('+(10-p*8)+'deg)';
   }
   window.addEventListener('scroll', update, {passive:true});
   update();
@@ -1146,7 +1134,7 @@ document.querySelectorAll('.accordion-header').forEach(function(header){
       var dd     = btn.closest('.cv-dropdown');
       var isOpen = dd.classList.contains('open');
       document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
-      if(!isOpen){ dd.classList.add('open'); }
+      if(!isOpen) dd.classList.add('open');
     });
   });
   document.addEventListener('click',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); });
@@ -1183,10 +1171,7 @@ function switchCV(lang) {
 var _cvCurrentLang = 'en';
 function openCVLight(lang) {
   _cvCurrentLang = lang || 'en';
-  var imgs = {
-    en: 'https://picui.ogmua.cn/s1/2026/03/11/69b176a41b074.webp',
-    fr: 'https://picui.ogmua.cn/s1/2026/03/11/69b176a4165d0.webp'
-  };
+  var imgs = { en:'https://picui.ogmua.cn/s1/2026/03/11/69b176a41b074.webp', fr:'https://picui.ogmua.cn/s1/2026/03/11/69b176a4165d0.webp' };
   var lb  = document.getElementById('cv-lightbox');
   var lbi = document.getElementById('cv-lightbox-img');
   if(!lb || !lbi) return;
@@ -1204,7 +1189,6 @@ function closeCVLight() {
   if(lbi) lbi.addEventListener('click', function(e){ e.stopPropagation(); });
 })();
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCVLight(); });
-
 </script>
 </body>
 </html>
