@@ -243,16 +243,20 @@ strong { font-weight:600; color:var(--accent); }
 /* Spine wrap contains #story + #arsenal */
 .spine-wrap { position:relative; }
 
-/* Dashed vertical spine line */
-.timeline-spine {
-  position:absolute;
-  left:96px;
-  top:0; bottom:0; width:0;
-  border-left:2px dashed rgba(41,151,255,.38);
+/* Spine: hidden, wavy SVGs are used instead */
+.timeline-spine { display:none; }
+
+/* Wavy connector between nodes */
+.snode-wave {
+  display:block;
+  margin:0 auto;
+  padding-left:calc(5% + 96px + 55px - 1px); /* align centre of dot */
   pointer-events:none;
-  z-index:0;
+  overflow:visible;
 }
-@media(max-width:860px){ .timeline-spine { left:44px; } }
+@media(max-width:860px){
+  .snode-wave { padding-left:calc(5% + 44px + 55px - 1px); }
+}
 
 /* ── Story node row ── */
 .snode {
@@ -264,11 +268,32 @@ strong { font-weight:600; color:var(--accent); }
   max-width:900px;
   margin:0 auto;
   z-index:2;
-  cursor:pointer;
   transition:opacity .2s;
 }
 /* When any snode is active, dim siblings slightly */
 .snode-active-sibling { opacity:.55; }
+/* Only the trigger zone is clickable */
+.snode-trigger {
+  display:flex; align-items:flex-start; gap:1.6rem;
+  cursor:pointer;
+  flex:1;
+  transition:opacity .2s;
+}
+.snode-trigger:hover { opacity:.92; }
+.snode-trigger:hover .snode-img-wrap {
+  border-color:var(--accent);
+  box-shadow:0 8px 28px rgba(41,151,255,.2);
+  transform:scale(1.06) translateY(-3px);
+}
+.snode.active .snode-trigger .snode-img-wrap {
+  border-color:var(--accent);
+  box-shadow:0 8px 28px rgba(41,151,255,.2);
+  transform:scale(1.06) translateY(-3px);
+}
+/* Hint text pulse when active */
+.snode.active .snode-hint { color:var(--accent); }
+.snode-hint::before { content:"→ "; }
+.snode.active .snode-hint::before { content:"✓ "; }
 
 /* Blue dot on spine */
 .snode-dot {
@@ -302,8 +327,7 @@ strong { font-weight:600; color:var(--accent); }
   transition:border-color .25s, box-shadow .25s, transform .3s;
   cursor:pointer;
 }
-.snode.active .snode-img-wrap,
-.snode:hover  .snode-img-wrap {
+.snode.active .snode-img-wrap {
   border-color:var(--accent);
   box-shadow:0 8px 28px rgba(41,151,255,.2);
   transform:scale(1.06) translateY(-3px);
@@ -330,50 +354,47 @@ strong { font-weight:600; color:var(--accent); }
 .snode-title { font-family:"Space Grotesk",sans-serif; font-size:1rem; font-weight:700; color:var(--text); line-height:1.3; }
 .snode-hint  { font-size:.78rem; color:var(--muted); margin-top:2px; }
 
-/* Tooltip – slides in from right of label */
+/* Tooltip panel — fixed to right side of viewport */
 .snode-tooltip {
-  position:absolute;
-  top:0;
-  left:calc(5% + 96px + 1.6rem + 110px + 180px);
-  width:290px;
+  position:fixed;
+  top:50%;
+  right:24px;
+  transform:translateY(-50%) translateX(20px);
+  width:min(320px, calc(100vw - 48px));
   background:var(--card-bg);
-  border:1.5px solid rgba(41,151,255,.2);
-  border-radius:18px;
-  padding:1.3rem 1.3rem 1.1rem;
-  box-shadow:0 16px 48px rgba(0,0,0,.13), 0 0 0 4px rgba(41,151,255,.04);
+  border:1.5px solid rgba(41,151,255,.22);
+  border-radius:20px;
+  padding:1.4rem 1.4rem 1.2rem;
+  box-shadow:0 24px 60px rgba(0,0,0,.16), 0 0 0 4px rgba(41,151,255,.05);
   opacity:0; pointer-events:none;
-  transform:translateX(-10px);
-  transition:opacity .3s, transform .3s cubic-bezier(.16,1,.3,1);
-  z-index:50;
+  transition:opacity .32s cubic-bezier(.16,1,.3,1), transform .32s cubic-bezier(.16,1,.3,1);
+  z-index:200;
+  max-height:80vh;
+  overflow-y:auto;
 }
-.snode.active .snode-tooltip { opacity:1; pointer-events:all; transform:translateX(0); }
-/* Tooltip hover */
-/* Tooltip card hover scale */
+.snode.active .snode-tooltip {
+  opacity:1; pointer-events:all;
+  transform:translateY(-50%) translateX(0);
+}
 .snode-tooltip:hover {
-  box-shadow:0 20px 60px rgba(0,0,0,.16);
+  box-shadow:0 28px 70px rgba(0,0,0,.18);
 }
-.snode-tooltip::before {
-  content:''; position:absolute; left:-8px; top:26px;
-  border:8px solid transparent; border-right-color:var(--card-bg); border-left:none;
-}
-.snode-tooltip::after {
-  content:''; position:absolute; left:-10px; top:25px;
-  border:9px solid transparent; border-right-color:rgba(0,0,0,.06); border-left:none;
-  z-index:-1;
-}
+/* No arrow needed for fixed panel */
+.snode-tooltip::before, .snode-tooltip::after { display:none; }
 
-@media(max-width:1100px){
-  .snode { flex-wrap:wrap; }
+/* On narrow screens, panel sits at bottom */
+@media(max-width:900px){
   .snode-tooltip {
-    position:relative; left:auto; top:auto; width:calc(100% - 5%);
-    margin-left:calc(96px + 1.6rem); margin-top:.8rem;
-    transform:translateY(-6px);
-    box-shadow:0 6px 20px rgba(0,0,0,.08);
+    position:fixed;
+    top:auto; right:0; bottom:0; left:0;
+    transform:translateY(100%);
+    width:100%; border-radius:20px 20px 0 0;
+    max-height:70vh;
   }
-  .snode.active .snode-tooltip { transform:translateY(0); }
-  .snode-tooltip::before, .snode-tooltip::after { display:none; }
+  .snode.active .snode-tooltip {
+    transform:translateY(0);
+  }
 }
-@media(max-width:860px){ .snode-tooltip { margin-left:calc(44px + 1.2rem); } }
 
 .snode-tooltip-close {
   position:absolute; top:.65rem; right:.65rem;
@@ -551,8 +572,16 @@ strong { font-weight:600; color:var(--accent); }
   transition:border-color .25s, box-shadow .25s, transform .3s cubic-bezier(.16,1,.3,1);
   position:relative;
 }
-.accordion-item:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.07); }
+.accordion-item:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(41,151,255,.1); border-color:rgba(41,151,255,.25); }
 .accordion-item.open { transform:none; }
+/* Gradient flash overlay — same feel as O2O card */
+.accordion-item::after {
+  content:''; position:absolute; inset:0; border-radius:18px;
+  background:linear-gradient(120deg, rgba(41,151,255,.06) 0%, transparent 50%);
+  opacity:0; transition:opacity .3s; pointer-events:none;
+}
+.accordion-item:hover::after { opacity:1; }
+.accordion-item.open::after  { opacity:0; }
 .accordion-item::before {
   content:''; position:absolute; left:0; top:0; bottom:0;
   width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk));
@@ -922,9 +951,14 @@ footer {
         <p style="color:var(--muted);margin-top:.4rem;">Click each chapter to expand the story.</p>
       </div>
 
+      <!-- Journey start marker -->
+      <div style="max-width:900px;margin:0 auto;padding:0 5%;position:relative;z-index:1;">
+        <div style="margin-left:calc(96px - 6px);width:12px;height:12px;border-radius:50%;background:rgba(41,151,255,.35);margin-bottom:8px;"></div>
+      </div>
       <!-- NODE 2013 -->
       <div class="snode reveal" data-story="s2013">
         <div class="snode-dot"></div>
+        <div class="snode-trigger">
         <div class="snode-img-wrap">
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e78d031.webp" alt="2013">
           <div class="snode-img-overlay"></div>
@@ -934,6 +968,7 @@ footer {
           <span class="snode-title">Grandma's Stall</span>
           <span class="snode-hint">Tap to read →</span>
         </div>
+        </div><!-- /.snode-trigger -->
         <div class="snode-tooltip">
           <button class="snode-tooltip-close">✕</button>
           <div class="stt-year">2013 · Consumer Insights</div>
@@ -946,9 +981,17 @@ footer {
         </div>
       </div>
 
+      <!-- Wavy dashed connector -->
+      <div style="max-width:900px;margin:0 auto;padding:0 5%;position:relative;z-index:1;">
+        <svg class="snode-wave" width="24" height="60" viewBox="0 0 24 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-left:calc(96px - 12px);">
+          <path d="M12,0 C18,10 6,20 12,30 C18,40 6,50 12,60" stroke="#2997FF" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round" fill="none" opacity=".45"/>
+        </svg>
+      </div>
+
       <!-- NODE 2015 -->
       <div class="snode reveal" data-story="s2015">
         <div class="snode-dot"></div>
+        <div class="snode-trigger">
         <div class="snode-img-wrap">
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
           <div class="snode-img-overlay"></div>
@@ -958,6 +1001,7 @@ footer {
           <span class="snode-title">DTC Stationery</span>
           <span class="snode-hint">Tap to read →</span>
         </div>
+        </div><!-- /.snode-trigger -->
         <div class="snode-tooltip">
           <button class="snode-tooltip-close">✕</button>
           <div class="stt-year">2015 · Brand Positioning</div>
@@ -970,9 +1014,17 @@ footer {
         </div>
       </div>
 
+      <!-- Wavy dashed connector -->
+      <div style="max-width:900px;margin:0 auto;padding:0 5%;position:relative;z-index:1;">
+        <svg class="snode-wave" width="24" height="60" viewBox="0 0 24 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-left:calc(96px - 12px);">
+          <path d="M12,0 C18,10 6,20 12,30 C18,40 6,50 12,60" stroke="#2997FF" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round" fill="none" opacity=".45"/>
+        </svg>
+      </div>
+
       <!-- NODE 2022 -->
       <div class="snode reveal" data-story="s2022">
         <div class="snode-dot"></div>
+        <div class="snode-trigger">
         <div class="snode-img-wrap">
           <img src="https://picui.ogmua.cn/s1/2026/03/09/69aee89aee031.webp" alt="2022">
           <div class="snode-img-overlay"></div>
@@ -1357,57 +1409,61 @@ document.querySelectorAll('.accordion-header').forEach(function(header){
 })();
 
 /* ================================================================
-   6. STORY NODES — tooltip toggle (fixed: prevent close when clicking inside tooltip)
+   6. STORY NODES — tooltip toggle
+   Clicks on .snode-trigger (left side) toggle the panel.
+   Clicks inside .snode-tooltip (right panel) are absorbed.
    ================================================================ */
 (function(){
-  // Clicking inside tooltip should NOT toggle the node
+  function setActive(node, active){
+    if(active){
+      document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
+      node.classList.add('active');
+    } else {
+      node.classList.remove('active');
+    }
+    // Dim/undim siblings
+    var hasActive = !!document.querySelector('.snode.active');
+    document.querySelectorAll('.snode').forEach(function(n){
+      n.classList.toggle('snode-active-sibling', hasActive && !n.classList.contains('active'));
+    });
+  }
+
+  // Only .snode-trigger (img+label side) triggers toggle
+  document.querySelectorAll('.snode-trigger').forEach(function(trigger){
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var node = trigger.closest('.snode');
+      setActive(node, !node.classList.contains('active'));
+    });
+  });
+
+  // Tooltip panel absorbs all clicks — does NOT propagate to document
   document.querySelectorAll('.snode-tooltip').forEach(function(tip){
     tip.addEventListener('click', function(e){
-      e.stopPropagation(); // stop bubble so it doesn't reach .snode or document
-    });
-  });
-
-  // Click on the node row (outside tooltip) toggles active
-  document.querySelectorAll('.snode').forEach(function(node){
-    node.addEventListener('click', function(e){
       e.stopPropagation();
-      var wasActive = node.classList.contains('active');
-      // close all
-      document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
-      if(!wasActive) node.classList.add('active');
     });
   });
 
-  // Close button inside tooltip
+  // ✕ close button
   document.querySelectorAll('.snode-tooltip-close').forEach(function(btn){
     btn.addEventListener('click', function(e){
       e.stopPropagation();
-      btn.closest('.snode').classList.remove('active');
+      setActive(btn.closest('.snode'), false);
     });
   });
 
-  // Click outside everything → close all tooltips
+  // Click anywhere else → close all
   document.addEventListener('click', function(){
     document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
     document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('snode-active-sibling'); });
   });
 
-  // Dim siblings on activate
-  function updateSiblingDim(){
-    var activeNode = document.querySelector('.snode.active');
-    document.querySelectorAll('.snode').forEach(function(n){
-      if(activeNode && n !== activeNode){ n.classList.add('snode-active-sibling'); }
-      else { n.classList.remove('snode-active-sibling'); }
-    });
-  }
-  // Re-hook after existing toggle
-  document.querySelectorAll('.snode').forEach(function(node){
-    node.addEventListener('click', updateSiblingDim);
-  });
-  document.querySelectorAll('.snode-tooltip-close').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      setTimeout(updateSiblingDim, 0);
-    });
+  // ESC key closes panels
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
+      document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('snode-active-sibling'); });
+    }
   });
 })();
 
