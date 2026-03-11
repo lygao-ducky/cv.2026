@@ -29,7 +29,7 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 *:focus { outline: none; }
 
-/* 修复大屏过大的问题，锁定基准字号 */
+/* [✅ 比例核心] 修复大屏过大的问题，锁定基准字号 */
 html { scroll-behavior: smooth; font-size: 15px; } 
 
 body {
@@ -82,7 +82,7 @@ strong { font-weight:600; color:var(--accent); }
   filter: grayscale(100%);
 }
 
-/* [🔥 核心修正] 统一且克制的宽度 */
+/* [✅ 比例核心] 统一且克制的宽度 */
 .section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
 p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
@@ -91,6 +91,26 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
   position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
 }
 @keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* [✅ 新增动画] PAGE INTRO */
+#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
+.intro-strip { 
+    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+}
+.intro-strip:nth-child(1){ transition-delay:.00s; }
+.intro-strip:nth-child(2){ transition-delay:.05s; }
+.intro-strip:nth-child(3){ transition-delay:.10s; }
+.intro-strip:nth-child(4){ transition-delay:.15s; }
+.intro-strip:nth-child(5){ transition-delay:.20s; }
+.intro-strip:nth-child(6){ transition-delay:.25s; }
+#page-intro.done .intro-strip { transform:translateY(-100%); }
+#page-intro.gone { display:none; }
+
+.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; }
+.intro-brand.fade { opacity:0; }
+.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,5vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
+.intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
+@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
 
 /* ============================================================
    TOP NAV
@@ -134,28 +154,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
 
 /* ============================================================
-   PAGE INTRO
-   ============================================================ */
-#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
-.intro-strip { 
-    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
-}
-.intro-strip:nth-child(1){ transition-delay:.00s; }
-.intro-strip:nth-child(2){ transition-delay:.05s; }
-.intro-strip:nth-child(3){ transition-delay:.10s; }
-.intro-strip:nth-child(4){ transition-delay:.15s; }
-.intro-strip:nth-child(5){ transition-delay:.20s; }
-.intro-strip:nth-child(6){ transition-delay:.25s; }
-#page-intro.done .intro-strip { transform:translateY(-100%); }
-#page-intro.gone { display:none; }
-
-.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; }
-.intro-brand.fade { opacity:0; }
-.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,5vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
-@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-
-/* ============================================================
-   [🔥 比例修复] HERO SECTION
+   [✅ 比例核心] HERO SECTION
    ============================================================ */
 .hero { 
     display:grid; grid-template-columns:1.1fr 1fr; /* 平衡左右比例 */
@@ -241,7 +240,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode-gallery { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
 .snode-gallery::-webkit-scrollbar { height: 3px; }
 .snode-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 3px; }
-.snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+.snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
 .snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; }
 /* 限制高度，防止竖图爆炸 */
 .snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
@@ -407,7 +406,6 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   .hero { grid-template-columns:1fr; gap:2rem; padding:2rem 5% 1.5rem; min-height:auto; }
   .hero-right { order:-1; max-width: 100%; }
   .hero-img-wrap { height:60vw; max-height:none;}
-  .hero-name-overlay { font-size:4rem; left:0; mix-blend-mode:normal; color:var(--text); opacity:1; animation:none; text-shadow:none;}
   
   .snode { padding-left: 50px; margin-bottom: 1.5rem;}
   .timeline-spine { left: calc(5% + 15px); }
@@ -446,7 +444,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <div class="intro-strip"></div>
 </div>
 <div class="intro-brand" id="intro-brand">
-  <div class="intro-name">Liyi GAO</div>
+  <div class="intro-name display">Liyi GAO</div>
   <div class="intro-role">Brand Builder &amp; Product Manager</div>
 </div>
 
@@ -459,11 +457,11 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     <div class="cv-dropdown" id="nav-cv">
       <button class="btn btn-ghost">Download CV ▾</button>
       <div class="cv-menu">
-        <a href="#" download>🇬🇧 English CV</a>
-        <a href="#" download>🇫🇷 CV en Français</a>
+        <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
+        <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
       </div>
     </div>
-    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none;">Contact</a>
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost">Contact</a>
     <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
   </div>
 </nav>
@@ -493,18 +491,25 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 
 <section id="hero" class="section-wrapper">
   <div class="hero">
-    <div class="hero-left reveal">
-      <div class="hero-kicker">
-        Audencia PGE | Internship from July 2026
+    <div class="hero-left">
+      <div class="avail-badge reveal">
+        <span class="avail-dot"></span>
+        Internship from July 2026
       </div>
-      <h1 class="display hero-h1">
+      <h1 class="display hero-h1 reveal">
         The Evolution<br>of a <em>Brand Builder.</em>
       </h1>
-      <p class="hero-desc">
+      <p class="hero-desc reveal delay-1">
         Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
       </p>
-      
-      <div class="skill-tags">
+      <div class="hero-ctas reveal delay-2">
+        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          liyi.gao.dm@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+      </div>
+      <div class="skill-tags reveal delay-2">
         <div class="skill-pill">🇨🇳 Mandarin</div>
         <div class="skill-pill">🇫🇷 French C1</div>
         <div class="skill-pill">🇬🇧 English C2</div>
@@ -518,14 +523,14 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <div class="hero-image-wrapper">
         <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad689ba1d37.webp" alt="Liyi Gao">
       </div>
-      <div class="hero-name-overlay">Liyi GAO</div>
+      <div class="hero-name-overlay display">Liyi GAO</div>
     </div>
   </div>
 </section>
 
 <div class="diary-container" id="diary-container">
   <div class="diary-sticky">
-    <h2 class="diary-text" id="diary-text">IT ALL STARTED WITH EMPATHY.</h2>
+    <h2 class="diary-text display" id="diary-text">IT ALL STARTED<br>WITH EMPATHY.</h2>
   </div>
 </div>
 
@@ -533,10 +538,10 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle-sticker" style="top:5%; right:5%; width:180px; transform:rotate(15deg);" alt="Doodle">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="Doodle">
 
-  <div class="section-title-block reveal">
-    <p class="label">Journey</p>
-    <h2 class="heading">Self-Growth &amp; Entrepreneurial Journey</h2>
-    <p>Two early sparks that shaped my product intuition.</p>
+  <div class="story-header reveal">
+    <p class="st-eyebrow">Journey</p>
+    <h2>Self-Growth &amp; Entrepreneurial Journey</h2>
+    <p class="st-sub">Click each chapter to expand the story.</p>
   </div>
 
   <div class="timeline-wrapper">
@@ -551,7 +556,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
         </div>
         <div class="snode-info">
           <span class="snode-year">2013 · Consumer Insights</span>
-          <h3 class="snode-title">Grandma's Stall</h3>
+          <h3 class="snode-title heading">Grandma's Stall</h3>
           <span class="snode-hint">Click to expand</span>
         </div>
       </div>
@@ -584,7 +589,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
         </div>
         <div class="snode-info">
           <span class="snode-year">2015 · Brand Positioning</span>
-          <h3 class="snode-title">DTC Stationery</h3>
+          <h3 class="snode-title heading">DTC Stationery</h3>
           <span class="snode-hint">Click to expand</span>
         </div>
       </div>
@@ -630,14 +635,14 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 <div class="drawer" id="o2o-drawer">
   <button class="drawer-close" id="drawer-close">✕</button>
   <p class="label">Phase 2 (2022) · Campus Startup</p>
-  <h3>Architecting a Campus O2O Network</h3>
+  <h3 class="heading">Architecting a Campus O2O Network</h3>
   <p style="color:var(--text);font-size:.95rem;line-height:1.7;margin-bottom:1rem;">
     Founded a new digital business ecosystem with online ordering and offline delivery — from a blank page to a thriving campus brand.
   </p>
   <div class="kpi-row">
-    <div class="kpi"><div class="kpi-num">400+</div><div class="kpi-label">Monthly Active Users</div></div>
-    <div class="kpi"><div class="kpi-num">80%</div><div class="kpi-label">Repurchase Rate</div></div>
-    <div class="kpi"><div class="kpi-num">&lt;5%</div><div class="kpi-label">Perishable Waste</div></div>
+    <div class="kpi"><div class="kpi-num heading">400+</div><div class="kpi-label">Monthly Active Users</div></div>
+    <div class="kpi"><div class="kpi-num heading">80%</div><div class="kpi-label">Repurchase Rate</div></div>
+    <div class="kpi"><div class="kpi-num heading">&lt;5%</div><div class="kpi-label">Perishable Waste</div></div>
   </div>
   <div class="kpi-badge">Designed materials driving engagement across <strong>1,000+ private-domain users</strong></div>
   <ul class="drawer-bullets" style="margin-top:1.2rem;">
@@ -654,7 +659,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 </div>
 
 <div class="transition-band" id="trans-band">
-  <div class="transition-words">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
+  <div class="transition-words heading">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
   <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:350px;height:250px;">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:280px;height:350px;">
@@ -675,7 +680,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
           <div class="acc-meta">
             <div class="acc-period">Canton, China · Mar 2025 – Jun 2025</div>
-            <div class="acc-company">Wealthfields Lohmann (FMCG)</div>
+            <div class="acc-company heading">Wealthfields Lohmann (FMCG)</div>
             <div class="acc-focus">360° Brand Partnerships & Go-to-Market</div>
           </div>
           <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
@@ -702,7 +707,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
           <div class="acc-meta">
             <div class="acc-period">Canton, China · Jan 2023 – Aug 2023</div>
-            <div class="acc-company">MMA Brand Services Pte. Ltd.</div>
+            <div class="acc-company heading">MMA Brand Services Pte. Ltd.</div>
             <div class="acc-focus">Product Lifecycle Management & E-Commerce Strategy</div>
           </div>
           <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
@@ -725,7 +730,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
           <div class="acc-meta">
             <div class="acc-period">Guangzhou, China · Nov 2023 – Jun 2024</div>
-            <div class="acc-company">TAL Education Group</div>
+            <div class="acc-company heading">TAL Education Group</div>
             <div class="acc-focus">EdTech & Audience Engagement</div>
           </div>
           <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
@@ -751,7 +756,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
           <div class="acc-meta">
             <div class="acc-period">Nantes, France · Ongoing</div>
-            <div class="acc-company">Audencia Entrepreneur Club (ACE)</div>
+            <div class="acc-company heading">Audencia Entrepreneur Club (ACE)</div>
             <div class="acc-focus">PR, External Communication & Resource Orchestration</div>
           </div>
           <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
@@ -780,7 +785,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566301faa.webp" class="demo-doodle" alt="Coding Doodle">
     <div>
       <p class="label">Current Exploration · Agile Prototyping</p>
-      <h3>Building the<br>Skincare Copilot</h3>
+      <h3 class="display">Building the<br>Skincare Copilot</h3>
       <p>I treat AI as a strategic co-pilot. By translating my consumer intuition into structured logic, I rapidly coded and deployed this functional web application.</p>
       <p>Designed to solve the real pain point of overwhelming skincare choices — providing personalized routine analysis and reducing cognitive load for beauty consumers.</p>
       <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
@@ -809,7 +814,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing" class="hobby-img">
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
-        <h4>🚣 Aviron</h4>
+        <h4 class="heading">🚣 Aviron</h4>
         <p>That pure magic of perfect team sync. And when I'm solo? Just me, a boat, chasing the wind.</p>
       </div>
     </div>
@@ -817,7 +822,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" class="hobby-img" style="object-position:top;">
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
-        <h4>🥾 Randonnée</h4>
+        <h4 class="heading">🥾 Randonnée</h4>
         <p>Scrambling up rocky trails for that one epic view. Leg burn? Yes. Worth it? Always.</p>
       </div>
     </div>
@@ -825,7 +830,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming" class="hobby-img">
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
-        <h4>🏊 Swimming</h4>
+        <h4 class="heading">🏊 Swimming</h4>
         <p>Honestly? I love it because there's no sweat to wipe away! Just the pure, carefree joy of uninhibited movement.</p>
       </div>
     </div>
@@ -856,8 +861,11 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   document.body.style.overflow = 'hidden';
 
   function startIntro(){
+    // First fade the brand out
     setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
+    // Then collapse the strips
     setTimeout(function(){ intro.classList.add('done'); }, 1000);
+    // Then remove everything
     setTimeout(function(){
       intro.classList.add('gone');
       document.body.style.overflow = '';
@@ -869,12 +877,14 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     }, 2000);
   }
 
-  // Ensure it fires even if load event misses
+  // Handle different ready states
   if(document.readyState === 'complete'){
     startIntro();
   } else {
+    // Standard approach
     window.addEventListener('load', startIntro);
-    setTimeout(startIntro, 2000); // Fail-safe fallback
+    // Fail-safefallback: if 'load' never fires, trigger anyway after 2s
+    setTimeout(startIntro, 2000);
   }
 })();
 
@@ -897,7 +907,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 })();
 
 /* ================================================================
-   3. DIARY PARALLAX — Empathy Animation (Slower, smoother slide up)
+   3. DIARY PARALLAX — Empathy Animation (Smooth exit only)
    ================================================================ */
 (function(){
   var diaryCont = document.getElementById('diary-container');
@@ -912,10 +922,11 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     // Safely clamp progress between 0 and 1
     var p = Math.max(0, Math.min(1, -rect.top / total));
     
-    // Smooth slide up & mild scale (max 1.05)
+    // Smooth exit animation
+    // Text slides up and scales down slightly as it leaves
     var translateY = 50 * (1 - p*2); 
-    if (translateY < 0) translateY = 0;
-    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; 
+    if (translateY < 0) translateY = 0; // Don't slide up on entry
+    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; // Slow down the scaling curve
     
     // Opacity Curve: smooth entry -> long hold -> slow exit
     var opacity = 0;
@@ -977,7 +988,7 @@ function toggleSnode(id) {
 
 /* ================================================================
    6. ACCORDION (Professional Arsenal)
-   ================================================================ */
+   ============================================================ */
 document.querySelectorAll('.accordion-header').forEach(function(header){
   header.addEventListener('click', function(){
     header.closest('.accordion-item').classList.toggle('open');
