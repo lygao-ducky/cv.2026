@@ -12,15 +12,16 @@
    DESIGN TOKENS — Apple-inspired Ice Blue System
    ============================================================ */
 :root {
-  --bg:          #F8F7F5; 
-  --card-bg:     #FFFFFF; 
-  --text:        #2C2C2E; 
-  --muted:       #8E8E93; 
+  --bg:          #F8F7F5;
+  --card-bg:     #FFFFFF;
+  --text:        #2C2C2E;
+  --muted:       #8E8E93;
   --border:      rgba(0,0,0,0.06);
-  --accent:      #2997FF; 
+  --accent:      #2997FF;
   --accent-glow: rgba(41,151,255,0.15);
   --accent-dk:   #0071E3;
   --accent-lt:   rgba(41,151,255,0.06);
+  --timeline-bg: rgba(0,0,0,0.10);
   --surface2:    #F2F2F7;
   --nav-bg:      rgba(248,247,245,0.85);
 }
@@ -28,7 +29,6 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 *:focus { outline: none; }
 
-/* 修复页面过大问题，严格控制溢出 */
 html { scroll-behavior:smooth; font-size:15px; }
 body {
   background: var(--bg); color: var(--text);
@@ -64,15 +64,13 @@ strong { font-weight:600; color:var(--accent); }
 .btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(41,151,255,.3); }
 .btn-ghost   { border:1.5px solid var(--border); color:var(--text); background:transparent; }
 .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
-.btn-solid   { background:var(--text); color:var(--bg); }
-.btn-solid:hover { background:var(--accent); }
 .btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.45); } }
 
 /* 全局透明涂鸦 */
 .doodle-sticker { 
   position: absolute; height: auto; z-index: -1; pointer-events: none; 
-  mix-blend-mode: multiply; opacity: 0.12; 
+  mix-blend-mode: multiply; opacity: 0.12; filter: grayscale(100%);
 }
 p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
@@ -89,12 +87,6 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; }
 .nav-right { display:flex; align-items:center; gap:.7rem; }
 
-/* Lang switcher */
-.lang-switcher { display:flex; align-items:center; border:1.5px solid var(--border); border-radius:40px; overflow:hidden; background:var(--card-bg); }
-.lang-btn { padding:.35rem .8rem; font-size:.78rem; font-weight:600; color:var(--muted); text-decoration:none; transition:background .2s, color .2s; }
-.lang-btn:hover { color:var(--accent); }
-.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
-
 /* CV dropdown */
 .cv-dropdown { position:relative; }
 .cv-menu { position:absolute; top:calc(100% + 10px); right:0; background:var(--card-bg); border:1px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 16px 40px rgba(0,0,0,.12); min-width:200px; opacity:0; transform:translateY(-8px) scale(.97); pointer-events:none; transition:all .22s; z-index:9999; }
@@ -110,16 +102,11 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .fnav-item:hover, .fnav-item.active { color:var(--accent); background:rgba(41,151,255,.12); }
 
 /* ============================================================
-   [🔥 优化] PAGE INTRO — 增加灰度和毛玻璃
+   PAGE INTRO — 增加灰度和毛玻璃
    ============================================================ */
 #page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
 .intro-strip { 
-    flex:1; 
-    /* 颜色调灰，增强毛玻璃质感 */
-    background:rgba(180, 180, 188, 0.65); 
-    backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); 
-    border-bottom:1px solid rgba(255,255,255,0.3); 
-    transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
 }
 .intro-strip:nth-child(1){ transition-delay:.00s; }
 .intro-strip:nth-child(2){ transition-delay:.05s; }
@@ -159,23 +146,21 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 @keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
 
 /* ============================================================
-   [🔥 优化] DIARY PARALLAX: 滑动浮现 (Slide-up & Fade-in)
+   DIARY PARALLAX: 滑动浮现 (Slide-up & Fade-in)
    ============================================================ */
 .diary-container { height:150vh; position:relative; z-index:15; }
 .diary-sticky { position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .diary-text {
   font-size:clamp(2rem,5vw,4.5rem); font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
   color:var(--text); text-align:center; opacity:0;
-  /* 初始在下方，等待滑入 */
-  transform:translateY(50px) scale(0.9);
-  will-change:transform,opacity; line-height:1.2;
+  transform:translateY(50px) scale(0.9); will-change:transform,opacity; line-height:1.2;
 }
 
 /* ============================================================
-   [🔥 重构] STORY SECTION — 错落堆叠排版 (Bon Jovi Backstage Style)
+   [🔥 重构] STORY SECTION — 错落堆叠排版 (Bug Fixes)
    ============================================================ */
-#story  { background:var(--bg); position:relative; padding-top: 4rem;}
-.story-header { text-align: center; margin-bottom: 4rem; }
+#story  { background:var(--bg); position:relative; padding-top: 2rem; padding-bottom: 2rem;}
+.story-header { text-align: center; margin-bottom: 5rem; }
 
 /* 2 列网格：左边2013，右边2015 */
 .story-duo {
@@ -185,12 +170,10 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 /* 让右侧 2015 往下错位，形成不对称美感 */
 .story-chapter.offset-down { margin-top: 6rem; }
 
-.story-chapter { position: relative; cursor: pointer; display: flex; flex-direction: column; gap: 1.5rem;}
+.story-chapter { position: relative; cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center;}
 
 /* 图片堆叠效果 */
-.photo-stack {
-    position: relative; width: 100%; aspect-ratio: 4/3; 
-}
+.photo-stack { position: relative; width: 100%; aspect-ratio: 4/3; margin-bottom: 1.5rem; }
 .photo-stack img {
     position: absolute; width: 85%; height: 85%; object-fit: cover; border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid var(--border);
@@ -205,19 +188,17 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
 /* 点击放大的提示悬浮丸子 */
 .click-hint {
-    position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); z-index: 5;
-    background: rgba(255,255,255,0.8); backdrop-filter: blur(8px); border: 1px solid var(--border);
+    position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); z-index: 5;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); border: 1px solid var(--border);
     padding: 0.5rem 1rem; border-radius: 30px; font-size: 0.75rem; font-weight: 700; color: var(--accent);
     display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     opacity: 0; transition: opacity 0.3s, transform 0.3s;
 }
 .story-chapter:hover .click-hint { opacity: 1; transform: translateX(-50%) translateY(-5px); }
 
-/* 节点文字描述 */
-.chapter-meta { padding: 0 0.5rem; text-align: center;}
 .chapter-year { font-family:"Space Grotesk",sans-serif; font-size:.75rem; font-weight:800; color:var(--accent); letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom: 0.5rem;}
 .chapter-title { font-family:"Space Grotesk",sans-serif; font-size:1.4rem; font-weight:700; line-height:1.2; margin-bottom: 0.5rem;}
-.chapter-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.5;}
+.chapter-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.5; max-width: 90%;}
 
 /* ── Bridge from duo → O2O ── */
 .story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.5rem; margin: 2rem 0; opacity:.65; }
@@ -229,7 +210,7 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .o2o-trigger {
   background:var(--card-bg); border:1px solid var(--border); border-radius:24px;
   padding:2.5rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
-  max-width: 900px; margin: 0 auto 5rem;
+  max-width: 900px; margin: 0 auto;
 }
 .o2o-trigger::before {
   content:''; position:absolute; inset:0; border-radius:24px;
@@ -266,7 +247,7 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .drawer-close:hover { background:var(--border); }
 
 /* ============================================================
-   [🔥 修复居中 Modal]
+   居中 Modal (For 2013 & 2015)
    ============================================================ */
 .story-modal-overlay {
   position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(8px);
@@ -293,21 +274,20 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .modal-title { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin-bottom:1rem; line-height:1.2;}
 .modal-desc { color:var(--text); font-size:1rem; line-height:1.7; margin-bottom:1.5rem; }
 
-/* 强制 Modal 里的图片高度一致 */
 .modal-gallery { display:flex; gap:10px; overflow-x:auto; padding-bottom:5px; scroll-snap-type: x mandatory;}
 .modal-gallery::-webkit-scrollbar { display:none; }
 .modal-gallery figure { flex:0 0 80%; scroll-snap-align: center; }
-.modal-gallery img { width:100%; height:220px; object-fit:cover; border-radius:12px; border:1px solid var(--border);}
+.modal-gallery img { width:100%; height:200px; object-fit:cover; border-radius:12px; border:1px solid var(--border);}
 .modal-gallery figcaption { font-size:.8rem; color:var(--muted); margin-top:5px; text-align:center; }
 
 /* ============================================================
    TRANSITION SCATTER BAND & BIG TITLE
    ============================================================ */
-.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg);}
+.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:4rem 0 0; background:var(--bg);}
 .transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(2rem,4.5vw,4.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
 .scatter { position:absolute; left:50%; top:50%; border-radius:14px; object-fit:cover; border:6px solid var(--card-bg); box-shadow:0 20px 40px rgba(0,0,0,.1); opacity:0; z-index:2; transform:translate(-50%,-50%); }
 
-/* 大标题滑动出现 (移到了散落区下方) */
+/* 大标题滑动出现 (位于散落区下方) */
 .arsenal-header { text-align:center; margin-bottom:3rem; padding-top: 4rem; }
 .arsenal-header p.label { margin-bottom:.5rem; }
 .arsenal-header h2 { font-size:clamp(2.4rem,4.5vw,3.8rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; }
@@ -354,7 +334,6 @@ p, h3, h4, li, figcaption { position: relative; z-index: 2; }
 #demo { background:var(--bg); position:relative;}
 .ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:4rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:28px; padding:4rem; position:relative; overflow:hidden; isolation:isolate; max-width:1100px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
 .ai-card::before { content:''; position:absolute; top:-30%; right:-5%; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events:none; }
-/* [🔥 修复] Coding插画留在框内右下角 */
 .demo-doodle { position:absolute; bottom:20px; right:30px; width:120px; z-index:-1; opacity:0.1; mix-blend-mode:multiply; transform:rotate(10deg); filter:grayscale(100%); }
 
 .ai-card > div { position:relative; z-index:1; }
@@ -401,8 +380,6 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
   .hero-name-overlay { font-size:4rem; left:0; mix-blend-mode:normal; color:var(--text); opacity:1; animation:none; text-shadow:none;}
   .story-duo { grid-template-columns:1fr; gap:3rem; }
   .story-chapter.offset-down { margin-top: 0; }
-  .kpi-row { grid-template-columns:repeat(3,1fr); gap:.8rem; }
-  .kpi-num { font-size:1.8rem; }
   .ai-card { grid-template-columns:1fr; padding:2rem; gap:2rem; }
   .browser iframe { height:340px; }
   .nav-brand span { display:none; }
@@ -445,11 +422,11 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
     <div class="cv-dropdown" id="nav-cv">
       <button class="btn btn-ghost">Download CV ▾</button>
       <div class="cv-menu">
-        <a href="#" download>🇬🇧 English CV</a>
-        <a href="#" download>🇫🇷 CV en Français</a>
+        <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
+        <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
       </div>
     </div>
-    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none; /* hidden on small screen if needed */">Contact</a>
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none;">Contact</a>
     <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
   </div>
 </nav>
@@ -501,7 +478,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
       </div>
     </div>
     <div class="hero-right">
-      <div class="hero-img-wrap">
+      <div class="hero-image-wrapper">
         <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad689ba1d37.webp" alt="Liyi Gao">
       </div>
       <div class="hero-name-overlay">Liyi GAO</div>
@@ -524,7 +501,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
     <p class="modal-desc">When my grandma's garden had a surplus, I took the bio vegetables to the rural market. Reducing cognitive load with <strong>direct copywriting</strong> — my very first A/B test on a cardboard sign. The earliest lesson in consumer psychology: clarity beats cleverness.</p>
     <div class="modal-gallery">
       <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt=""><figcaption>Fresh harvest</figcaption></figure>
-      <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858ba3c7b4.webp" alt=""><figcaption>First A/B test</figcaption></figure>
+      <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt=""><figcaption>First A/B test</figcaption></figure>
     </div>
 </div>
 
@@ -542,7 +519,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
 <section id="story">
   
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle-sticker" style="top:5%; right:5%; width:180px; transform:rotate(15deg);" alt="Doodle">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="Doodle">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:40%; left:2%; width:200px; transform:rotate(-10deg);" alt="Doodle">
 
   <div class="section-title-block reveal" style="margin-bottom: 2rem;">
     <p class="label">Journey</p>
@@ -633,17 +610,19 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
 <div class="transition-band" id="trans-band">
   <div class="transition-words">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
   <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:340px;height:240px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:270px;height:340px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:350px;height:250px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:280px;height:350px;">
 </div>
 <div data-theme="theme-light" class="theme-trigger"></div>
 
 <div class="arsenal-header reveal" id="arsenal">
-    <p class="label">Experience</p>
+    <p class="label" style="margin-bottom:.5rem;">Experience</p>
     <h2 class="display">Sharpening the<br><em style="color:var(--accent);">Professional Arsenal</em></h2>
 </div>
 
 <section class="section-wrapper" style="padding-top:0; padding-bottom:5rem;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566379bac.webp" class="doodle-sticker" style="top:5%; left:2%; width:200px;" alt="Doodle">
+
   <div class="accordion-container">
 
       <div class="accordion-item reveal">
@@ -659,7 +638,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
         <div class="accordion-body">
           <div class="accordion-inner">
             <ul class="acc-bullets">
-              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
+              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong>.</li>
               <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
               <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
             </ul>
@@ -687,7 +666,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
           <div class="accordion-inner">
             <ul class="acc-bullets">
               <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
-              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
+              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong>.</li>
             </ul>
             <div class="acc-gallery">
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
@@ -741,7 +720,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
             </ul>
             <div class="acc-gallery">
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Event Planning</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>Coordination</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.figcaption"><figcaption>Coordination</figcaption></figure>
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE Execution</figcaption></figure>
             </div>
           </div>
@@ -776,7 +755,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle-sticker" style="top:5%;left:2%;width:150px;transform:rotate(10deg);" alt="">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle-sticker" style="bottom:10%;right:2%;width:140px;transform:rotate(-12deg);" alt="">
   
-  <div class="section-title-block" style="text-align:center; padding-top: 0;">
+  <div class="section-title-block" style="text-align:center; padding-top: 0; margin-bottom: 2rem;">
     <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">When I'm not in front of my laptop...</h2>
     <p>Maintaining the "hardware" and optimizing the "flow state".</p>
   </div>
@@ -818,8 +797,6 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
   </div>
   <p class="footer-copy" style="margin-top: 1rem;">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
 </footer>
-
-<div data-theme="theme-light" class="theme-trigger" style="position:absolute;top:0;height:1px;"></div>
 
 <script>
 /* ================================================================
@@ -874,7 +851,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
 })();
 
 /* ================================================================
-   3. [🔥 FIX] DIARY PARALLAX — Empathy Animation (Slower, smoother slide up)
+   3. DIARY PARALLAX — Empathy Animation (Slower, smoother slide up)
    ================================================================ */
 (function(){
   var diaryCont = document.getElementById('diary-container');
@@ -935,7 +912,7 @@ footer { border-top:1px solid var(--border); padding:3.5rem 5% 5rem; max-width:1
 })();
 
 /* ================================================================
-   5. [🔥 FIX] STORY CENTERED MODALS
+   5. STORY CENTERED MODALS
    ================================================================ */
 function openStoryModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -1025,7 +1002,6 @@ document.querySelectorAll('.hobby-card').forEach(function(card){
     if(!was) card.classList.add('active');
   });
 });
-
 </script>
 </body>
 </html>
