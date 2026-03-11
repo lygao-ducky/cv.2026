@@ -1,1210 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liyi Gao | Brand Builder & Product Manager</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* ============================================================
-   DESIGN TOKENS — Warm Silver & Ice Blue System
-   ============================================================ */
-:root {
-  --bg:          #F8F7F5; 
-  --card-bg:     #FFFFFF; 
-  --text:        #2C2C2E; 
-  --muted:       #8E8E93; 
-  --border:      rgba(0,0,0,0.06);
-  --accent:      #2997FF; 
-  --accent-glow: rgba(41,151,255,0.15);
-  --accent-dk:   #0071E3;
-  --accent-lt:   rgba(41,151,255,0.06);
-  --surface2:    #F2F2F7;
-  --nav-bg:      rgba(248,247,245,0.85);
-}
-
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-*:focus { outline: none; }
-
-/* 锁定基准字号 */
-html { scroll-behavior: smooth; font-size: 15px; } 
-
-/* [🔥 修复 Sticky 失效的罪魁祸首] 移除 body 的 overflow-x: hidden */
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', -apple-system, sans-serif;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* ---- Type Scale ---- */
-.display   { font-family:'Playfair Display',serif; font-weight:800; letter-spacing:-1px; line-height:1.05; }
-.heading   { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.5px; }
-.label     { font-size:.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
-strong { font-weight:600; color:var(--accent); }
-
-/* ---- Reveal Animations ---- */
-.reveal { opacity:1; transform:none; }
-#hero, #hero * { animation-play-state:running !important; }
-.will-reveal { opacity:0; transform:translateY(28px); transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
-.will-reveal.active { opacity:1; transform:none; }
-.delay-1 { transition-delay:.1s; }
-.delay-2 { transition-delay:.2s; }
-.delay-3 { transition-delay:.3s; }
-
-/* ---- Buttons ---- */
-.btn {
-  display:inline-flex; align-items:center; gap:.45rem;
-  padding:.55rem 1.2rem; border-radius:40px;
-  font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:600;
-  text-decoration:none; cursor:pointer; border:none;
-  transition:all .22s cubic-bezier(.16,1,.3,1);
-  white-space:nowrap;
-}
-.btn:hover { transform:translateY(-2px); }
-.btn-accent  { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
-.btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(41,151,255,.25); }
-.btn-ghost   { border:1.5px solid var(--border); color:var(--text); background:transparent; }
-.btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
-.btn-solid   { background:var(--text); color:var(--bg); }
-.btn-solid:hover { background:var(--accent); }
-.btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
-@keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.3); } }
-
-/* 全局透明涂鸦贴纸：作为极淡的水印背景 */
-.doodle-sticker { 
-  position: absolute; height: auto; 
-  z-index: -1; pointer-events: none; 
-  mix-blend-mode: multiply; opacity: 0.06; 
-  filter: grayscale(100%);
-}
-
-.section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
-p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
-
-/* 防止页面撑破的基础设置 */
-.overflow-protector {
-    max-width: 100vw;
-    overflow-x: hidden;
-}
-
-/* 全屏跑马灯 */
-.marquee-bg {
-  position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
-}
-@keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-/* ============================================================
-   [🔥 修复] TOP NAV
-   ============================================================ */
-.top-nav {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 5%; 
-  position: sticky; top: 0; /* 恢复 Sticky 效果 */
-  z-index: 2000; 
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  background:var(--nav-bg); border-bottom:1px solid var(--border);
-}
-.nav-brand { display:flex; align-items:center; gap:.8rem; }
-.nav-brand img { height:26px; object-fit:contain; }
-.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
-.nav-right { display:flex; align-items:center; gap:.7rem; }
-
-/* 语言切换 */
-.lang-switcher {
-  display:flex; align-items:center;
-  border:1.5px solid var(--border); border-radius:40px;
-  overflow:hidden; background:var(--card-bg);
-}
-.lang-btn {
-  padding:.35rem .8rem; font-size:.78rem; font-weight:600;
-  color:var(--muted); text-decoration:none;
-  transition:background .2s, color .2s;
-}
-.lang-btn:hover { color:var(--accent); }
-.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
-
-/* CV dropdown */
-.cv-dropdown { position:relative; }
-.cv-menu {
-  position:absolute; top:calc(100% + 10px); right:0;
-  background:var(--card-bg); border:1px solid var(--border);
-  border-radius:12px; overflow:hidden;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
-  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
-  pointer-events:none; transition:all .22s; z-index:9999;
-}
-.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
-.cv-menu a { display:flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; text-decoration:none; color:var(--text); font-size:.85rem; font-weight:500; transition:background .2s; }
-.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
-.cv-menu a + a { border-top:1px solid var(--border); }
-
-/* ============================================================
-   FLOATING BOTTOM NAV
-   ============================================================ */
-.floating-nav {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:50px; padding:6px 10px; box-shadow:0 10px 30px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.05);
-}
-.fnav-item {
-  display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.65rem; font-weight:600; transition:all .22s; min-width:52px;
-}
-.fnav-item svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
-
-/* ============================================================
-   PAGE INTRO
-   ============================================================ */
-#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
-.intro-strip { 
-    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
-}
-.intro-strip:nth-child(1){ transition-delay:.00s; }
-.intro-strip:nth-child(2){ transition-delay:.05s; }
-.intro-strip:nth-child(3){ transition-delay:.10s; }
-.intro-strip:nth-child(4){ transition-delay:.15s; }
-.intro-strip:nth-child(5){ transition-delay:.20s; }
-.intro-strip:nth-child(6){ transition-delay:.25s; }
-#page-intro.done .intro-strip { transform:translateY(-100%); }
-#page-intro.gone { display:none; }
-
-.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width: 100%;}
-.intro-brand.fade { opacity:0; }
-.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,6vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
-.intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
-@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-
-/* ============================================================
-   HERO SECTION
-   ============================================================ */
-.hero { 
-    display:grid; grid-template-columns:1.1fr 1fr; 
-    align-items:center; gap:4rem; 
-    min-height:80vh; padding:4rem 5% 1rem; 
-    max-width:1040px; margin:0 auto; position:relative; z-index:10; 
-}
-.hero-left { position:relative; }
-.hero-right { position:relative; width: 100%; max-width: 400px; margin-left: auto; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liyi Gao | PGE PGE Program</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================
+           1. 基础样式和重置
+           ========================================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
+        body { background-color: #f7f3ed; color: #333; line-height: 1.6; overflow-x: hidden; width: 100%; height: 100%; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+        h2 { font-size: 2rem; margin-bottom: 2rem; color: #333; }
+        a { text-decoration: none; color: inherit; transition: color 0.2s; }
+        ul { list-style: none; }
         
-.hero-kicker { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:1.2rem; border-left:3px solid var(--accent); padding-left:10px; }
-.hero-h1 { font-size:clamp(2.5rem, 4vw, 3.5rem); margin-bottom:1rem; }
-.hero-h1 em { color:var(--accent); font-style:italic; }
-.hero-desc { font-size:1.05rem; color:var(--text); max-width:480px; margin-bottom:2rem; line-height:1.7; }
+        /* 通用遮罩和揭示效果 */
+        .reveal-mask { position: relative; overflow: hidden; display: inline-block; }
+        .reveal-mask::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #333; transform: translateX(-101%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; }
+        .reveal-mask.active::after { transform: translateX(101%); }
+        
+        .large-text { font-size: 3rem; font-weight: 800; color: #333; line-height: 1.1; }
+        
+        /* 防止页面撑破的基础设置 */
+        .overflow-protector { max-width: 100vw; overflow: hidden; }
 
-.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem;}
-.skill-pill { padding:.3rem .8rem; border:1px solid var(--border); border-radius:6px; font-size:.75rem; font-weight:500; background:var(--card-bg); color:var(--text); transition:border-color .2s; }
-.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow: 0 2px 8px var(--accent-glow);}
+        /* ==========================================================
+           2. [🔥 修复] 顶端导航栏：设置成按钮形式
+           ========================================================== */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(247, 243, 237, 0.9); /* 半透明背景 */
+            transition: background-color 0.3s;
+        }
+        .top-nav .logo { font-size: 1.1rem; font-weight: 600; color: #333; letter-spacing: 0.5px; }
+        
+        /* 按钮组 */
+        .btn-group { display: flex; gap: 0.5rem; align-items: center; }
+        
+        /* 导航栏基础按钮样式 */
+        .top-nav .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, color 0.2s, transform 0.2s;
+        }
+        
+        /* EN / FR 切换器 */
+        .top-nav .btn.lang-switcher {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #dcdcdc;
+        }
+        .top-nav .btn.lang-switcher:hover { background-color: #e0e0e0; transform: translateY(-2px); }
+        
+        /* Download CV 和 LinkedIn 按钮样式 */
+        .top-nav .btn.cv-btn,
+        .top-nav .btn.linkedin-btn {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #333;
+        }
+        .top-nav .btn.cv-btn:hover,
+        .top-nav .btn.linkedin-btn:hover { background-color: #555; transform: translateY(-2px); }
+        
+        /* LinkedIn 特殊颜色 */
+        .top-nav .btn.linkedin-btn { background-color: #2980b9; border: 1px solid #2980b9; }
+        .top-nav .btn.linkedin-btn:hover { background-color: #3498db; }
+        
+        /* ==========================================================
+           3. Hero Section (保留)
+           ========================================================== */
+        .hero { display: flex; align-items: center; justify-content: space-between; min-height: 80vh; padding: 4rem 2rem 1rem; }
+        .hero-left { flex: 0 0 50%; max-width: 600px; }
+        .hero-kicker { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: #555; letter-spacing: 2px; margin-bottom: 0.8rem; }
+        .hero-title { font-size: 3.5rem; margin-bottom: 1.5rem; line-height: 1.1; color: #333; }
+        .hero-title em { color: #3498db; font-style: normal; }
+        .hero-desc { font-size: 1rem; color: #555; margin-bottom: 2rem; max-width: 480px; }
+        .hero-right { flex: 0 0 45%; max-width: 400px; border-radius: 1rem; overflow: hidden; border: 1px solid #e0e0e0; aspect-ratio: 16 / 10; }
+        .hero-right img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .skill-pill { padding: 0.3rem 0.8rem; border: 1px solid #dcdcdc; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 500; background: #fff; color: #333;}
 
-.hero-img-wrap { width:100%; height:55vh; max-height: 520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);}
-.hero-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center 20%; transform:scale(1.15); animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; }
-.hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(3rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
+        /* ==========================================================
+           4. Parallax Section (保留)
+           ========================================================= */
+        .parallax-wrapper { width: 100%; overflow: hidden; position: relative; }
+        .parallax-container { height: 140vh; position: relative; overflow: hidden; background-color: #f7f3ed; }
+        .parallax-text-wrap { position: absolute; top: 50%; width: 100%; z-index: 2; transform: translateY(-50%); transition: opacity 0.5s, transform 0.5s; }
+        .spacer-container { height: 100%; width: 100%; position: absolute; z-index: 1; top: 0; background-color: #f7f3ed; transition: transform 0.5s ease-out; transform-origin: top; }
+        .spacer-container.shrink { transform: scaleY(0.7); }
 
-@keyframes expandImg { to { clip-path:inset(0 0 0 0 round 20px); } }
-@keyframes scaleImg  { to { transform:scale(1); } }
-@keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+        /* ==========================================================
+           5. Story Section (含 [🔥修正的照片和措辞])
+           ========================================================== */
+        .story-section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+        .story-item { margin-bottom: 3rem; }
+        .phase { font-size: 0.8rem; text-transform: uppercase; color: #e67e22; margin-bottom: 0.5rem; }
+        .story-title { font-size: 1.5rem; margin-bottom: 1rem; }
+        .story-desc { color: #555; max-width: 800px; line-height: 1.6; }
+        
+        /* [🔥 修复] 照片排版：弹性画廊布局 */
+        .story-gallery {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap; /* 允许在小屏幕换行 */
+        }
+        .story-gallery-item {
+            width: calc(33.333% - 1rem); /* 三列 */
+            aspect-ratio: 16 / 9; /* 保持一致的宽位比 */
+            overflow: hidden;
+            border-radius: 0.5rem;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s;
+        }
+        .story-gallery-item:hover { transform: scale(1.03); }
+        .story-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-/* ============================================================
-   DIARY PARALLAX (Empathy)
-   ============================================================ */
-.diary-container { height:150vh; position:relative; z-index:15; margin-bottom: -5vh;}
-.diary-sticky { position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-.diary-text {
-  font-size:clamp(2rem,4.5vw,4rem); font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
-  color:var(--text); text-align:center; opacity:0; transform:scale(0.9) translateY(20px);
-  letter-spacing:-1px; line-height:1.2; will-change:transform, opacity;
-}
-
-/* ============================================================
-   STORY SECTION: INLINE EXPANSION 
-   ============================================================ */
-#story  { background:var(--bg); padding-bottom: 4rem; position: relative;}
-
-.story-header { text-align: center; margin-bottom: 3rem; }
-.story-header .st-eyebrow { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:.6rem; }
-.story-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color:var(--text); }
-.story-header .st-sub { font-size:.9rem; color:var(--muted); margin-top:.5rem; }
-
-.timeline-wrapper { position: relative; max-width: 800px; margin: 0 auto; padding: 0 5%; }
-.timeline-spine { position: absolute; left: calc(5% + 38px); top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--accent); opacity: 0.25; z-index: 1;}
-
-.snode { position: relative; margin-bottom: 2rem; z-index: 2; }
-.snode-dot { position: absolute; left: 32px; top: 25px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); z-index: 3; transition: all 0.3s; }
-.snode.open .snode-dot { background: var(--accent); box-shadow: 0 0 0 6px var(--accent-glow); }
-
-.snode-trigger { display: flex; align-items: center; gap: 1.5rem; padding-left: 70px; cursor: pointer; transition: opacity 0.3s; }
-.snode-trigger:hover { opacity: 0.8; }
-.snode-icon { width: 64px; height: 64px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); box-shadow: 0 8px 16px rgba(0,0,0,0.03); padding: 6px; flex-shrink: 0; transition: transform 0.3s, border-color 0.3s; }
-.snode-icon img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
-.snode.open .snode-icon { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px var(--accent-glow); }
-
-.snode-info { display: flex; flex-direction: column; gap: 2px; }
-.snode-year { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
-.snode-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
-.snode-hint { font-size: 0.75rem; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; transition: color 0.3s; margin-top: 2px;}
-.snode-hint::before { content: '→'; transition: transform 0.3s; }
-.snode.open .snode-hint { color: var(--accent); }
-.snode.open .snode-hint::before { transform: rotate(90deg); }
-
-/* Inline Accordion Expansion */
-.snode-expansion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 70px; }
-.snode.open .snode-expansion { grid-template-rows: 1fr; }
-.snode-expansion-inner { overflow: hidden; }
-
-.snode-detail-card {
-    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
-    padding: 1.5rem; margin-top: 1rem; margin-bottom: 0.5rem;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.04);
-}
-.snode-detail-card p { font-size: 0.95rem; color: var(--text); line-height: 1.6; margin-bottom: 1.2rem; }
-
-.snode-gallery { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
-.snode-gallery::-webkit-scrollbar { height: 3px; }
-.snode-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 3px; }
-.snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
-.snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; }
-.snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
-.snode-gallery figcaption { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; }
-
-/* Bridge Wavy Line */
-.snode-wave-container { text-align: center; margin: 0; line-height: 0; position: relative; z-index: 1;}
-.snode-wave-container svg { height: 30px; margin-left: calc(96px - 12px); display: block; } 
-
-.story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin: 1.5rem 0 2rem; opacity:.6; }
-.story-bridge-v2 .sbv-line { width:2px; height:40px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
-.story-bridge-v2 .sbv-label { font-size:.7rem; font-weight:600; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
-
-/* ============================================================
-   O2O CARD & DRAWER
-   ============================================================ */
-.o2o-trigger {
-  background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
-  padding:2rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
-  max-width: 900px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-}
-.o2o-trigger::before {
-  content:''; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 60%); opacity:0; transition:opacity .3s;
-}
-.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 15px 35px var(--accent-glow); }
-.o2o-trigger:hover::before { opacity:1; }
-.o2o-inner { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; position:relative; z-index:1; }
-.o2o-icon  { width:64px; height:64px; object-fit:contain; background:#fff; border-radius:14px; padding:5px; border:1px solid var(--border); flex-shrink:0; }
-.o2o-text  { flex:1; min-width:0; }
-.o2o-open-hint {
-  display:inline-flex; align-items:center; gap:.5rem;
-  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.2rem;
-  background:var(--accent); padding:.6rem 1.2rem; border-radius:40px;
-  box-shadow:0 4px 12px var(--accent-glow); transition:background .2s, transform .2s;
-}
-.o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(4px); }
-
-/* Drawer */
-.drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
-.drawer-overlay.open { opacity:1; pointer-events:all; }
-.drawer {
-  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw); /* [🔥加宽抽屉，平铺4图] */
-  background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
-  transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
-  overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
-}
-.drawer.open { transform:translateX(0); }
-.drawer-close {
-  display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%;
-  border:none; background:var(--surface2); cursor:pointer; color:var(--muted); font-size:1rem;
-  margin-bottom:1.5rem; transition:background .2s;
-}
-.drawer-close:hover { background:var(--border); }
-.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin:.5rem 0 1rem; line-height: 1.2;}
-.drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.2rem 0; }
-.drawer .kpi { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:1rem; }
-.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:800; color:var(--accent); line-height:1; }
-.drawer .kpi-label { font-size:.75rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
-.kpi-badge { display:inline-block; padding:.5rem 1rem; background:var(--accent-lt); color:var(--accent); border-radius:8px; font-weight:600; font-size:.85rem; margin:.8rem 0; border: 1px solid rgba(41, 151, 255, 0.15);}
-
-.drawer-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; }
-.drawer-bullets li { margin-bottom:.6rem; line-height:1.6; }
-/* 平铺 4 张图的画廊 */
-.drawer-gallery { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:2rem; }
-.drawer-gallery figure { margin:0; }
-.drawer-gallery img { width:100%; height:140px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
-.drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center;}
-
-
-/* ============================================================
-   TRANSITION SCATTER BAND & BIG TITLE
-   ============================================================ */
-/* 用 overflow-protector 包裹会撑爆屏幕的散落区 */
-.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); width: 100vw; margin-left: calc(-50vw + 50%);}
-.transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
-.scatter { position:absolute; left:50%; top:50%; border-radius:12px; object-fit:cover; border:5px solid var(--card-bg); box-shadow:0 15px 30px rgba(0,0,0,.08); opacity:0; z-index:2; transform:translate(-50%,-50%); }
-
-.arsenal-header { text-align:center; margin-bottom:2.5rem; padding-top: 3rem; }
-.arsenal-header p.label { margin-bottom:.4rem; }
-.arsenal-header h2 { font-size:clamp(2rem,3.5vw,3rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; color: var(--text);}
-
-/* ============================================================
-   ACCORDION — Professional Arsenal
-   ============================================================ */
-#arsenal { background:var(--bg); padding-bottom:4rem; }
-.accordion-container { display:flex; flex-direction:column; gap:.8rem; max-width:900px; margin: 0 auto; position:relative;}
-.accordion-item { 
-    background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; 
-    transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s; position:relative; 
-}
-/* 悬浮渐变与放大光效 */
-.accordion-item::after { 
-    content:''; position:absolute; inset:0; border-radius:16px; 
-    background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%); 
-    opacity:0; transition:opacity .3s; pointer-events: none; 
-}
-.accordion-item:hover { transform:translateY(-4px) scale(1.01); border-color:var(--accent); box-shadow:0 15px 30px var(--accent-glow); }
-.accordion-item:hover::after { opacity:1; }
-
-.accordion-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk)); opacity:0; transition:opacity .3s; }
-.accordion-item.open { transform:none; border-color:rgba(41,151,255,.3); box-shadow:0 8px 30px rgba(41,151,255,.06); }
-.accordion-item.open::before { opacity:1; }
-.accordion-item.open::after { opacity:0; }
-
-.accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; position:relative; z-index:2;}
-
-.acc-logo { width:50px; height:50px; object-fit:contain; background:var(--bg); padding:5px; border-radius:12px; border:1px solid var(--border); flex-shrink:0; }
-.acc-meta { flex:1; min-width:0; }
-.acc-period  { font-size:.75rem; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:.2rem; }
-.acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700; line-height:1.2; margin-bottom:.3rem; }
-.acc-focus { display:inline-block; font-size:.75rem; font-weight:600; color:var(--text-muted); background:var(--surface2); border-radius:40px; padding:.2rem .6rem; }
-
-/* Click to expand hint */
-.acc-hint { font-size: 0.75rem; font-weight: 600; color: var(--accent); opacity: 0; transition: opacity 0.3s; padding-right: 1rem;}
-.accordion-item:hover .acc-hint { opacity: 1; }
-.accordion-item.open .acc-hint { opacity: 0; }
-
-.acc-chevron { width:28px; height:28px; border-radius:50%; flex-shrink:0; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; transition:transform .3s; }
-.accordion-item.open .acc-chevron { transform:rotate(180deg); background:var(--accent); border-color:var(--accent); color:#fff;}
-.acc-chevron svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
-
-.accordion-body { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.16,1,.3,1); position:relative; z-index:2;}
-.accordion-item.open .accordion-body { max-height:1000px; }
-.accordion-inner { padding:0 1.5rem 2rem calc(1.5rem + 50px + 1rem); }
-.acc-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; margin-bottom:1.2rem; }
-.acc-bullets li { margin-bottom:.6rem; line-height:1.6; }
-
-.acc-gallery { display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
-.acc-gallery::-webkit-scrollbar { height: 4px; }
-.acc-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
-.acc-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
-.acc-gallery figure { flex:0 0 auto; scroll-snap-align:center; }
-.acc-gallery img { height:160px; width:auto; max-width:240px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
-.acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center;}
-
-/* ============================================================
-   AI DEMO
-   ============================================================ */
-#demo { background:var(--bg); position:relative;}
-.ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3rem; position:relative; overflow:hidden; isolation:isolate; max-width:1040px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
-.ai-card::before { content:''; position:absolute; top:-30%; right:-5%; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events:none; }
-.demo-doodle { position:absolute; bottom:15px; right:20px; width:100px; z-index:-1; opacity:0.06; mix-blend-mode:multiply; transform:rotate(10deg); filter:grayscale(100%); pointer-events: none;}
-
-.ai-card > div { position:relative; z-index:1; }
-.ai-card h3 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; margin:.4rem 0 .8rem; line-height:1.2; }
-.ai-card p  { color:var(--text); font-size:.95rem; line-height:1.7; }
-.ai-card p+p { margin-top:.6rem; }
-
-.browser { border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.08); background:#fff; min-width:0; }
-.browser-bar { height:30px; background:#F2F2F2; display:flex; align-items:center; padding-left:12px; gap:6px; border-bottom:1px solid var(--border); }
-.b-dot { width:10px; height:10px; border-radius:50%; }
-.b-dot:nth-child(1){background:#ff5f56} .b-dot:nth-child(2){background:#ffbd2e} .b-dot:nth-child(3){background:#27c93f}
-.browser iframe { width:100%; height:360px; border:none; display:block; background:#fff; }
-
-/* ============================================================
-   HOBBIES
-   ============================================================ */
-#hobbies { background:var(--bg); position:relative; padding-bottom: 5rem;}
-.hobby-stack { display:flex; gap:12px; margin-top:2.5rem; height:380px; align-items:stretch; max-width:1040px; margin: 2.5rem auto 0;}
-.hobby-card { flex:1; border-radius:16px; overflow:hidden; position:relative; cursor:pointer; transition:flex .5s cubic-bezier(.16,1,.3,1), box-shadow .4s; box-shadow:0 8px 24px rgba(0,0,0,.05); min-width:0; border: 1px solid var(--border);}
-.hobby-stack:hover .hobby-card { flex:.4; }
-.hobby-stack:hover .hobby-card:hover { flex:2; box-shadow:0 15px 40px rgba(0,0,0,.1); }
-.hobby-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
-.hobby-card:hover .hobby-img { transform:scale(1.05); }
-.hobby-gradient { position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.1) 50%, transparent 100%); transition:opacity .4s; }
-.hobby-body { position:absolute; bottom:0; left:0; right:0; padding:1.2rem; color:#fff; }
-.hobby-body h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.hobby-body p { font-size:.85rem; line-height:1.5; opacity:0; transform:translateY(8px); transition:opacity .4s .1s, transform .4s .1s; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; color:rgba(255,255,255,0.9);}
-.hobby-stack .hobby-card:hover .hobby-body p { opacity:1; transform:translateY(0); }
-
-
-/* ============================================================
-   [🔥 修复] CV FLIP SECTION
-   ============================================================ */
-.cv-flip-section { padding:6rem 5%; max-width:1040px; margin:0 auto; position:relative; }
-.cv-flip-header { text-align:center; margin-bottom:4rem; }
-.cv-flip-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,4vw,3.2rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color: var(--text); }
-.cv-switcher { display:flex; justify-content:center; gap:.5rem; margin-bottom:3rem; }
-.cv-tab { padding:.55rem 1.4rem; border-radius:40px; font-size:.88rem; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:var(--card-bg); color:var(--muted); transition:all .22s; }
-.cv-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 16px var(--accent-glow); }
-.cv-book-wrap { perspective:1800px; display:flex; justify-content:center; align-items:center; }
-.cv-book { position:relative; width:min(560px, 90vw); }
-.cv-page { width:100%; border-radius:12px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,.15), -8px 0 24px rgba(0,0,0,.06); cursor:pointer; transform-origin:left center; transition:transform .6s cubic-bezier(.16,1,.3,1), opacity .4s; position:relative; border: 1px solid var(--border);}
-.cv-page img { width:100%; display:block; border-radius:12px; }
-.cv-page::after { content:''; position:absolute; inset:0; border-radius:12px; background:linear-gradient(to right, rgba(0,0,0,.08) 0%, transparent 15%); pointer-events:none; }
-.cv-page:hover { transform:rotate3d(0,1,0,-8deg); }
-.cv-download-row { display:flex; justify-content:center; gap:1rem; margin-top:3rem; flex-wrap:wrap; }
-
-/* Lightbox */
-.cv-lightbox { position:fixed; inset:0; z-index:2500; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; }
-.cv-lightbox.open { opacity:1; pointer-events:all; }
-.cv-lightbox img { max-width:min(700px,92vw); max-height:90vh; border-radius:12px; box-shadow:0 40px 100px rgba(0,0,0,.5); transition:transform .4s cubic-bezier(.16,1,.3,1); transform:scale(.9); }
-.cv-lightbox.open img { transform:scale(1); }
-.cv-lightbox-close { position:absolute; top:1.5rem; right:1.5rem; width:40px; height:40px; border-radius:50%; border:none; background:rgba(255,255,255,.15); cursor:pointer; color:#fff; font-size:1.2rem; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(8px); transition:background .2s; }
-.cv-lightbox-close:hover { background:rgba(255,255,255,.3); }
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
-footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:1040px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
-.footer-contact { display:flex; flex-wrap:wrap; justify-content:center; gap:.8rem; }
-.footer-copy { font-size:.8rem; color:var(--muted); text-align:center; }
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width:860px) {
-  .hero { grid-template-columns:1fr; gap:2rem; padding:2rem 5% 1.5rem; min-height:auto; }
-  .hero-right { order:-1; max-width: 100%; }
-  .hero-img-wrap { height:60vw; max-height:none;}
-  
-  .snode { padding-left: 50px; margin-bottom: 1.5rem;}
-  .timeline-spine { left: calc(5% + 15px); }
-  .snode-dot { left: 9px; top: 22px;}
-  .snode-trigger { padding-left: 0; gap: 1rem; }
-  .snode-icon { width: 56px; height: 56px; }
-  .snode-expansion { margin-left: 0; }
-  .snode-detail-card { padding: 1.2rem; }
-  
-  .drawer { width:100vw; border-radius:24px 24px 0 0; top:auto; height:90vh; transform:translateY(100%); }
-  .drawer.open { transform:translateY(0); }
-  .drawer-gallery { grid-template-columns:1fr 1fr; }
-
-  .ai-card { grid-template-columns:1fr; padding:2rem; gap:2rem; }
-  .browser iframe { height:300px; }
-  .nav-brand span { display:none; }
-  .floating-nav { bottom:12px; padding:6px 8px; width:90%; justify-content:space-between;}
-  .fnav-item { padding:.4rem .6rem; font-size:.6rem; min-width:40px;}
-  
-  .accordion-header { padding:1.2rem; gap:.8rem; }
-  .acc-hint { display: none;} /* 手机上隐藏 Click to expand */
-  .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
-  .acc-logo { width:44px; height:44px; }
-  .hobby-stack { flex-direction:column; height:auto; }
-  .hobby-card { flex:none; height:180px; }
-  .hobby-stack:hover .hobby-card { flex:none; height:180px; }
-  .hobby-stack:hover .hobby-card:hover { flex:none; height:240px; }
-  .hobby-body p { opacity:.9; transform:none; }
-}
-</style>
+        /* 弹窗样式 */
+        .modal { background: #fff; border-radius: 1rem; padding: 2rem; border: 1px solid #e0e0e0; box-shadow: 0 1rem 3rem rgba(0,0,0,0.1); width: 80%; max-width: 600px; position: absolute; top: 35rem; right: 2rem; transition: transform 0.5s, opacity 0.5s; opacity: 1;}
+        .modal .phase { color: #3498db; }
+        .modal-metrics { display: flex; flex-direction: column; gap: 0.5rem; margin: 1.5rem 0; }
+        .modal-metrics strong { font-size: 1.5rem; color: #3498db; }
+        .metric-label { font-size: 0.9rem; color: #555; margin-left: 0.3rem; }
+        .modal-case-study { margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: #3498db; font-weight: 600; }
+        
+        /* [🔥修正] 时间轴线：向下方延续 */
+        .timeline-line { position: absolute; left: 1rem; top: 38rem; width: 2px; height: calc(100% - 38rem + 40px); background-color: #e0e0e0; z-index: 1; }
+        
+        /* 手机端响应式 */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; padding: 6rem 1rem 1rem; text-align: center; }
+            .hero-left, .hero-right { flex: 0 0 100%; max-width: 100%; }
+            .hero-right { order: -1; margin-bottom: 2rem; aspect-ratio: 16 / 12; }
+            .modal { position: static; width: 100%; max-width: 100%; margin-top: 2rem; }
+            .timeline-line { left: 50%; transform: translateX(-50%); top: 30rem;}
+            .btn-group { flex-direction: column; gap: 0.3rem; align-items: center; }
+            .large-text { font-size: 2.2rem; }
+            .story-gallery-item { width: calc(50% - 0.5rem); } /* 手机端双列 */
+        }
+    </style>
 </head>
 <body>
-
-<div id="page-intro">
-  <div class="intro-strip"></div>
-  <div class="intro-strip"></div>
-  <div class="intro-strip"></div>
-  <div class="intro-strip"></div>
-  <div class="intro-strip"></div>
-  <div class="intro-strip"></div>
-</div>
-<div class="intro-brand" id="intro-brand">
-  <div class="intro-name display">Liyi GAO</div>
-  <div class="intro-role">Brand Builder &amp; Product Manager</div>
-</div>
-
-<div class="overflow-protector"> <nav class="top-nav">
-  <div class="nav-brand">
-    <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
-    <span>Audencia GE Program (PGE)</span>
-  </div>
-  <div class="nav-right">
-    <div class="lang-switcher">
-      <a href="pro.html"    class="lang-btn active" data-lang="en">EN</a>
-      <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
-      <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
-    </div>
-    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none; /* hidden on small screen if needed */">Contact</a>
-    <div class="cv-dropdown" id="nav-cv">
-      <button class="btn btn-ghost">Download CV ▾</button>
-      <div class="cv-menu">
-        <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
-        <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
-      </div>
-    </div>
-    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
-  </div>
-</nav>
-
-<nav class="floating-nav" id="floating-nav">
-  <a class="fnav-item active" href="#hero">
-    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-    <span>Home</span>
-  </a>
-  <a class="fnav-item" href="#story">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-    <span>Story</span>
-  </a>
-  <a class="fnav-item" href="#arsenal">
-    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-    <span>Work</span>
-  </a>
-  <a class="fnav-item" href="#demo">
-    <svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-    <span>Project</span>
-  </a>
-  <a class="fnav-item" href="#hobbies">
-    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
-    <span>Life</span>
-  </a>
-</nav>
-
-<section id="hero" class="section-wrapper">
-  <div class="hero">
-    <div class="hero-left reveal">
-      <div class="avail-badge">
-        <span class="avail-dot"></span>
-        Internship from July 2026
-      </div>
-      <h1 class="display hero-h1">
-        The Evolution<br>of a <em>Brand Builder.</em>
-      </h1>
-      <p class="hero-desc reveal delay-1">
-        Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
-      </p>
-      <div class="hero-ctas reveal delay-2">
-        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-          liyi.gao.dm@gmail.com
-        </a>
-        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-            LinkedIn ↗
-        </a>
-      </div>
-      <div class="skill-tags reveal delay-2">
-        <div class="skill-pill">🇨🇳 Mandarin</div>
-        <div class="skill-pill">🇫🇷 French C1</div>
-        <div class="skill-pill">🇬🇧 English C2</div>
-        <div class="skill-pill">SQL</div>
-        <div class="skill-pill">Google Analytics</div>
-        <div class="skill-pill">Microsoft Office</div>
-        <div class="skill-pill">PowerPoint</div>
-      </div>
-    </div>
-    <div class="hero-right reveal delay-2">
-      <div class="hero-img-wrap">
-        <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad689ba1d37.webp" alt="Liyi Gao">
-      </div>
-      <div class="hero-name-overlay display">Liyi GAO</div>
-    </div>
-  </div>
-</section>
-
-<div class="diary-container" id="diary-container">
-  <div class="diary-sticky">
-    <h2 class="diary-text display" id="diary-text">IT ALL STARTED<br>WITH EMPATHY.</h2>
-  </div>
-</div>
-
-<section id="story">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle-sticker" style="top:5%; right:5%; width:180px; transform:rotate(15deg);" alt="Doodle">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="Doodle">
-
-  <div class="story-header reveal">
-    <p class="st-eyebrow">Journey</p>
-    <h2>Self-Growth &amp; Entrepreneurial Journey</h2>
-    <p class="st-sub">Click each chapter to expand the story.</p>
-  </div>
-
-  <div class="timeline-wrapper">
-    <div class="timeline-spine"></div>
-
-    <div class="snode reveal" id="node-2013">
-      <div class="snode-dot"></div>
-      
-      <div class="snode-trigger" onclick="toggleSnode('node-2013')">
-        <div class="snode-icon">
-          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e78d031.webp" alt="2013">
+    <nav class="top-nav">
+        <div class="logo">Liyi Gao | PGE PGE Program</div>
+        <div class="btn-group">
+            <a href="#" class="btn lang-switcher">EN / FR</a>
+            <a href="#" class="btn cv-btn">Download CV <span class="arrow">▼</span></a>
+            <a href="#" class="btn linkedin-btn">LinkedIn <span class="arrow">↗</span></a>
         </div>
-        <div class="snode-info">
-          <span class="snode-year">2013 · Consumer Insights</span>
-          <h3 class="snode-title heading">Grandma's Stall</h3>
-          <span class="snode-hint">Click to expand</span>
-        </div>
-      </div>
+    </nav>
 
-      <div class="snode-expansion">
-        <div class="snode-expansion-inner">
-          <div class="snode-detail-card">
-            <p>When my grandma's garden had a surplus, I took the bio vegetables to the rural market. Reducing cognitive load with <strong>direct copywriting</strong> — my very first A/B test on a cardboard sign. The earliest lesson in consumer psychology: clarity beats cleverness.</p>
-            <div class="snode-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt=""><figcaption>Fresh harvest</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt=""><figcaption>First A/B test</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt=""><figcaption>Direct connection</figcaption></figure>
+    <div class="overflow-protector">
+
+    <section class="hero">
+        <div class="hero-left">
+            <p class="hero-kicker">AUDENCIA PGE | INTERNSHIP FROM JULY 2026</p>
+            <h1 class="hero-title">The Evolution of a <em class="reveal-mask active font-serif">Brand Builder.</em></h1>
+            <p class="hero-desc">Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.</p>
+            
+            <div class="skill-tags">
+                <span class="skill-pill">Mandarin</span>
+                <span class="skill-pill">French C1</span>
+                <span class="skill-pill">English C2</span>
+                <span class="skill-pill">SQL</span>
+                <span class="skill-pill">Consumer Insight</span>
+                <span class="skill-pill">PowerPoint</span>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="snode-wave-container">
-        <svg width="2" height="30" viewBox="0 0 2 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M1,0 L1,30" stroke="#2997FF" stroke-width="2" stroke-dasharray="4,4" opacity=".45"/>
-        </svg>
-    </div>
-
-    <div class="snode reveal delay-1" id="node-2015">
-      <div class="snode-dot"></div>
-      
-      <div class="snode-trigger" onclick="toggleSnode('node-2015')">
-        <div class="snode-icon">
-          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
+        <div class="hero-right">
+            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad689ba1d37.webp" alt="Liyi Gao">
         </div>
-        <div class="snode-info">
-          <span class="snode-year">2015 · Brand Positioning</span>
-          <h3 class="snode-title heading">DTC Stationery</h3>
-          <span class="snode-hint">Click to expand</span>
-        </div>
-      </div>
+    </section>
 
-      <div class="snode-expansion">
-        <div class="snode-expansion-inner">
-          <div class="snode-detail-card">
-            <p>Spotted the early trend of Japanese stationery. By <strong>curating high-quality items</strong> and unifying the visual display, I created a distinct brand vibe at a flea market. I learned that aesthetics is a growth lever — and that the experience around the product is the product.</p>
-            <div class="snode-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt=""><figcaption>Trend curation</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt=""><figcaption>Visual display</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa98149e08.webp" alt=""><figcaption>Merchandising</figcaption></figure>
+    <div class="parallax-wrapper">
+        <div class="parallax-container">
+            <div class="parallax-text-wrap">
+                <div class="reveal-mask large-text font-serif">
+                    IT ALL STARTED WITH EMPATHY.
+                </div>
             </div>
-          </div>
+            <div class="spacer-container"></div>
         </div>
-      </div>
     </div>
 
-    <div class="story-bridge-v2 reveal">
-      <div class="sbv-line"></div>
-      <div class="sbv-label">Flagship project ↓</div>
-    </div>
-
-  </div>
-
-  <div class="o2o-trigger reveal" id="o2o-trigger">
-    <div class="o2o-inner">
-      <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa31d4774d.webp" alt="O2O" class="o2o-icon" style="object-fit:contain;">
-      <div class="o2o-text">
-        <p class="label" style="margin-bottom:.3rem;">2022 · First Entrepreneurial Venture</p>
-        <h3 class="heading" style="font-size:1.6rem; margin-bottom:.4rem;">Building a Campus O2O Retail Network</h3>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.5;">400+ MAU · 80% repurchase · &lt;5% waste · 1,000+ private-domain users</p>
-      </div>
-      <div class="o2o-open-hint">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        Case Study
-      </div>
-    </div>
-  </div>
-
-</section>
-
-<div class="drawer-overlay" id="drawer-overlay"></div>
-<div class="drawer" id="o2o-drawer">
-  <button class="drawer-close" id="drawer-close">✕</button>
-  <p class="label">Phase 2 (2022) · First Entrepreneurial Venture</p>
-  <h3 class="heading">Building a Campus O2O Retail Network</h3>
-  <p style="color:var(--text);font-size:.95rem;line-height:1.7;margin-bottom:1rem;">
-    Founded a new digital business ecosystem with online ordering and offline delivery — from a blank page to a thriving campus brand.
-  </p>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-num heading">400+</div><div class="kpi-label">Monthly Active Users</div></div>
-    <div class="kpi"><div class="kpi-num heading">80%</div><div class="kpi-label">Repurchase Rate</div></div>
-    <div class="kpi"><div class="kpi-num heading">&lt;5%</div><div class="kpi-label">Perishable Waste</div></div>
-  </div>
-  <div class="kpi-badge">Designed materials driving engagement across <strong>1,000+ private-domain users</strong></div>
-  <ul class="drawer-bullets" style="margin-top:1.2rem;">
-    <li><strong>Founded</strong> a new digital business ecosystem with online ordering and offline delivery, initially focusing on fresh fruit and successfully scaling to high-margin fruit by-products.</li>
-    <li><strong>Directed</strong> end-to-end operations, taking full ownership of procurement, SKU selection, team coordination, and daily customer service management.</li>
-    <li><strong>Forged</strong> strategic partnerships with student clubs and local coffee shops, effectively securing offline pop-up spaces and co-hosting promotional events.</li>
-  </ul>
-  <div class="drawer-gallery">
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt=""><figcaption>Dorm-level shelf system</figcaption></figure>
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt=""><figcaption>Data-driven orders</figcaption></figure>
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt=""><figcaption>Frictionless UI</figcaption></figure>
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt=""><figcaption>High-retention CRM</figcaption></figure>
-  </div>
-</div>
-
-<div class="transition-band" id="trans-band">
-  <div class="transition-words heading">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
-  <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:350px;height:250px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:280px;height:350px;">
-</div>
-
-<div class="arsenal-header reveal" id="arsenal">
-    <p class="label" style="margin-bottom:.4rem;">Experience</p>
-    <h2 class="display">Sharpening My Senses:<br><em style="color:var(--accent);">Professional Experience</em></h2>
-</div>
-
-<section class="section-wrapper" style="padding-top:0; padding-bottom:5rem;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566379bac.webp" class="doodle-sticker" style="top:5%; left:2%; width:200px;" alt="Doodle">
-
-  <div class="accordion-container">
-
-      <div class="accordion-item reveal">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Canton, China · Mar 2025 – Jun 2025</div>
-            <div class="acc-company heading">Wealthfields Lohmann (FMCG)</div>
-            <div class="acc-focus">360° Brand Partnerships & Go-to-Market</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
-        </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
-              <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
-              <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>Marathon Live</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>50k+ Stream</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>Event Setup</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>Offline Sales</figcaption></figure>
+    <section class="story-section">
+        <div class="timeline-line"></div>
+        <h2>Chapter 1: The Initial Spark</h2>
+        <div class="story-item">
+            <p class="phase">PHASE 1 (2015): BRAND POSITIONING</p>
+            
+            <h3 class="story-title heading">Market Testing and Brand Vibe Creation</h3>
+            
+            <p class="story-desc">Market validation of premium stationery curating. Creating a distinct brand vibe at a flea market, effectively validating premium pricing strategies. Validating curating high-quality items and unifying the visual display.</p>
+            
+            <div class="story-gallery">
+                <div class="story-gallery-item"><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt="Stall Setup"></div>
+                <div class="story-gallery-item"><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt="Signage Detail"></div>
+                <div class="story-gallery-item"><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt="Customer Interaction"></div>
             </div>
-          </div>
         </div>
-      </div>
 
-      <div class="accordion-item reveal delay-1">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Canton, China · Jan 2023 – Aug 2023</div>
-            <div class="acc-company heading">MMA Brand Services Pte. Ltd.</div>
-            <div class="acc-focus">Product Lifecycle Management & E-Commerce Strategy</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
-        </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
-              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
+        <div class="story-item" style="height: 40rem; position: relative; margin-top: -10rem;">
+            <div class="modal">
+                <p class="phase">PHASE 2 (2022): O2O • ENTREPRENEURSHIP</p>
+                <h3 class="story-title heading">Architecting a Campus O2O Network</h3>
+                <p class="story-desc">Built campus-wide O2O from scratch – online ordering, offline delivery, CRM, pop-up partnerships.</p>
+                <div class="modal-metrics">
+                    <div><strong>400+</strong><span class="metric-label">Monthly Active Users</span></div>
+                    <div><strong>80%</strong><span class="metric-label">Repurchase Rate</span></div>
+                    <div><strong><5%</strong><span class="metric-label">Perishable Waste</span></div>
+                </div>
+                <div class="modal-case-study">
+                    <a href="#" class="case-study-link">Full Case Study <span class="arrow">→</span></a>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+    </section>
 
-      <div class="accordion-item reveal">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Guangzhou, China · Nov 2023 – Jun 2024</div>
-            <div class="acc-company heading">TAL Education Group</div>
-            <div class="acc-focus">EdTech & Audience Engagement</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
-        </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Public Speaking:</strong> Delivered high-pressure live presentations to large audiences, achieving <strong>#1 performance</strong> among new instructors.</li>
-              <li><strong>Knowledge Synthesis:</strong> Deconstructed complex Olympiad Math logic into simplified, engaging content.</li>
-              <li><strong>CRM & Retention:</strong> Secured a <strong>100% renewal rate</strong> through proactive client relationship management.</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>Top Performance</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>Live Presentation</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>Engagement</figcaption></figure>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="accordion-item reveal delay-1">
-        <div class="accordion-header">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
-          <div class="acc-meta">
-            <div class="acc-period">Nantes, France · Ongoing</div>
-            <div class="acc-company heading">Audencia Entrepreneur Club (ACE)</div>
-            <div class="acc-focus">PR, External Communication & Resource Orchestration</div>
-          </div>
-          <span class="acc-hint">Click to expand ▾</span>
-          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
-        </div>
-        <div class="accordion-body">
-          <div class="accordion-inner">
-            <ul class="acc-bullets">
-              <li><strong>Spearheaded</strong> external communications for the "DARE" initiative, successfully pitching and securing <strong>high-profile industry guest speakers</strong>.</li>
-              <li><strong>Directed</strong> cross-functional collaboration across departments, aligning core messaging.</li>
-              <li><strong>Produced</strong> high-impact visual media assets and integrated promotional campaigns.</li>
-            </ul>
-            <div class="acc-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Event Planning</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>Coordination</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE Execution</figcaption></figure>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="spacer" style="height: 10rem; background-color: #f7f3ed; position: relative; z-index: 10;"></div>
 
-  </div>
-</section>
+    </div><script>
+        const parallaxContainer = document.querySelector('.parallax-container');
+        const parallaxText = document.querySelector('.parallax-text-wrap');
+        const spacerContainer = document.querySelector('.spacer-container');
 
-<section id="demo" class="section-wrapper reveal">
-  <div class="ai-card">
-    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566301faa.webp" class="demo-doodle" alt="Coding Doodle">
-    <div>
-      <p class="label">Current Exploration · Agile Prototyping</p>
-      <h3 class="display">Building the<br>Skincare Copilot</h3>
-      <p>I treat AI as a strategic co-pilot. By translating my consumer intuition into structured logic, I rapidly coded and deployed this functional web application.</p>
-      <p>Designed to solve the real pain point of overwhelming skincare choices — providing personalized routine analysis and reducing cognitive load for beauty consumers.</p>
-      <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
-        Experience the Live Prototype ↗
-      </a>
-    </div>
-    <div class="browser">
-      <div class="browser-bar">
-        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
-      </div>
-      <iframe src="https://lygao-ducky.github.io/skincare_assistant/index.html" title="Skincare Copilot"></iframe>
-    </div>
-  </div>
-</section>
+        const sectionTriggerPoint = innerHeight / 2; // 屏幕中点
+        const sectionLength = 800; // 动画持续滚动的像素长度
 
-<section id="hobbies" class="section-wrapper reveal hobbies-section">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle-sticker" style="top:5%;left:2%;width:150px;transform:rotate(10deg);" alt="">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle-sticker" style="bottom:10%;right:2%;width:140px;transform:rotate(-12deg);" alt="">
-  
-  <div class="section-title-block" style="text-align:center; padding-top: 0; margin-bottom: 2rem;">
-    <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">When I'm not in front of my laptop...</h2>
-    <p>Maintaining the "hardware" and optimizing the "flow state".</p>
-  </div>
-  <div class="hobby-stack">
-    <div class="hobby-card">
-      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing" class="hobby-img">
-      <div class="hobby-gradient"></div>
-      <div class="hobby-body">
-        <h4 class="heading">🚣 Aviron</h4>
-        <p>That pure magic of perfect team sync. And when I'm solo? Just me, a boat, chasing the wind.</p>
-      </div>
-    </div>
-    <div class="hobby-card">
-      <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" class="hobby-img" style="object-position:top;">
-      <div class="hobby-gradient"></div>
-      <div class="hobby-body">
-        <h4 class="heading">🥾 Randonnée</h4>
-        <p>Scrambling up rocky trails for that one epic view. Leg burn? Yes. Worth it? Always.</p>
-      </div>
-    </div>
-    <div class="hobby-card">
-      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming" class="hobby-img">
-      <div class="hobby-gradient"></div>
-      <div class="hobby-body">
-        <h4 class="heading">🏊 Swimming</h4>
-        <p>Honestly? I love it because there's no sweat to wipe away! Just the pure, carefree joy of uninhibited movement.</p>
-      </div>
-    </div>
-  </div>
-</section>
+        window.addEventListener('scroll', () => {
+            const parallaxRect = parallaxContainer.getBoundingClientRect();
+            const parallaxTop = parallaxRect.top;
+            const parallaxHeight = parallaxRect.height;
+            const windowHeight = window.innerHeight;
 
-<section class="cv-flip-section reveal">
-  <div class="cv-flip-header">
-    <p class="label" style="margin-bottom:.6rem;">Download &amp; Preview</p>
-    <h2 class="display">My CV,<br><em style="color:var(--accent);">at a glance</em></h2>
-    <div style="display:inline-flex;align-items:center;gap:.6rem;margin:1.2rem 0 .4rem;padding:.6rem 1.4rem;background:var(--accent-lt);border:1.5px solid rgba(41,151,255,.25);border-radius:40px;">
-      <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;display:inline-block;"></span>
-      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px; text-transform: uppercase;">Actively seeking internship · Available from July 2026</span>
-    </div>
-    <p style="margin-top:.6rem;">Click to preview full CV · Download below</p>
-  </div>
+            // 当Parallax区域进入屏幕可视范围
+            if (parallaxTop < windowHeight && parallaxTop + parallaxHeight > 0) {
+                // 计算动画滚动的百分比 (从屏幕底部到顶部)
+                let scrollPercentage = (windowHeight - parallaxTop) / (windowHeight + parallaxHeight);
+                // 限制在 0 - 1 之间
+                scrollPercentage = Math.max(0, Math.min(1, scrollPercentage));
+                
+                // 1. 文本放大和淡入：在滚动的中间阶段开始
+                const textOpacity = Math.max(0, Math.min(1, (scrollPercentage - 0.2) * 2.5)); // 0.2开始淡入，0.6完成
+                const textScale = 0.8 + (0.2 * Math.min(1, scrollPercentage / 0.7)); // 从0.8放大到1.0
 
-  <div class="cv-switcher">
-    <button class="cv-tab active" data-cv="en" onclick="switchCV('en')">🇬🇧 English</button>
-    <button class="cv-tab" data-cv="fr" onclick="switchCV('fr')">🇫🇷 Français</button>
-  </div>
+                parallaxText.style.opacity = textOpacity;
+                parallaxText.style.transform = `translateY(-50%) scale(${textScale})`;
 
-  <div class="cv-book-wrap">
-    <div class="cv-book">
-      <div class="cv-page" id="cv-page-en" onclick="openCVLight('en')">
-        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b176a41b074.webp" alt="English CV" id="cv-img-en">
-      </div>
-      <div class="cv-page" id="cv-page-fr" style="display:none;" onclick="openCVLight('fr')">
-        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b176a4165d0.webp" alt="French CV" id="cv-img-fr">
-      </div>
-    </div>
-  </div>
-
-  <div class="cv-download-row">
-    <a href="Liyi_GAO_Product_assistant.pdf" download class="btn btn-accent">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Download English CV
-    </a>
-    <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download class="btn btn-ghost">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Télécharger CV Français
-    </a>
-  </div>
-</section>
-
-<div class="cv-lightbox" id="cv-lightbox" onclick="closeCVLight()">
-  <img src="" alt="CV Preview" id="cv-lightbox-img">
-  <button class="cv-lightbox-close" onclick="closeCVLight()">✕</button>
-  <div class="cv-lightbox-hint" style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 0.8rem;">Click anywhere to close</div>
-</div>
-
-<footer>
-  <div class="footer-contact">
-    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-      liyi.gao.dm@gmail.com
-    </a>
-    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
-  </div>
-  <p class="footer-copy" style="margin-top: 1rem;">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
-</footer>
-
-</div><script>
-/* ================================================================
-   1. PAGE INTRO — Fixed Accordion Strip Reveal (Anti-Lock)
-   ================================================================ */
-(function(){
-  var intro = document.getElementById('page-intro');
-  var brand = document.getElementById('intro-brand');
-  if(!intro) return;
-  
-  document.body.style.overflow = 'hidden';
-
-  function startIntro(){
-    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
-    setTimeout(function(){ intro.classList.add('done'); }, 1000);
-    setTimeout(function(){
-      intro.classList.add('gone');
-      document.body.style.overflow = '';
-      document.querySelectorAll('.will-reveal').forEach(function(el){
-        if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
-      });
-    }, 2000);
-  }
-
-  if(document.readyState === 'complete'){
-    startIntro();
-  } else {
-    window.addEventListener('load', startIntro);
-    setTimeout(startIntro, 2000); 
-  }
-})();
-
-/* ================================================================
-   2. REVEAL ON SCROLL
-   ================================================================ */
-(function(){
-  function init(){
-    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('will-reveal'); });
-    function check(){
-      document.querySelectorAll('.will-reveal').forEach(function(el){
-        if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
-      });
-    }
-    window.addEventListener('scroll', check, {passive:true});
-    check();
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
-  else init();
-})();
-
-/* ================================================================
-   3. DIARY PARALLAX — Empathy Animation
-   ================================================================ */
-(function(){
-  var diaryCont = document.getElementById('diary-container');
-  var diaryTxt  = document.getElementById('diary-text');
-  
-  function update(){
-    if(!diaryCont||!diaryTxt) return;
-    var rect = diaryCont.getBoundingClientRect();
-    var wh   = window.innerHeight;
-    var total = rect.height - wh;
-    
-    var p = Math.max(0, Math.min(1, -rect.top / total));
-    
-    var translateY = 50 * (1 - p*2); 
-    if (translateY < 0) translateY = 0; 
-    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; 
-    
-    var opacity = 0;
-    if (p < 0.25) { opacity = p * 4; } 
-    else if (p < 0.8) { opacity = 1; } 
-    else { opacity = 1 - (p - 0.8) * 5; }
-
-    diaryTxt.style.opacity   = Math.max(opacity, 0);
-    diaryTxt.style.transform = `translateY(${translateY}px) scale(${scale})`;
-  }
-  
-  window.addEventListener('scroll', update, {passive:true});
-  update();
-})();
-
-/* ================================================================
-   4. INLINE STORY ACCORDION TOGGLE
-   ================================================================ */
-function toggleSnode(id) {
-    const node = document.getElementById(id);
-    if (!node) return;
-    const wasOpen = node.classList.contains('open');
-    document.querySelectorAll('.snode').forEach(n => n.classList.remove('open'));
-    if (!wasOpen) { node.classList.add('open'); }
-}
-
-/* ================================================================
-   5. SCATTER BAND
-   ================================================================ */
-(function(){
-  var transBand = document.getElementById('trans-band');
-  var si1=document.getElementById('s1'),
-      si2=document.getElementById('s2'),
-      si3=document.getElementById('s3');
-  function update(){
-    if(!transBand) return;
-    var r=transBand.getBoundingClientRect(), wh=window.innerHeight;
-    var p=Math.max(0,Math.min(1,1-r.bottom/(wh+r.height)));
-    var o=Math.sin(p*Math.PI);
-    [si1,si2,si3].forEach(function(img){ if(img) img.style.opacity=o; });
-    if(si1) si1.style.transform='translate(calc(-50% + '+(-170+p*110)+'px),calc(-50% + '+(55-p*110)+'px)) rotate('+(-12+p*4)+'deg)';
-    if(si2) si2.style.transform='translate(calc(-50% + '+(15-p*55)+'px),calc(-50% + '+(-75+p*75)+'px)) rotate('+(4-p*8)+'deg)';
-    if(si3) si3.style.transform='translate(calc(-50% + '+(155-p*95)+'px),calc(-50% + '+(35-p*55)+'px)) rotate('+(12-p*12)+'deg)';
-  }
-  window.addEventListener('scroll', update, {passive:true});
-  update();
-})();
-
-/* ================================================================
-   6. ACCORDION (Professional Arsenal)
-   ================================================================ */
-document.querySelectorAll('.accordion-header').forEach(function(header){
-  header.addEventListener('click', function(){
-    header.closest('.accordion-item').classList.toggle('open');
-  });
-});
-
-/* ================================================================
-   7. O2O DRAWER
-   ================================================================ */
-(function(){
-  var overlay = document.getElementById('drawer-overlay');
-  var drawer  = document.getElementById('o2o-drawer');
-  var close   = document.getElementById('drawer-close');
-  var trigger = document.getElementById('o2o-trigger');
-  function open(){ if(!drawer||!overlay) return; drawer.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow='hidden'; }
-  function shut(){ if(!drawer||!overlay) return; drawer.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow=''; }
-  if(trigger) trigger.addEventListener('click', open);
-  if(close)   close.addEventListener('click', shut);
-  if(overlay) overlay.addEventListener('click', shut);
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') shut(); });
-})();
-
-/* ================================================================
-   8. FLOATING NAV
-   ================================================================ */
-(function(){
-  var sections  = ['hero','story','arsenal','demo','hobbies'];
-  var fnavItems = document.querySelectorAll('.fnav-item');
-  window.addEventListener('scroll', function(){
-    var scrollY  = window.scrollY + window.innerHeight/2;
-    var current  = 'hero';
-    sections.forEach(function(id){
-      var el = document.getElementById(id);
-      if(el && el.offsetTop <= scrollY) current = id;
-    });
-    fnavItems.forEach(function(item){
-      item.classList.toggle('active', item.getAttribute('href')==='#'+current);
-    });
-  }, {passive:true});
-})();
-
-/* ================================================================
-   9. CV DROPDOWN
-   ================================================================ */
-(function(){
-  document.querySelectorAll('.cv-dropdown button').forEach(function(btn){
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      var dd     = btn.closest('.cv-dropdown');
-      var isOpen = dd.classList.contains('open');
-      document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
-      if(!isOpen){ dd.classList.add('open'); }
-    });
-  });
-  document.addEventListener('click',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); });
-})();
-
-/* ================================================================
-   10. HOBBY CARDS
-   ================================================================ */
-document.querySelectorAll('.hobby-card').forEach(function(card){
-  card.addEventListener('click', function(){
-    var was = card.classList.contains('active');
-    document.querySelectorAll('.hobby-card.active').forEach(function(c){ c.classList.remove('active'); });
-    if(!was) card.classList.add('active');
-  });
-});
-
-/* ================================================================
-   11. CV FLIP — tab switching + lightbox
-   ================================================================ */
-function switchCV(lang) {
-  var enPage = document.getElementById('cv-page-en');
-  var frPage = document.getElementById('cv-page-fr');
-  var tabs   = document.querySelectorAll('.cv-tab');
-  tabs.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-cv') === lang); });
-  if(lang === 'en'){
-    if(enPage) enPage.style.display = '';
-    if(frPage) frPage.style.display = 'none';
-  } else {
-    if(enPage) enPage.style.display = 'none';
-    if(frPage) frPage.style.display = '';
-  }
-}
-
-var _cvCurrentLang = 'en';
-function openCVLight(lang) {
-  _cvCurrentLang = lang || 'en';
-  var imgs = {
-    en: 'https://picui.ogmua.cn/s1/2026/03/11/69b176a41b074.webp',
-    fr: 'https://picui.ogmua.cn/s1/2026/03/11/69b176a4165d0.webp'
-  };
-  var lb  = document.getElementById('cv-lightbox');
-  var lbi = document.getElementById('cv-lightbox-img');
-  if(!lb || !lbi) return;
-  lbi.src = imgs[_cvCurrentLang] || imgs.en;
-  lb.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeCVLight() {
-  var lb = document.getElementById('cv-lightbox');
-  if(lb) lb.classList.remove('open');
-  document.body.style.overflow = '';
-}
-(function(){
-  var lbi = document.getElementById('cv-lightbox-img');
-  if(lbi) lbi.addEventListener('click', function(e){ e.stopPropagation(); });
-})();
-document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCVLight(); });
-
-</script>
+                // 2. 空白占位块收缩（Parallax）：文本放大后开始
+                if (scrollPercentage > 0.6) {
+                    const spacerPercentage = Math.max(0, Math.min(1, (scrollPercentage - 0.6) * 3)); // 0.6开始收缩
+                    spacerContainer.style.transform = `scaleY(${1 - spacerPercentage * 0.3})`; // 收缩到 0.7
+                } else {
+                    spacerContainer.style.transform = `scaleY(1)`;
+                }
+                
+                // 3. 将Story区域向上拉，产生视差覆盖效果
+                const storyPushPercentage = Math.max(0, Math.min(1, (scrollPercentage - 0.6) * 2));
+                const storyPushAmount = storyPushPercentage * 300; // 向上移动300px
+                document.querySelector('.story-section').style.transform = `translateY(-${storyPushAmount}px)`;
+            }
+        });
+    </script>
 </body>
 </html>
