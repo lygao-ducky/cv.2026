@@ -29,22 +29,21 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 *:focus { outline: none; }
 
-/* [🔥 适配修复1] 锁定基准字号，移除 100vw 防止横向滚动条 */
-html { scroll-behavior: smooth; font-size: 15px; width: 100%; height: 100%; } 
+/* 锁定基准字号 */
+html { scroll-behavior: smooth; font-size: 15px; } 
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', -apple-system, sans-serif;
   line-height: 1.6;
-  overflow-x: hidden; /* 彻底锁死横向溢出 */
-  width: 100%;
+  overflow-x: hidden;
 }
 
 /* ---- Type Scale ---- */
 .display   { font-family:'Playfair Display',serif; font-weight:800; letter-spacing:-1px; line-height:1.05; }
 .heading   { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.5px; }
-.label     { font-size:.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
+.label     { font-size:.75rem; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--accent); }
 strong { font-weight:600; color:var(--accent); }
 
 /* ---- Reveal Animations ---- */
@@ -79,55 +78,26 @@ strong { font-weight:600; color:var(--accent); }
 .doodle-sticker { 
   position: absolute; height: auto; 
   z-index: -1; pointer-events: none; 
-  mix-blend-mode: multiply; opacity: 0.06; 
+  mix-blend-mode: multiply; opacity: 0.05; 
   filter: grayscale(100%);
 }
 
-/* [🔥 适配修复2] 统一居中容器，防止两边过度拉伸 */
-.section-wrapper { 
-    padding: 4rem 5%; 
-    max-width: 1040px; /* 锁死最大宽度 */
-    margin: 0 auto; 
-    position: relative; 
-    z-index: 10; 
-    isolation: isolate; 
-}
+.section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
 p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
 /* 全屏跑马灯 */
 .marquee-bg {
-  position: fixed; top: 40%; left: 0; width: 100vw; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
+  position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
 }
 @keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 /* ============================================================
-   PAGE INTRO
-   ============================================================ */
-#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
-.intro-strip { 
-    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
-}
-.intro-strip:nth-child(1){ transition-delay:.00s; }
-.intro-strip:nth-child(2){ transition-delay:.05s; }
-.intro-strip:nth-child(3){ transition-delay:.10s; }
-.intro-strip:nth-child(4){ transition-delay:.15s; }
-.intro-strip:nth-child(5){ transition-delay:.20s; }
-.intro-strip:nth-child(6){ transition-delay:.25s; }
-#page-intro.done .intro-strip { transform:translateY(-100%); }
-#page-intro.gone { display:none; }
-
-.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width: 100%;}
-.intro-brand.fade { opacity:0; }
-.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,6vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
-.intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
-@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-
-/* ============================================================
-   TOP NAV
+   [🔥 修复] TOP NAV 永久固定
    ============================================================ */
 .top-nav {
   display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 5%; position:sticky; top:0; z-index:200;
+  padding:1rem 5%; position:sticky; top:0; 
+  z-index: 1000; /* 提升层级，确保永远在最顶端 */
   backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
   background:var(--nav-bg); border-bottom:1px solid var(--border);
 }
@@ -136,6 +106,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
 .nav-right { display:flex; align-items:center; gap:.7rem; }
 
+/* CV dropdown */
 .cv-dropdown { position:relative; }
 .cv-menu {
   position:absolute; top:calc(100% + 10px); right:0;
@@ -163,31 +134,64 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
 
 /* ============================================================
-   [🔥 适配修复3] HERO SECTION
+   PAGE INTRO
+   ============================================================ */
+#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
+.intro-strip { 
+    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+}
+.intro-strip:nth-child(1){ transition-delay:.00s; }
+.intro-strip:nth-child(2){ transition-delay:.05s; }
+.intro-strip:nth-child(3){ transition-delay:.10s; }
+.intro-strip:nth-child(4){ transition-delay:.15s; }
+.intro-strip:nth-child(5){ transition-delay:.20s; }
+.intro-strip:nth-child(6){ transition-delay:.25s; }
+#page-intro.done .intro-strip { transform:translateY(-100%); }
+#page-intro.gone { display:none; }
+
+.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width: 100%;}
+.intro-brand.fade { opacity:0; }
+.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,5vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
+.intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
+@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+/* ============================================================
+   [🔥 完美复刻] HERO SECTION
    ============================================================ */
 .hero { 
-    display:grid; 
-    /* 左侧文字占主导，右侧图片宽度自适应，防止挤压 */
-    grid-template-columns: 1fr auto; 
-    align-items:center; gap:4rem; 
-    min-height:80vh; padding:4rem 5% 1rem; 
-    max-width:1040px; margin:0 auto; position:relative; z-index:10; 
+    /* 调整网格比例：左边宽文字，右边窄人像 */
+    display:grid; grid-template-columns: 1.3fr 0.8fr; 
+    align-items:center; gap:5rem; 
+    padding:5rem 5% 3rem; 
+    max-width:1100px; /* 控制总宽度 */
+    margin:0 auto; position:relative; z-index:10; 
 }
-.hero-left { position:relative; max-width: 540px; }
-.hero-right { position:relative; width: 100%; max-width: 420px; margin-left: auto; }
+.hero-left { position:relative; max-width: 600px; }
+/* 限制图片区域的宽度，使其呈现窄长方形 */
+.hero-right { position:relative; width: 100%; max-width: 360px; margin-left: auto; } 
         
 .hero-kicker { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:1.2rem; border-left:3px solid var(--accent); padding-left:10px; }
-.hero-h1 { font-size:clamp(2.5rem, 4vw, 3.5rem); margin-bottom:1rem; }
+.hero-h1 { font-size:clamp(2.8rem, 4vw, 4rem); margin-bottom:1rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
-.hero-desc { font-size:1.05rem; color:var(--text); margin-bottom:2rem; line-height:1.7; }
+.hero-desc { font-size:1.05rem; color:var(--text); max-width:520px; margin-bottom:2.5rem; line-height:1.7; }
 
-.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem;}
+.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:2rem;}
 .skill-pill { padding:.3rem .8rem; border:1px solid var(--border); border-radius:6px; font-size:.75rem; font-weight:500; background:var(--card-bg); color:var(--text); transition:border-color .2s; }
 .skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow: 0 2px 8px var(--accent-glow);}
 
-.hero-img-wrap { width:100%; height:55vh; max-height: 520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);}
+/* 图片容器调整为适中的窄长方形比例 */
+.hero-img-wrap { 
+    width:100%; 
+    height: 60vh; max-height: 500px; min-height: 400px; /* 限制高度 */
+    border-radius:20px; overflow:hidden; 
+    clip-path:inset(30% 30% 30% 30% round 20px); 
+    animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; 
+    box-shadow:0 20px 40px rgba(0,0,0,.08); 
+    border: 1px solid var(--border);
+}
 .hero-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center 20%; transform:scale(1.15); animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; }
-.hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.8rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
+
+.hero-name-overlay { position:absolute; bottom:-3%; left:-10%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(3.5rem,6vw,5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
 
 @keyframes expandImg { to { clip-path:inset(0 0 0 0 round 20px); } }
 @keyframes scaleImg  { to { transform:scale(1); } }
@@ -212,6 +216,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .story-header { text-align: center; margin-bottom: 3rem; }
 .story-header .st-eyebrow { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:.6rem; }
 .story-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color:var(--text); }
+.story-header .st-sub { font-size:.9rem; color:var(--muted); margin-top:.5rem; }
 
 .timeline-wrapper { position: relative; max-width: 800px; margin: 0 auto; padding: 0 5%; }
 .timeline-spine { position: absolute; left: calc(5% + 38px); top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--accent); opacity: 0.25; z-index: 1;}
@@ -234,7 +239,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode.open .snode-hint { color: var(--accent); }
 .snode.open .snode-hint::before { transform: rotate(90deg); }
 
-/* Inline Accordion Expansion */
+/* Inline Accordion Expansion (The "Long Window") */
 .snode-expansion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 70px; }
 .snode.open .snode-expansion { grid-template-rows: 1fr; }
 .snode-expansion-inner { overflow: hidden; }
@@ -251,6 +256,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 3px; }
 .snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
 .snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; }
+/* 限制高度，防止竖图爆炸 */
 .snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
 .snode-gallery figcaption { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; }
 
@@ -263,7 +269,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .story-bridge-v2 .sbv-label { font-size:.7rem; font-weight:600; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
 
 /* ============================================================
-   [🔥 适配修复4] O2O CARD & DRAWER 内收
+   O2O CARD & DRAWER (内收尺寸)
    ============================================================ */
 .o2o-trigger {
   background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
@@ -291,7 +297,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
 .drawer-overlay.open { opacity:1; pointer-events:all; }
 .drawer {
-  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(550px, 96vw); /* 收窄，不要撑满半个屏幕 */
+  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(580px, 96vw);
   background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
   transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
   overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
@@ -366,7 +372,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center;}
 
 /* ============================================================
-   AI DEMO
+   AI DEMO (比例约束)
    ============================================================ */
 #demo { background:var(--bg); position:relative;}
 .ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3rem; position:relative; overflow:hidden; isolation:isolate; max-width:1040px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
@@ -408,13 +414,12 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 .footer-copy { font-size:.8rem; color:var(--muted); text-align:center; }
 
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE (Mobile Fallbacks)
    ============================================================ */
 @media (max-width:860px) {
   .hero { grid-template-columns:1fr; gap:2rem; padding:2rem 5% 1.5rem; min-height:auto; }
   .hero-right { order:-1; max-width: 100%; }
   .hero-img-wrap { height:60vw; max-height:none;}
-  .hero-name-overlay { font-size:4rem; left:0; mix-blend-mode:normal; color:var(--text); opacity:1; animation:none; text-shadow:none;}
   
   .snode { padding-left: 50px; margin-bottom: 1.5rem;}
   .timeline-spine { left: calc(5% + 15px); }
@@ -470,6 +475,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
         <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
       </div>
     </div>
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none;">Contact</a>
     <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
   </div>
 </nav>
@@ -851,7 +857,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 
 <script>
 /* ================================================================
-   1. PAGE INTRO — Fixed Accordion Strip Reveal (Anti-Lock)
+   1. PAGE INTRO — Fixed Accordion Strip Reveal
    ================================================================ */
 (function(){
   var intro = document.getElementById('page-intro');
@@ -924,19 +930,18 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     var p = Math.max(0, Math.min(1, -rect.top / total));
     
     // Smooth exit animation
-    // Text slides up and scales down slightly as it leaves
     var translateY = 50 * (1 - p*2); 
-    if (translateY < 0) translateY = 0; // Don't slide up on entry
-    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; // Slow down the scaling curve
+    if (translateY < 0) translateY = 0; 
+    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; 
     
     // Opacity Curve: smooth entry -> long hold -> slow exit
     var opacity = 0;
     if (p < 0.25) {
-        opacity = p * 4; // fade in 0-25%
+        opacity = p * 4; 
     } else if (p < 0.8) {
-        opacity = 1; // hold 25-80%
+        opacity = 1; 
     } else {
-        opacity = 1 - (p - 0.8) * 5; // fade out 80-100%
+        opacity = 1 - (p - 0.8) * 5; 
     }
 
     diaryTxt.style.opacity   = Math.max(opacity, 0);
