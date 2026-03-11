@@ -28,7 +28,8 @@
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-html { scroll-behavior:smooth; }
+html { scroll-behavior:smooth; font-size:clamp(14px,1.1vw,16px); }
+@media(min-width:1600px){ html { font-size:16px; } }
 
 body {
   background: var(--bg);
@@ -235,10 +236,14 @@ strong { font-weight:600; color:var(--accent); }
 .diary-text {
   font-size:clamp(2.2rem,5vw,5rem);
   font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
-  color:var(--text); text-align:center; opacity:0;
-  letter-spacing:-1px; transform:scale(.68);
+  color:var(--text); text-align:center;
+  opacity:0; transform:translateY(40px) scale(.9);
   will-change:transform,opacity; line-height:1.2;
-  transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.diary-text.diary-visible {
+  opacity:1 !important;
+  transform:translateY(0) scale(1) !important;
 }
 
 /* ============================================================
@@ -848,11 +853,11 @@ footer {
 }
 .intro-strip {
   flex:1;
-  background:rgba(245,245,247,0.97);
-  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(0,0,0,0.04);
+  background:rgba(220,220,225,0.96);
+  backdrop-filter:blur(32px) saturate(1.2); -webkit-backdrop-filter:blur(32px) saturate(1.2);
+  border-bottom:1px solid rgba(255,255,255,0.6);
   transform:translateY(0);
-  transition:transform .9s cubic-bezier(.76,0,.24,1);
+  transition:transform .85s cubic-bezier(.76,0,.24,1);
 }
 .intro-strip:nth-child(1){ transition-delay:.00s; }
 .intro-strip:nth-child(2){ transition-delay:.05s; }
@@ -890,177 +895,188 @@ footer {
 }
 
 /* ============================================================
-   STORY GALLERY — Bon Jovi Scene Layout
-   Big hero image left + info card overlay + scattered photos right
+   STORY SECTION — Vertical scroll, 2013/2015 stacked side-by-side
+   2022 featured card full width
    ============================================================ */
 #story {
-  position:relative;
-  background:var(--bg);
-  overflow:hidden;
-  padding:5rem 0 4rem;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+  padding: 5rem 5%;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
 }
 
-/* Watermark background text */
-.sg-bg-text {
-  position:absolute;
-  top:50%; left:50%; transform:translate(-50%,-50%);
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:800; font-size:clamp(6rem,14vw,18rem);
-  line-height:0.85;
-  color:var(--text); opacity:.028;
-  letter-spacing:-4px; text-align:center;
-  pointer-events:none; white-space:nowrap;
-  z-index:0; user-select:none;
+/* Section header */
+.story-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.story-header .st-eyebrow {
+  font-size:.72rem; font-weight:700; letter-spacing:3px;
+  text-transform:uppercase; color:var(--muted); margin-bottom:.8rem;
+}
+.story-header h2 {
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(2rem,4vw,3.2rem); font-weight:800;
+  letter-spacing:-1px; line-height:1.1; color:var(--text);
+}
+.story-header .st-sub {
+  font-size:.95rem; color:var(--muted); margin-top:.6rem;
 }
 
-/* Top label row */
-.sg-top-label {
+/* ── Two-column row: 2013 left, 2015 right ── */
+.story-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+/* Each chapter card = stacked photos */
+.story-chapter {
+  position: relative;
+  cursor: pointer;
+}
+.story-chapter:hover .sc-stack-front { transform: translate(-4px,-6px) rotate(-1deg); }
+.story-chapter:hover .sc-stack-back  { transform: translate( 6px, 8px) rotate( 2.5deg); }
+
+/* Photo stack */
+.sc-stack {
+  position: relative;
+  height: 340px;
+}
+.sc-stack-back {
+  position: absolute; inset:0;
+  border-radius: 18px; overflow: hidden;
+  transform: translate(8px, 10px) rotate(3deg);
+  transition: transform .5s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 8px 24px rgba(0,0,0,.10);
+}
+.sc-stack-front {
+  position: absolute; inset:0;
+  border-radius: 18px; overflow: hidden;
+  transform: translate(-2px,-2px) rotate(-1.5deg);
+  transition: transform .5s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 16px 40px rgba(0,0,0,.14);
+}
+.sc-stack-back img,
+.sc-stack-front img {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+/* Gradient overlay on front */
+.sc-stack-front::after {
+  content:'';
+  position:absolute; inset:0; border-radius:18px;
+  background:linear-gradient(to top, rgba(0,0,0,.55) 0%, transparent 55%);
+  pointer-events:none;
+}
+
+/* "Click to expand" hint at bottom of front card */
+.sc-hint {
+  position: absolute; bottom: 1.1rem; left: 1.2rem; right: 1.2rem;
+  z-index:2;
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 5%; position:relative; z-index:2; margin-bottom:3rem;
 }
-.sg-eyebrow-pill {
-  display:inline-flex; align-items:center;
-  padding:.38rem 1rem; border-radius:40px;
-  border:1.5px solid rgba(41,151,255,.25);
-  background:var(--accent-lt);
-  font-size:.72rem; font-weight:700; letter-spacing:2px;
-  text-transform:uppercase; color:var(--accent);
-}
-.sg-slide-counter {
+.sc-hint-year {
   font-family:'Space Grotesk',sans-serif;
-  font-size:.82rem; font-weight:600; color:var(--muted);
-  letter-spacing:1px;
+  font-size:.7rem; font-weight:800; letter-spacing:2px;
+  text-transform:uppercase; color:rgba(255,255,255,.8);
 }
-#sg-current { color:var(--accent); }
+.sc-hint-cta {
+  display:inline-flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,.18); backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.25); border-radius:40px;
+  padding:.3rem .75rem;
+  font-size:.72rem; font-weight:600; color:#fff;
+  transition: background .2s;
+}
+.story-chapter:hover .sc-hint-cta { background:rgba(41,151,255,.55); }
+.sc-hint-cta svg { width:12px; height:12px; stroke:#fff; fill:none; stroke-width:2.5; }
 
-/* Stage — full-width scene container */
-.sg-stage {
-  position:relative; z-index:2;
-  padding:0 5%;
-  flex:1;
+/* Card title below stack */
+.sc-label {
+  margin-top: 1rem; padding: 0 .25rem;
+}
+.sc-label h3 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1rem; font-weight:700; color:var(--text);
+  margin-bottom:.2rem; line-height:1.3;
+}
+.sc-label p {
+  font-size:.82rem; color:var(--muted); line-height:1.5;
 }
 
-/* Each slide */
-.sg-slide {
-  display:none;
-  grid-template-columns:1fr 340px;
-  gap:2.5rem;
-  align-items:start;
-  animation:sgFadeIn .55s cubic-bezier(.16,1,.3,1) both;
+/* ── Bridge from duo → O2O ── */
+.story-bridge-v2 {
+  display:flex; flex-direction:column; align-items:center;
+  gap:.5rem; margin: 1rem 0 2rem; opacity:.65;
 }
-.sg-slide.active { display:grid; }
-@keyframes sgFadeIn {
-  from { opacity:0; transform:translateX(30px); }
-  to   { opacity:1; transform:none; }
+.story-bridge-v2 .sbv-line {
+  width:2px; height:40px;
+  background:linear-gradient(to bottom, rgba(41,151,255,.5), rgba(41,151,255,.1));
+}
+.story-bridge-v2 .sbv-label {
+  font-size:.72rem; font-weight:600; letter-spacing:1px;
+  color:var(--accent); text-transform:uppercase;
 }
 
-/* Big hero image left */
-.sg-hero-img {
+/* ── 2022 O2O featured card ── */
+/* (reuses existing .o2o-trigger styles) */
+
+/* ── Chapter MODAL (lightbox) ── */
+.ch-overlay {
+  position:fixed; inset:0; z-index:700;
+  background:rgba(0,0,0,.6); backdrop-filter:blur(12px);
+  opacity:0; pointer-events:none;
+  transition:opacity .35s;
+  display:flex; align-items:center; justify-content:center;
+  padding:2rem;
+}
+.ch-overlay.open { opacity:1; pointer-events:all; }
+
+.ch-modal {
+  background:var(--card-bg); border-radius:24px;
+  width:min(700px,95vw); max-height:88vh; overflow-y:auto;
+  padding:2.5rem;
+  box-shadow:0 40px 80px rgba(0,0,0,.2);
+  transform:translateY(24px) scale(.97);
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
   position:relative;
-  border-radius:20px;
-  overflow:hidden;
-  height:clamp(420px,55vh,640px);
-  box-shadow:0 24px 60px rgba(0,0,0,.14);
 }
-.sg-hero-img > img {
-  width:100%; height:100%; object-fit:cover;
-  transition:transform .6s cubic-bezier(.16,1,.3,1);
+.ch-overlay.open .ch-modal { transform:none; }
+.ch-modal-close {
+  position:absolute; top:1.2rem; right:1.2rem;
+  width:32px; height:32px; border-radius:50%;
+  background:var(--surface2); border:none; cursor:pointer;
+  font-size:1rem; color:var(--muted);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s;
 }
-.sg-slide:hover .sg-hero-img > img { transform:scale(1.03); }
-
-/* Info card — bottom-left overlay (like Bon Jovi eBay card) */
-.sg-info-card {
-  position:absolute; bottom:1.5rem; left:1.5rem;
-  width:min(320px, calc(100% - 3rem));
-  background:rgba(255,255,255,0.88);
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,0.7);
-  border-radius:16px;
-  padding:1.4rem 1.6rem 1.5rem;
-  box-shadow:0 8px 32px rgba(0,0,0,.12);
+.ch-modal-close:hover { background:var(--border); }
+.ch-modal-year { font-size:.7rem; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:.4rem; }
+.ch-modal-title { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; line-height:1.2; margin-bottom:1rem; }
+.ch-modal-desc { font-size:.97rem; line-height:1.75; color:var(--text); margin-bottom:1.4rem; }
+.ch-modal-photos {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+  margin-top:1.2rem;
 }
-.sg-info-year {
-  font-family:'Space Grotesk',sans-serif;
-  font-size:.68rem; font-weight:800; letter-spacing:2.5px;
-  text-transform:uppercase; color:var(--accent);
-  margin-bottom:.4rem;
+.ch-modal-photos figure img {
+  width:100%; height:160px; object-fit:cover; border-radius:12px; display:block;
 }
-.sg-info-title {
-  font-family:'Space Grotesk',sans-serif;
-  font-size:1.1rem; font-weight:700; color:var(--text);
-  line-height:1.3; margin-bottom:.7rem;
+.ch-modal-photos figcaption {
+  font-size:.75rem; color:var(--muted); margin-top:4px;
 }
-.sg-info-desc {
-  font-size:.83rem; color:#444; line-height:1.65;
-  margin-bottom:.8rem;
+.ch-modal-tag {
+  display:inline-block; margin-top:1rem;
+  font-size:.72rem; font-weight:600; color:var(--accent);
+  background:var(--accent-lt); border:1px solid rgba(41,151,255,.2);
+  border-radius:6px; padding:.3rem .7rem; letter-spacing:.3px;
 }
-.sg-info-tag {
-  display:inline-block;
-  font-size:.68rem; font-weight:600; letter-spacing:.5px;
-  color:var(--accent); background:var(--accent-lt);
-  border:1px solid rgba(41,151,255,.2);
-  border-radius:6px; padding:.25rem .65rem;
-}
-
-/* Scattered photos right column */
-.sg-scatter-col {
-  display:flex; flex-direction:column; gap:1.2rem;
-  padding-top:1rem; align-self:start;
-}
-.sg-scatter-photo {
-  border-radius:14px; overflow:hidden;
-  box-shadow:0 12px 32px rgba(0,0,0,.12);
-  background:var(--card-bg);
-  transition:transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s;
-  cursor:default;
-}
-.sg-scatter-photo:hover {
-  transform:translateY(-6px) rotate(0deg) !important;
-  box-shadow:0 20px 48px rgba(0,0,0,.18);
-}
-.sg-scatter-photo img {
-  width:100%; height:180px; object-fit:cover; display:block;
-}
-.sg-scatter-cap {
-  padding:.55rem .75rem;
-  font-size:.75rem; color:var(--muted); line-height:1.4;
-  background:var(--card-bg);
-  border-top:1px solid var(--border);
-}
-
-/* Nav controls */
-.sg-controls {
-  display:flex; align-items:center; justify-content:center; gap:1.5rem;
-  padding:2.5rem 5% 0; position:relative; z-index:2;
-}
-.sg-btn {
-  width:44px; height:44px; border-radius:50%;
-  border:1.5px solid var(--border); background:var(--card-bg);
-  cursor:pointer; display:flex; align-items:center; justify-content:center;
-  transition:all .2s; color:var(--text);
-}
-.sg-btn svg { width:18px; height:18px; }
-.sg-btn:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.08); }
-.sg-dots { display:flex; gap:.6rem; align-items:center; }
-.sg-dot {
-  width:8px; height:8px; border-radius:50%;
-  border:none; background:var(--border); cursor:pointer;
-  transition:all .25s; padding:0;
-}
-.sg-dot.active { background:var(--accent); transform:scale(1.3); }
 
 /* Responsive */
-@media(max-width:860px){
-  .sg-slide { grid-template-columns:1fr; gap:1.5rem; }
-  .sg-scatter-col { flex-direction:row; overflow-x:auto; padding:0 5% 1rem; margin:0 -5%; }
-  .sg-scatter-photo { flex:0 0 200px; }
-  .sg-scatter-photo img { height:140px; }
-  .sg-hero-img { height:56vw; min-height:260px; }
-  .sg-bg-text { font-size:20vw; }
+@media(max-width:760px){
+  .story-duo { grid-template-columns:1fr; gap:3rem; }
+  .sc-stack { height:260px; }
+  .ch-modal-photos { grid-template-columns:1fr; }
 }
 
 
@@ -1277,144 +1293,111 @@ footer {
   </div>
 </div>
 
-<!-- ===== STORY GALLERY — Bon Jovi inspired ===== -->
+<!-- ===== STORY SECTION — vertical scroll ===== -->
+
+<!-- Chapter modal overlay -->
+<div class="ch-overlay" id="ch-overlay">
+  <div class="ch-modal" id="ch-modal">
+    <button class="ch-modal-close" id="ch-modal-close">✕</button>
+    <div class="ch-modal-year" id="ch-modal-year"></div>
+    <div class="ch-modal-title" id="ch-modal-title"></div>
+    <div class="ch-modal-desc" id="ch-modal-desc"></div>
+    <div class="ch-modal-photos" id="ch-modal-photos"></div>
+    <div class="ch-modal-tag" id="ch-modal-tag"></div>
+  </div>
+</div>
+
 <section id="story">
 
-  <!-- bg watermark text -->
-  <div class="sg-bg-text" aria-hidden="true">SELF<br>EXPLORATION</div>
-
-  <!-- top label row -->
-  <div class="sg-top-label">
-    <span class="sg-eyebrow-pill">Personal Journey</span>
-    <span class="sg-slide-counter"><span id="sg-current">01</span> / 03</span>
+  <div class="story-header reveal">
+    <div class="st-eyebrow">Personal Journey</div>
+    <h2>How I became<br><em style="color:var(--accent);">who I am today</em></h2>
+    <p class="st-sub">Three turning points. Click each chapter to read the full story.</p>
   </div>
 
-  <!-- main stage -->
-  <div class="sg-stage" id="sg-stage">
+  <!-- 2013 + 2015 side by side, stacked photos -->
+  <div class="story-duo reveal">
 
-    <!-- ── SLIDE 1: Grandma's Stall ── -->
-    <div class="sg-slide active" data-index="0">
-
-      <!-- big hero image left -->
-      <div class="sg-hero-img">
-        <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt="Grandma Stall">
-        <!-- info card overlay (top-left, like Bon Jovi eBay card) -->
-        <div class="sg-info-card">
-          <div class="sg-info-year">2013</div>
-          <div class="sg-info-title">The Ultimate MVP:<br>Grandma's Stall</div>
-          <p class="sg-info-desc">Took surplus garden produce to the rural market. Ran my <strong>first A/B test</strong> on a cardboard sign — proved that clearer copywriting doubled sales. Consumer insight, raw form.</p>
-          <div class="sg-info-tag">Consumer Insights · Copywriting</div>
-        </div>
-      </div>
-
-      <!-- scattered small photos right -->
-      <div class="sg-scatter-col">
-        <div class="sg-scatter-photo" style="transform:rotate(3deg);margin-top:2rem;">
+    <!-- 2013: LEFT -->
+    <div class="story-chapter" data-chapter="2013">
+      <div class="sc-stack">
+        <!-- back photo -->
+        <div class="sc-stack-back">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt="Cardboard sign">
-          <div class="sg-scatter-cap">Bio veggies &amp; cardboard A/B test.</div>
         </div>
-        <div class="sg-scatter-photo" style="transform:rotate(-2deg);margin-top:1.2rem;align-self:flex-end;">
-          <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt="Direct connection" style="object-position:top;">
-          <div class="sg-scatter-cap">Direct consumer connection.</div>
+        <!-- front photo -->
+        <div class="sc-stack-front">
+          <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt="Grandma stall harvest">
+          <div class="sc-hint">
+            <span class="sc-hint-year">2013</span>
+            <span class="sc-hint-cta">
+              <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              Expand
+            </span>
+          </div>
         </div>
       </div>
-
+      <div class="sc-label">
+        <h3>Grandma's Stall — The First MVP</h3>
+        <p>Consumer insights at a rural market. My very first A/B test on a cardboard sign.</p>
+      </div>
     </div>
 
-    <!-- ── SLIDE 2: DTC Stationery ── -->
-    <div class="sg-slide" data-index="1">
-
-      <div class="sg-hero-img">
-        <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt="DTC brand identity">
-        <div class="sg-info-card">
-          <div class="sg-info-year">2015</div>
-          <div class="sg-info-title">My First Lesson<br>in DTC</div>
-          <p class="sg-info-desc">Spotted the Japanese stationery wave early. Unified visual display and <strong>brand storytelling</strong> justified premium pricing at a flea market. First proof: aesthetics drives growth.</p>
-          <div class="sg-info-tag">Brand Positioning · DTC · Visual Merchandising</div>
+    <!-- 2015: RIGHT -->
+    <div class="story-chapter" data-chapter="2015">
+      <div class="sc-stack">
+        <div class="sc-stack-back">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt="Stationery curation">
+        </div>
+        <div class="sc-stack-front">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt="DTC brand identity">
+          <div class="sc-hint">
+            <span class="sc-hint-year">2015</span>
+            <span class="sc-hint-cta">
+              <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              Expand
+            </span>
+          </div>
         </div>
       </div>
-
-      <div class="sg-scatter-col">
-        <div class="sg-scatter-photo" style="transform:rotate(-3deg);margin-top:1rem;">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt="Trend curation">
-          <div class="sg-scatter-cap">Trend curation.</div>
-        </div>
-        <div class="sg-scatter-photo" style="transform:rotate(2deg);margin-top:1rem;align-self:flex-end;">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp" alt="Visual merchandising" style="object-position:top;">
-          <div class="sg-scatter-cap">Visual merchandising.</div>
-        </div>
+      <div class="sc-label">
+        <h3>DTC Stationery — Brand at the Flea Market</h3>
+        <p>Spotted the Japanese stationery wave early. Aesthetics as a growth lever.</p>
       </div>
-
     </div>
 
-    <!-- ── SLIDE 3: Campus O2O ── -->
-    <div class="sg-slide" data-index="2">
+  </div><!-- /story-duo -->
 
-      <div class="sg-hero-img">
-        <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt="Campus O2O shelf">
-        <div class="sg-info-card">
-          <div class="sg-info-year">2022</div>
-          <div class="sg-info-title">Architecting a<br>Campus O2O Network</div>
-          <p class="sg-info-desc">Built campus O2O from zero — online ordering, offline delivery, CRM, pop-up partnerships. <strong>400+ MAU</strong>, <strong>80% repurchase</strong>, &lt;5% perishable waste.</p>
-          <div class="sg-info-tag">O2O · Entrepreneurship · CRM · GTM</div>
+  <!-- Bridge down to O2O -->
+  <div class="story-bridge-v2 reveal">
+    <div class="sbv-line"></div>
+    <div class="sbv-label">Flagship project →</div>
+    <div class="sbv-line"></div>
+  </div>
+
+  <!-- 2022 O2O — full width featured -->
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="o2o-trigger reveal" id="o2o-trigger">
+      <div class="o2o-inner">
+        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b173d32086c.webp" alt="O2O" class="o2o-icon" style="object-fit:cover;">
+        <div class="o2o-text">
+          <p class="label" style="margin-bottom:.3rem;">2022 · Flagship Deep Dive</p>
+          <h3 class="heading" style="font-size:1.5rem;">Architecting a Campus O2O Network</h3>
+          <p style="color:var(--muted);font-size:.92rem;margin-top:.3rem;line-height:1.6;">400+ MAU · 80% repurchase · &lt;5% waste · 1,000+ private-domain users</p>
+        </div>
+        <div class="o2o-open-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          Explore Case Study
         </div>
       </div>
-
-      <div class="sg-scatter-col">
-        <div class="sg-scatter-photo" style="transform:rotate(2deg);margin-top:.5rem;">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt="Order data">
-          <div class="sg-scatter-cap">Data-driven order system.</div>
-        </div>
-        <div class="sg-scatter-photo" style="transform:rotate(-2.5deg);margin-top:1rem;align-self:flex-end;">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt="UI">
-          <div class="sg-scatter-cap">Frictionless UI design.</div>
-        </div>
-      </div>
-
     </div>
-
-  </div><!-- /sg-stage -->
-
-  <!-- nav controls -->
-  <div class="sg-controls">
-    <button class="sg-btn sg-prev" id="sg-prev" aria-label="Previous">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <div class="sg-dots">
-      <button class="sg-dot active" data-i="0"></button>
-      <button class="sg-dot" data-i="1"></button>
-      <button class="sg-dot" data-i="2"></button>
-    </div>
-    <button class="sg-btn sg-next" id="sg-next" aria-label="Next">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
   </div>
 
 </section>
 
-<!-- spine-wrap spans #o2o-story through #arsenal -->
+<!-- spine-wrap wraps #arsenal only now -->
 <div class="spine-wrap" id="spine-wrap">
   <div class="timeline-spine" id="timeline-spine"></div>
-
-  <!-- O2O Case Study -->
-  <section style="padding:3rem 0 0; position:relative;">
-    <div style="max-width:900px;margin:0 auto;padding:0 5% 4rem;">
-      <div class="o2o-trigger reveal" id="o2o-trigger">
-        <div class="o2o-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b173d32086c.webp" alt="O2O" class="o2o-icon" style="object-fit:cover;">
-          <div class="o2o-text">
-            <p class="label" style="margin-bottom:.3rem;">Phase 2 (2022) · Flagship Deep Dive</p>
-            <h3 class="heading" style="font-size:1.5rem;">Architecting a Campus O2O Network</h3>
-            <p style="color:var(--muted);font-size:.92rem;margin-top:.3rem;line-height:1.6;">400+ MAU · 80% repurchase · &lt;5% waste · 1,000+ private-domain users</p>
-          </div>
-          <div class="o2o-open-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            Explore Case Study
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
 <!-- ===== DRAWER: O2O detail ===== -->
 <div class="drawer-overlay" id="drawer-overlay"></div>
@@ -1725,34 +1708,38 @@ footer {
 })();
 
 /* ================================================================
-   2. DIARY PARALLAX — fade in once, stay visible
+   2. DIARY — scroll-triggered slide-up reveal, stays permanently
    ================================================================ */
 (function(){
-  var diaryCont = document.getElementById('diary-container');
-  var diaryTxt  = document.getElementById('diary-text');
-  var locked = false;
-  function update(){
-    if(!diaryCont||!diaryTxt||locked) return;
-    var rect = diaryCont.getBoundingClientRect();
-    var wh   = window.innerHeight;
-    var total = rect.height - wh;
-    if(total <= 0) { lock(); return; }
-    var p = Math.max(0, Math.min(1, -rect.top / total));
-    var opacity = Math.min(1, p / 0.18);
-    var scale   = 0.65 + Math.pow(p, .5) * 0.42;
-    diaryTxt.style.opacity   = opacity;
-    diaryTxt.style.transform = 'scale('+Math.min(scale,1.05)+')';
-    if(p >= 0.22) lock();
+  var diaryTxt = document.getElementById('diary-text');
+  if(!diaryTxt) return;
+  var triggered = false;
+  function trigger(){
+    if(triggered) return;
+    triggered = true;
+    diaryTxt.classList.add('diary-visible');
+    // After transition done, lock with inline style so nothing can override
+    setTimeout(function(){
+      diaryTxt.style.cssText += '; opacity:1 !important; transform:none !important;';
+    }, 1000);
   }
-  function lock(){
-    locked = true;
-    diaryTxt.style.cssText = 'opacity:1 !important; transform:scale(1) !important; will-change:auto; transition:none !important;';
+  // IntersectionObserver: fire when element is 30% visible
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      if(entries[0].intersectionRatio > 0.2) trigger();
+    }, { threshold:[0, 0.2, 0.5] });
+    obs.observe(diaryTxt);
+  } else {
+    // Fallback: scroll-based
+    function check(){
+      var rect = diaryTxt.getBoundingClientRect();
+      if(rect.top < window.innerHeight * 0.75) trigger();
+    }
+    window.addEventListener('scroll', check, {passive:true});
+    check();
   }
-  window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('load',   update);
-  update();
-  // Safety net: force visible after 2s in case scroll never fires
-  setTimeout(function(){ if(!locked) lock(); }, 2500);
+  // Safety: show after 3s no matter what
+  setTimeout(trigger, 3000);
 })();
 
 /* ================================================================
@@ -1980,42 +1967,73 @@ document.querySelectorAll('.hobby-card').forEach(function(card){
 })();
 
 /* ================================================================
-   12. STORY GALLERY — slide navigation
+   12. STORY CHAPTERS — click stacked photos → modal expand
    ================================================================ */
 (function(){
-  var slides  = document.querySelectorAll('.sg-slide');
-  var dots    = document.querySelectorAll('.sg-dot');
-  var counter = document.getElementById('sg-current');
-  var current = 0;
+  // Chapter data
+  var chapters = {
+    '2013': {
+      year:  '2013 · Consumer Insights',
+      title: 'The Ultimate MVP: Grandma's Stall',
+      desc:  'When my grandma's garden had a surplus, I took the bio vegetables to the rural market. I ran my <strong>first A/B test</strong> on a cardboard sign — a simple tweak in wording that visibly increased footfall. My earliest lesson in consumer psychology: clarity beats cleverness.',
+      tag:   'Consumer Insights · Copywriting · First Principles',
+      photos: [
+        { src:'https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp',    cap:'Freshly harvested produce.' },
+        { src:'https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp',    cap:'Bio veggies & cardboard A/B test.' },
+        { src:'https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp',    cap:'Direct consumer connection.' }
+      ]
+    },
+    '2015': {
+      year:  '2015 · Brand Positioning',
+      title: 'My First Lesson in DTC',
+      desc:  'Spotted the Japanese stationery wave early. By <strong>curating high-quality items</strong> and unifying the visual display, I created a distinct brand vibe at a flea market. I learned that aesthetics is a growth lever — and that the experience around the product is the product.',
+      tag:   'Brand Positioning · DTC · Visual Merchandising',
+      photos: [
+        { src:'https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp',    cap:'Establishing brand identity.' },
+        { src:'https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp',    cap:'Trend curation.' },
+        { src:'https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp',    cap:'Visual merchandising.' }
+      ]
+    }
+  };
 
-  function goTo(i){
-    if(!slides.length) return;
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = (i + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-    if(counter) counter.textContent = String(current+1).padStart(2,'0');
+  var overlay    = document.getElementById('ch-overlay');
+  var modal      = document.getElementById('ch-modal');
+  var closeBtn   = document.getElementById('ch-modal-close');
+  var elYear     = document.getElementById('ch-modal-year');
+  var elTitle    = document.getElementById('ch-modal-title');
+  var elDesc     = document.getElementById('ch-modal-desc');
+  var elPhotos   = document.getElementById('ch-modal-photos');
+  var elTag      = document.getElementById('ch-modal-tag');
+
+  function openChapter(key){
+    var d = chapters[key];
+    if(!d || !overlay) return;
+    elYear.textContent    = d.year;
+    elTitle.textContent   = d.title;
+    elDesc.innerHTML      = d.desc;
+    elTag.textContent     = d.tag;
+    elPhotos.innerHTML    = d.photos.map(function(p){
+      return '<figure><img src="'+p.src+'" alt="'+p.cap+'"><figcaption>'+p.cap+'</figcaption></figure>';
+    }).join('');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeChapter(){
+    if(overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
   }
 
-  var prev = document.getElementById('sg-prev');
-  var next = document.getElementById('sg-next');
-  if(prev) prev.addEventListener('click', function(){ goTo(current - 1); });
-  if(next) next.addEventListener('click', function(){ goTo(current + 1); });
-  dots.forEach(function(dot){
-    dot.addEventListener('click', function(){ goTo(parseInt(dot.getAttribute('data-i'))); });
+  // Bind chapter cards
+  document.querySelectorAll('.story-chapter').forEach(function(card){
+    card.addEventListener('click', function(){ openChapter(card.getAttribute('data-chapter')); });
   });
 
-  // Touch swipe support
-  var touchX0 = 0;
-  var stage = document.getElementById('sg-stage');
-  if(stage){
-    stage.addEventListener('touchstart', function(e){ touchX0 = e.touches[0].clientX; }, {passive:true});
-    stage.addEventListener('touchend', function(e){
-      var dx = e.changedTouches[0].clientX - touchX0;
-      if(Math.abs(dx) > 40){ goTo(dx < 0 ? current+1 : current-1); }
-    });
-  }
+  if(closeBtn)  closeBtn.addEventListener('click', closeChapter);
+  if(overlay)   overlay.addEventListener('click', function(e){ if(e.target===overlay) closeChapter(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeChapter(); });
+
+  // Stop modal from closing when clicking inside
+  if(modal) modal.addEventListener('click', function(e){ e.stopPropagation(); });
 })();
 
 /* ================================================================
