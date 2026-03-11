@@ -848,7 +848,9 @@ footer {
 }
 .intro-strip {
   flex:1;
-  background:var(--text);
+  background:rgba(245,245,247,0.97);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(0,0,0,0.04);
   transform:translateY(0);
   transition:transform .9s cubic-bezier(.76,0,.24,1);
 }
@@ -871,14 +873,14 @@ footer {
 .intro-brand.fade { opacity:0; }
 .intro-name {
   font-family:'Playfair Display',serif; font-style:italic;
-  font-size:clamp(2.5rem,6vw,4.5rem); font-weight:800; color:#fff;
+  font-size:clamp(2.5rem,6vw,4.5rem); font-weight:800; color:var(--text);
   letter-spacing:-1px; line-height:1.1;
   opacity:0; transform:translateY(20px);
   animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both;
 }
 .intro-role {
   font-family:'Space Grotesk',sans-serif; font-size:clamp(.85rem,1.5vw,1rem);
-  font-weight:500; color:rgba(255,255,255,.55); letter-spacing:3px;
+  font-weight:500; color:var(--muted); letter-spacing:3px;
   text-transform:uppercase; margin-top:.5rem;
   opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .3s both;
 }
@@ -888,146 +890,179 @@ footer {
 }
 
 /* ============================================================
-   STORY GALLERY — Bon Jovi inspired photo windows
+   STORY GALLERY — Bon Jovi Scene Layout
+   Big hero image left + info card overlay + scattered photos right
    ============================================================ */
-.story-gallery-section {
-  padding:6rem 0 4rem;
+#story {
   position:relative;
-  overflow:hidden;
   background:var(--bg);
-}
-.story-gallery-header {
-  text-align:center; margin-bottom:4rem; padding:0 5%;
-}
-.story-gallery-header .sg-eyebrow {
-  font-family:'Space Grotesk',sans-serif;
-  font-size:.72rem; font-weight:700; letter-spacing:3px;
-  text-transform:uppercase; color:var(--muted);
-  margin-bottom:1rem;
-}
-.story-gallery-header h2 {
-  font-family:'Playfair Display',serif; font-style:italic;
-  font-size:clamp(2rem,4vw,3.5rem); font-weight:800;
-  color:var(--text); line-height:1.1; letter-spacing:-1px;
-}
-.story-gallery-header .sg-sub {
-  font-size:1rem; color:var(--muted); margin-top:.8rem;
-  max-width:520px; margin-left:auto; margin-right:auto;
+  overflow:hidden;
+  padding:5rem 0 4rem;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
-/* Horizontal track */
-.sg-track-wrap {
-  position:relative;
-  cursor:grab;
-  user-select:none;
-}
-.sg-track-wrap:active { cursor:grabbing; }
-.sg-track {
-  display:flex; gap:2rem;
-  padding:1rem 5% 3rem;
-  overflow-x:auto; scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-}
-.sg-track::-webkit-scrollbar { display:none; }
-
-/* Chapter divider within track */
-.sg-chapter {
-  flex:0 0 auto;
-  display:flex; flex-direction:column;
-  align-items:flex-start;
-  gap:1.4rem;
-  scroll-snap-align:start;
-}
-.sg-chapter-label {
+/* Watermark background text */
+.sg-bg-text {
+  position:absolute;
+  top:50%; left:50%; transform:translate(-50%,-50%);
   font-family:'Space Grotesk',sans-serif;
-  font-size:.7rem; font-weight:700; letter-spacing:2px;
+  font-weight:800; font-size:clamp(6rem,14vw,18rem);
+  line-height:0.85;
+  color:var(--text); opacity:.028;
+  letter-spacing:-4px; text-align:center;
+  pointer-events:none; white-space:nowrap;
+  z-index:0; user-select:none;
+}
+
+/* Top label row */
+.sg-top-label {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 5%; position:relative; z-index:2; margin-bottom:3rem;
+}
+.sg-eyebrow-pill {
+  display:inline-flex; align-items:center;
+  padding:.38rem 1rem; border-radius:40px;
+  border:1.5px solid rgba(41,151,255,.25);
+  background:var(--accent-lt);
+  font-size:.72rem; font-weight:700; letter-spacing:2px;
   text-transform:uppercase; color:var(--accent);
-  padding:.3rem .8rem; border:1px solid rgba(41,151,255,.25);
-  border-radius:40px; background:var(--accent-lt);
-  white-space:nowrap;
 }
-.sg-chapter-title {
+.sg-slide-counter {
   font-family:'Space Grotesk',sans-serif;
-  font-size:1.05rem; font-weight:700; color:var(--text);
-  max-width:200px; line-height:1.35;
+  font-size:.82rem; font-weight:600; color:var(--muted);
+  letter-spacing:1px;
 }
-.sg-chapter-desc {
-  font-size:.82rem; color:var(--muted); line-height:1.6;
-  max-width:200px;
+#sg-current { color:var(--accent); }
+
+/* Stage — full-width scene container */
+.sg-stage {
+  position:relative; z-index:2;
+  padding:0 5%;
+  flex:1;
 }
 
-/* Photo card */
-.sg-photo {
-  flex:0 0 auto;
-  scroll-snap-align:center;
+/* Each slide */
+.sg-slide {
+  display:none;
+  grid-template-columns:1fr 340px;
+  gap:2.5rem;
+  align-items:start;
+  animation:sgFadeIn .55s cubic-bezier(.16,1,.3,1) both;
+}
+.sg-slide.active { display:grid; }
+@keyframes sgFadeIn {
+  from { opacity:0; transform:translateX(30px); }
+  to   { opacity:1; transform:none; }
+}
+
+/* Big hero image left */
+.sg-hero-img {
   position:relative;
-  width:260px;
+  border-radius:20px;
+  overflow:hidden;
+  height:clamp(420px,55vh,640px);
+  box-shadow:0 24px 60px rgba(0,0,0,.14);
 }
-.sg-photo-inner {
-  width:260px; height:320px;
-  border-radius:16px; overflow:hidden;
-  position:relative;
-  box-shadow:0 12px 40px rgba(0,0,0,.12);
-  transition:transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s;
-}
-.sg-photo:hover .sg-photo-inner {
-  transform:translateY(-8px) rotate(-0.5deg);
-  box-shadow:0 24px 60px rgba(0,0,0,.18);
-}
-.sg-photo-inner img {
+.sg-hero-img > img {
   width:100%; height:100%; object-fit:cover;
   transition:transform .6s cubic-bezier(.16,1,.3,1);
 }
-.sg-photo:hover .sg-photo-inner img { transform:scale(1.05); }
-.sg-photo-overlay {
-  position:absolute; inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 55%);
+.sg-slide:hover .sg-hero-img > img { transform:scale(1.03); }
+
+/* Info card — bottom-left overlay (like Bon Jovi eBay card) */
+.sg-info-card {
+  position:absolute; bottom:1.5rem; left:1.5rem;
+  width:min(320px, calc(100% - 3rem));
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.7);
+  border-radius:16px;
+  padding:1.4rem 1.6rem 1.5rem;
+  box-shadow:0 8px 32px rgba(0,0,0,.12);
 }
-.sg-photo-caption {
-  position:absolute; bottom:0; left:0; right:0;
-  padding:1.2rem 1.2rem 1.4rem;
-  color:#fff;
+.sg-info-year {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.68rem; font-weight:800; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--accent);
+  margin-bottom:.4rem;
 }
-.sg-photo-caption .sg-cap-label {
-  font-size:.65rem; font-weight:700; letter-spacing:1.5px;
-  text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:3px;
+.sg-info-title {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.1rem; font-weight:700; color:var(--text);
+  line-height:1.3; margin-bottom:.7rem;
 }
-.sg-photo-caption .sg-cap-text {
-  font-size:.88rem; font-weight:600; line-height:1.35;
+.sg-info-desc {
+  font-size:.83rem; color:#444; line-height:1.65;
+  margin-bottom:.8rem;
+}
+.sg-info-tag {
+  display:inline-block;
+  font-size:.68rem; font-weight:600; letter-spacing:.5px;
+  color:var(--accent); background:var(--accent-lt);
+  border:1px solid rgba(41,151,255,.2);
+  border-radius:6px; padding:.25rem .65rem;
 }
 
-/* Wide photo variant */
-.sg-photo.wide { width:340px; }
-.sg-photo.wide .sg-photo-inner { width:340px; height:320px; }
+/* Scattered photos right column */
+.sg-scatter-col {
+  display:flex; flex-direction:column; gap:1.2rem;
+  padding-top:1rem; align-self:start;
+}
+.sg-scatter-photo {
+  border-radius:14px; overflow:hidden;
+  box-shadow:0 12px 32px rgba(0,0,0,.12);
+  background:var(--card-bg);
+  transition:transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s;
+  cursor:default;
+}
+.sg-scatter-photo:hover {
+  transform:translateY(-6px) rotate(0deg) !important;
+  box-shadow:0 20px 48px rgba(0,0,0,.18);
+}
+.sg-scatter-photo img {
+  width:100%; height:180px; object-fit:cover; display:block;
+}
+.sg-scatter-cap {
+  padding:.55rem .75rem;
+  font-size:.75rem; color:var(--muted); line-height:1.4;
+  background:var(--card-bg);
+  border-top:1px solid var(--border);
+}
 
-/* Tall photo variant */
-.sg-photo.tall .sg-photo-inner { height:380px; }
+/* Nav controls */
+.sg-controls {
+  display:flex; align-items:center; justify-content:center; gap:1.5rem;
+  padding:2.5rem 5% 0; position:relative; z-index:2;
+}
+.sg-btn {
+  width:44px; height:44px; border-radius:50%;
+  border:1.5px solid var(--border); background:var(--card-bg);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all .2s; color:var(--text);
+}
+.sg-btn svg { width:18px; height:18px; }
+.sg-btn:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.08); }
+.sg-dots { display:flex; gap:.6rem; align-items:center; }
+.sg-dot {
+  width:8px; height:8px; border-radius:50%;
+  border:none; background:var(--border); cursor:pointer;
+  transition:all .25s; padding:0;
+}
+.sg-dot.active { background:var(--accent); transform:scale(1.3); }
 
-/* Chapter connector */
-.sg-connector {
-  flex:0 0 auto; align-self:center;
-  display:flex; align-items:center; gap:6px;
-  padding:0 .5rem;
-}
-.sg-connector-line {
-  width:48px; height:1px;
-  background:linear-gradient(to right, rgba(41,151,255,.4), rgba(41,151,255,.1));
-}
-.sg-connector-dot {
-  width:6px; height:6px; border-radius:50%;
-  background:rgba(41,151,255,.35);
+/* Responsive */
+@media(max-width:860px){
+  .sg-slide { grid-template-columns:1fr; gap:1.5rem; }
+  .sg-scatter-col { flex-direction:row; overflow-x:auto; padding:0 5% 1rem; margin:0 -5%; }
+  .sg-scatter-photo { flex:0 0 200px; }
+  .sg-scatter-photo img { height:140px; }
+  .sg-hero-img { height:56vw; min-height:260px; }
+  .sg-bg-text { font-size:20vw; }
 }
 
-/* Drag hint */
-.sg-hint {
-  text-align:center; margin-top:1.5rem;
-  font-size:.8rem; color:var(--muted);
-  display:flex; align-items:center; justify-content:center; gap:.5rem;
-}
-.sg-hint svg { width:16px; height:16px; stroke:var(--muted); fill:none; stroke-width:2; }
-.sg-hint-arrow { animation: sgDrag 2s ease-in-out infinite; display:inline-block; }
-@keyframes sgDrag { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
 
 /* ============================================================
    CV FLIP SECTION — Page-turn inspired
@@ -1242,174 +1277,119 @@ footer {
   </div>
 </div>
 
-<!-- ===== STORY MAP (vertical timeline) ===== -->
+<!-- ===== STORY GALLERY — Bon Jovi inspired ===== -->
+<section id="story">
 
-<!-- ===== STORY GALLERY SECTION ===== -->
-<section id="story" class="story-gallery-section reveal">
-  <div class="story-gallery-header">
-    <div class="sg-eyebrow">Personal Journey</div>
-    <h2>How I grew up<br><em style="color:var(--accent);">in my self-exploration</em></h2>
-    <p class="sg-sub">Three chapters, one continuous thread — curiosity turned into action.</p>
+  <!-- bg watermark text -->
+  <div class="sg-bg-text" aria-hidden="true">SELF<br>EXPLORATION</div>
+
+  <!-- top label row -->
+  <div class="sg-top-label">
+    <span class="sg-eyebrow-pill">Personal Journey</span>
+    <span class="sg-slide-counter"><span id="sg-current">01</span> / 03</span>
   </div>
 
-  <div class="sg-track-wrap" id="sg-track-wrap">
-    <div class="sg-track" id="sg-track">
+  <!-- main stage -->
+  <div class="sg-stage" id="sg-stage">
 
-      <!-- CHAPTER 1: Grandma's Stall 2013 -->
-      <div class="sg-chapter">
-        <div class="sg-chapter-label">2013 · Consumer Insights</div>
-        <div class="sg-chapter-title">The Ultimate MVP:<br>Grandma's Stall</div>
-        <div class="sg-chapter-desc">First A/B test on a cardboard sign. Reducing cognitive load with direct copywriting at a rural market.</div>
-      </div>
+    <!-- ── SLIDE 1: Grandma's Stall ── -->
+    <div class="sg-slide active" data-index="0">
 
-      <div class="sg-photo tall">
-        <div class="sg-photo-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt="Fresh harvest">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Harvest</div>
-            <div class="sg-cap-text">Freshly harvested produce.</div>
-          </div>
+      <!-- big hero image left -->
+      <div class="sg-hero-img">
+        <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt="Grandma Stall">
+        <!-- info card overlay (top-left, like Bon Jovi eBay card) -->
+        <div class="sg-info-card">
+          <div class="sg-info-year">2013</div>
+          <div class="sg-info-title">The Ultimate MVP:<br>Grandma's Stall</div>
+          <p class="sg-info-desc">Took surplus garden produce to the rural market. Ran my <strong>first A/B test</strong> on a cardboard sign — proved that clearer copywriting doubled sales. Consumer insight, raw form.</p>
+          <div class="sg-info-tag">Consumer Insights · Copywriting</div>
         </div>
       </div>
 
-      <div class="sg-photo">
-        <div class="sg-photo-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt="Copywriting sign" style="object-fit:cover;">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Copywriting</div>
-            <div class="sg-cap-text">Bio veggies &amp; cardboard copywriting.</div>
-          </div>
+      <!-- scattered small photos right -->
+      <div class="sg-scatter-col">
+        <div class="sg-scatter-photo" style="transform:rotate(3deg);margin-top:2rem;">
+          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt="Cardboard sign">
+          <div class="sg-scatter-cap">Bio veggies &amp; cardboard A/B test.</div>
+        </div>
+        <div class="sg-scatter-photo" style="transform:rotate(-2deg);margin-top:1.2rem;align-self:flex-end;">
+          <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt="Direct connection" style="object-position:top;">
+          <div class="sg-scatter-cap">Direct consumer connection.</div>
         </div>
       </div>
 
-      <div class="sg-photo">
-        <div class="sg-photo-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt="Holding veggies" style="object-position:top;">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Connection</div>
-            <div class="sg-cap-text">Direct consumer connection.</div>
-          </div>
+    </div>
+
+    <!-- ── SLIDE 2: DTC Stationery ── -->
+    <div class="sg-slide" data-index="1">
+
+      <div class="sg-hero-img">
+        <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt="DTC brand identity">
+        <div class="sg-info-card">
+          <div class="sg-info-year">2015</div>
+          <div class="sg-info-title">My First Lesson<br>in DTC</div>
+          <p class="sg-info-desc">Spotted the Japanese stationery wave early. Unified visual display and <strong>brand storytelling</strong> justified premium pricing at a flea market. First proof: aesthetics drives growth.</p>
+          <div class="sg-info-tag">Brand Positioning · DTC · Visual Merchandising</div>
         </div>
       </div>
 
-      <!-- Chapter connector -->
-      <div class="sg-connector">
-        <div class="sg-connector-line"></div>
-        <div class="sg-connector-dot"></div>
-        <div class="sg-connector-line"></div>
-      </div>
-
-      <!-- CHAPTER 2: DTC Stationery 2015 -->
-      <div class="sg-chapter">
-        <div class="sg-chapter-label">2015 · Brand Positioning</div>
-        <div class="sg-chapter-title">My First Lesson<br>in DTC</div>
-        <div class="sg-chapter-desc">Japanese stationery trend + unified visual display → premium pricing validated. Aesthetics is a growth lever.</div>
-      </div>
-
-      <div class="sg-photo wide">
-        <div class="sg-photo-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt="Brand identity">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Identity</div>
-            <div class="sg-cap-text">Establishing brand identity.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sg-photo">
-        <div class="sg-photo-inner">
+      <div class="sg-scatter-col">
+        <div class="sg-scatter-photo" style="transform:rotate(-3deg);margin-top:1rem;">
           <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt="Trend curation">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Curation</div>
-            <div class="sg-cap-text">Trend curation.</div>
-          </div>
+          <div class="sg-scatter-cap">Trend curation.</div>
         </div>
-      </div>
-
-      <div class="sg-photo">
-        <div class="sg-photo-inner">
+        <div class="sg-scatter-photo" style="transform:rotate(2deg);margin-top:1rem;align-self:flex-end;">
           <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp" alt="Visual merchandising" style="object-position:top;">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Merchandising</div>
-            <div class="sg-cap-text">Visual merchandising.</div>
-          </div>
+          <div class="sg-scatter-cap">Visual merchandising.</div>
         </div>
       </div>
 
-      <!-- Chapter connector -->
-      <div class="sg-connector">
-        <div class="sg-connector-line"></div>
-        <div class="sg-connector-dot"></div>
-        <div class="sg-connector-line"></div>
-      </div>
+    </div>
 
-      <!-- CHAPTER 3: O2O Campus 2022 -->
-      <div class="sg-chapter">
-        <div class="sg-chapter-label">2022 · O2O · Entrepreneurship</div>
-        <div class="sg-chapter-title">Architecting a<br>Campus O2O Network</div>
-        <div class="sg-chapter-desc">400+ MAU, 80% repurchase, &lt;5% waste. Online ordering meets offline delivery at campus scale.</div>
-      </div>
+    <!-- ── SLIDE 3: Campus O2O ── -->
+    <div class="sg-slide" data-index="2">
 
-      <div class="sg-photo wide">
-        <div class="sg-photo-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt="Shelf system">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Operations</div>
-            <div class="sg-cap-text">Dorm-level shelf system.</div>
-          </div>
+      <div class="sg-hero-img">
+        <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt="Campus O2O shelf">
+        <div class="sg-info-card">
+          <div class="sg-info-year">2022</div>
+          <div class="sg-info-title">Architecting a<br>Campus O2O Network</div>
+          <p class="sg-info-desc">Built campus O2O from zero — online ordering, offline delivery, CRM, pop-up partnerships. <strong>400+ MAU</strong>, <strong>80% repurchase</strong>, &lt;5% perishable waste.</p>
+          <div class="sg-info-tag">O2O · Entrepreneurship · CRM · GTM</div>
         </div>
       </div>
 
-      <div class="sg-photo">
-        <div class="sg-photo-inner">
+      <div class="sg-scatter-col">
+        <div class="sg-scatter-photo" style="transform:rotate(2deg);margin-top:.5rem;">
           <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt="Order data">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Data</div>
-            <div class="sg-cap-text">Data-driven order system.</div>
-          </div>
+          <div class="sg-scatter-cap">Data-driven order system.</div>
         </div>
-      </div>
-
-      <div class="sg-photo">
-        <div class="sg-photo-inner">
+        <div class="sg-scatter-photo" style="transform:rotate(-2.5deg);margin-top:1rem;align-self:flex-end;">
           <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt="UI">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">Product</div>
-            <div class="sg-cap-text">Frictionless UI design.</div>
-          </div>
+          <div class="sg-scatter-cap">Frictionless UI design.</div>
         </div>
       </div>
 
-      <div class="sg-photo">
-        <div class="sg-photo-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt="CRM">
-          <div class="sg-photo-overlay"></div>
-          <div class="sg-photo-caption">
-            <div class="sg-cap-label">CRM</div>
-            <div class="sg-cap-text">High-retention CRM.</div>
-          </div>
-        </div>
-      </div>
+    </div>
 
-      <!-- End padding -->
-      <div style="flex:0 0 2rem;"></div>
+  </div><!-- /sg-stage -->
 
-    </div><!-- /sg-track -->
+  <!-- nav controls -->
+  <div class="sg-controls">
+    <button class="sg-btn sg-prev" id="sg-prev" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="sg-dots">
+      <button class="sg-dot active" data-i="0"></button>
+      <button class="sg-dot" data-i="1"></button>
+      <button class="sg-dot" data-i="2"></button>
+    </div>
+    <button class="sg-btn sg-next" id="sg-next" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
   </div>
 
-  <div class="sg-hint">
-    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    <span class="sg-hint-arrow">Drag to explore →</span>
-  </div>
 </section>
 
 <!-- spine-wrap spans #o2o-story through #arsenal -->
@@ -1656,9 +1636,13 @@ footer {
 <!-- ===== CV FLIP SECTION ===== -->
 <section class="cv-flip-section reveal">
   <div class="cv-flip-header">
-    <p class="label" style="margin-bottom:.6rem;">Download & Preview</p>
+    <p class="label" style="margin-bottom:.6rem;">Download &amp; Preview</p>
     <h2>My CV,<br><em style="font-style:italic; color:var(--accent);">at a glance</em></h2>
-    <p>Swipe to preview · Click to enlarge · Download below</p>
+    <div style="display:inline-flex;align-items:center;gap:.6rem;margin:.8rem 0 .4rem;padding:.55rem 1.2rem;background:rgba(41,151,255,.08);border:1.5px solid rgba(41,151,255,.25);border-radius:40px;">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;display:inline-block;"></span>
+      <span style="font-size:.82rem;font-weight:700;color:var(--accent);letter-spacing:.5px;">Actively seeking internship · Available from July 2026</span>
+    </div>
+    <p style="margin-top:.4rem;">Click to preview full CV · Download below</p>
   </div>
 
   <div class="cv-switcher">
@@ -1996,39 +1980,42 @@ document.querySelectorAll('.hobby-card').forEach(function(card){
 })();
 
 /* ================================================================
-   12. GALLERY DRAG SCROLL
+   12. STORY GALLERY — slide navigation
    ================================================================ */
 (function(){
-  var track = document.getElementById('sg-track');
-  if(!track) return;
-  var isDragging = false, startX = 0, scrollLeft = 0;
-  track.addEventListener('mousedown', function(e){
-    isDragging = true;
-    startX = e.pageX - track.offsetLeft;
-    scrollLeft = track.scrollLeft;
-    track.style.cursor = 'grabbing';
+  var slides  = document.querySelectorAll('.sg-slide');
+  var dots    = document.querySelectorAll('.sg-dot');
+  var counter = document.getElementById('sg-current');
+  var current = 0;
+
+  function goTo(i){
+    if(!slides.length) return;
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (i + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    if(counter) counter.textContent = String(current+1).padStart(2,'0');
+  }
+
+  var prev = document.getElementById('sg-prev');
+  var next = document.getElementById('sg-next');
+  if(prev) prev.addEventListener('click', function(){ goTo(current - 1); });
+  if(next) next.addEventListener('click', function(){ goTo(current + 1); });
+  dots.forEach(function(dot){
+    dot.addEventListener('click', function(){ goTo(parseInt(dot.getAttribute('data-i'))); });
   });
-  document.addEventListener('mouseup', function(){
-    isDragging = false;
-    if(track) track.style.cursor = 'grab';
-  });
-  track.addEventListener('mousemove', function(e){
-    if(!isDragging) return;
-    e.preventDefault();
-    var x = e.pageX - track.offsetLeft;
-    var walk = (x - startX) * 1.4;
-    track.scrollLeft = scrollLeft - walk;
-  });
-  // Touch support
-  var touchStartX = 0, touchScrollLeft = 0;
-  track.addEventListener('touchstart', function(e){
-    touchStartX = e.touches[0].pageX;
-    touchScrollLeft = track.scrollLeft;
-  }, {passive:true});
-  track.addEventListener('touchmove', function(e){
-    var walk = touchStartX - e.touches[0].pageX;
-    track.scrollLeft = touchScrollLeft + walk;
-  }, {passive:true});
+
+  // Touch swipe support
+  var touchX0 = 0;
+  var stage = document.getElementById('sg-stage');
+  if(stage){
+    stage.addEventListener('touchstart', function(e){ touchX0 = e.touches[0].clientX; }, {passive:true});
+    stage.addEventListener('touchend', function(e){
+      var dx = e.changedTouches[0].clientX - touchX0;
+      if(Math.abs(dx) > 40){ goTo(dx < 0 ? current+1 : current-1); }
+    });
+  }
 })();
 
 /* ================================================================
