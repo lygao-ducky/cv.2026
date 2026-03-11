@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liyi Gao | Brand Builder & Product Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — Apple-inspired Ice Blue System
+   ============================================================ */
+:root {
+  --bg:          #F5F5F7;
+  --card-bg:     #FFFFFF;
+  --text:        #1D1D1F;
+  --muted:       #86868B;
+  --border:      rgba(0,0,0,0.06);
+  --accent:      #2997FF;
+  --accent-glow: rgba(41,151,255,0.12);
+  --accent-dk:   #0071E3;
+  --accent-lt:   rgba(41,151,255,0.08);
+  --timeline-bg: rgba(0,0,0,0.10);
+  --surface2:    #F2F2F2;
+  --nav-bg:      rgba(245,245,247,0.82);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  line-height: 1.65;
+  overflow-x: hidden;
+  overflow-y: scroll; /* prevent layout shift during intro */
+}
+
+/* ---- Type Scale ---- */
+.display   { font-family:'Playfair Display',serif; font-weight:800; letter-spacing:-1px; line-height:1.05; }
+.heading   { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.5px; }
+.label     { font-size:.75rem; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--accent); }
+
+strong { font-weight:600; color:var(--accent); }
+
+/* ---- Reveal ---- */
+.reveal { opacity:1; transform:none; }
+/* Hero never blocked by reveal system */
+#hero, #hero * { animation-play-state:running !important; }
+.will-reveal { opacity:0; transform:translateY(28px); transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
+.will-reveal.active { opacity:1; transform:none; }
+.delay-1 { transition-delay:.1s; }
+.delay-2 { transition-delay:.2s; }
+.delay-3 { transition-delay:.3s; }
+
+/* ---- Buttons ---- */
+.btn {
+  display:inline-flex; align-items:center; gap:.45rem;
+  padding:.6rem 1.4rem; border-radius:40px;
+  font-family:'DM Sans',sans-serif; font-size:.88rem; font-weight:600;
+  text-decoration:none; cursor:pointer; border:none;
+  transition:all .22s cubic-bezier(.16,1,.3,1);
+  white-space:nowrap;
+}
+.btn:hover { transform:translateY(-2px); }
+.btn-accent  { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
+.btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(41,151,255,.3); }
+.btn-ghost   { border:1.5px solid var(--border); color:var(--text); background:transparent; }
+.btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+.btn-solid   { background:var(--text); color:var(--bg); }
+.btn-solid:hover { background:var(--accent); }
+.btn-pulse {
+  animation: pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { box-shadow:0 4px 16px var(--accent-glow); }
+  50%      { box-shadow:0 4px 28px rgba(41,151,255,.45); }
+}
+
+/* ============================================================
+   TOP NAV
+   ============================================================ */
+.top-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 5%; position:sticky; top:0; z-index:200;
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  background:var(--nav-bg);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand { display:flex; align-items:center; gap:.8rem; }
+.nav-brand img { height:30px; object-fit:contain; }
+.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; }
+.nav-right { display:flex; align-items:center; gap:.7rem; }
+
+/* Lang switcher */
+.lang-switcher {
+  display:flex; align-items:center;
+  border:1.5px solid var(--border); border-radius:40px;
+  overflow:hidden; background:var(--card-bg);
+}
+.lang-btn {
+  padding:.38rem .8rem; font-size:.78rem; font-weight:600;
+  color:var(--muted); text-decoration:none;
+  transition:background .2s, color .2s;
+}
+.lang-btn:hover { color:var(--accent); }
+.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
+.lang-btn + .lang-btn { border-left:1px solid var(--border); }
+.lang-btn.active + .lang-btn { border-left:none; }
+
+/* CV dropdown */
+.cv-dropdown { position:relative; }
+.cv-menu {
+  position:fixed;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:14px; overflow:hidden;
+  box-shadow:0 16px 40px rgba(0,0,0,.12);
+  min-width:220px; opacity:0; transform:translateY(-8px) scale(.97);
+  pointer-events:none; transition:all .22s cubic-bezier(.16,1,.3,1);
+  z-index:9999;
+}
+.cv-dropdown.open .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.cv-menu a {
+  display:flex; align-items:center; gap:.7rem;
+  padding:.9rem 1.3rem; text-decoration:none;
+  color:var(--text); font-size:.88rem; font-weight:500;
+  transition:background .2s;
+}
+.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
+.cv-menu a + a { border-top:1px solid var(--border); }
+
+/* ============================================================
+   FLOATING BOTTOM NAV
+   ============================================================ */
+.floating-nav {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+  z-index:300; display:flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border:1.5px solid rgba(0,0,0,0.08);
+  border-radius:50px;
+  padding:8px 12px;
+  box-shadow:0 12px 40px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.07);
+}
+.fnav-item {
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:.6rem 1.1rem; border-radius:40px;
+  text-decoration:none; color:var(--muted);
+  font-size:.72rem; font-weight:600; letter-spacing:.4px;
+  transition:all .22s cubic-bezier(.16,1,.3,1); cursor:pointer;
+  border:none; background:transparent;
+  white-space:nowrap; min-width:56px;
+}
+.fnav-item svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.fnav-item:hover { color:var(--accent); background:var(--accent-lt); }
+.fnav-item.active { color:var(--accent); background:rgba(41,151,255,.12); }
+
+/* ============================================================
+   SECTION WRAPPER
+   ============================================================ */
+.section { padding:5rem 5%; max-width:1280px; margin:0 auto; }
+.section-full { padding:5rem 5%; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  display:grid; grid-template-columns:1fr 1fr;
+  align-items:center; gap:4rem;
+  min-height:92vh; padding:4rem 5% 2rem;
+  max-width:1280px; margin:0 auto; position:relative; z-index:10;
+}
+.avail-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.42rem 1.1rem; border-radius:40px;
+  border:1.5px solid var(--accent); background:var(--accent-lt);
+  color:var(--accent); font-size:.78rem; font-weight:600;
+  letter-spacing:.8px; text-transform:uppercase; margin-bottom:1.6rem;
+}
+.avail-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 1.8s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+.hero-h1 { font-size:clamp(3rem,5.5vw,5.2rem); margin-bottom:1.3rem; }
+.hero-h1 em { color:var(--accent); font-style:italic; }
+.hero-desc { font-size:1.05rem; color:var(--muted); max-width:560px; margin-bottom:2rem; line-height:1.8; }
+.hero-ctas { display:flex; flex-wrap:wrap; align-items:center; gap:.9rem; margin-bottom:2.4rem; }
+.skill-tags { display:flex; flex-wrap:wrap; gap:.6rem; }
+.skill-pill {
+  padding:.38rem .9rem; border:1.5px solid var(--border);
+  border-radius:8px; font-size:.82rem; font-weight:500;
+  background:var(--card-bg); color:var(--text);
+  transition:border-color .2s, color .2s;
+}
+.skill-pill:hover { border-color:var(--accent); color:var(--accent); }
+
+/* Hero photo */
+.hero-right { position:relative; }
+.hero-img-wrap {
+  width:100%; height:72vh; border-radius:24px; overflow:hidden;
+  clip-path:inset(30% 30% 30% 30% round 24px);
+  animation:expandImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
+  animation-play-state:running;
+  box-shadow:0 32px 64px rgba(0,0,0,.1);
+  will-change:clip-path;
+}
+.hero-img-wrap img {
+  width:100%; height:100%; object-fit:cover; object-position:center 15%;
+  transform:scale(1.18);
+  animation:scaleImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
+  will-change:transform;
+}
+.hero-name-overlay {
+  position:absolute; bottom:-2%; left:-6%;
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(3.5rem,7vw,6rem); font-weight:800;
+  color:#fff; mix-blend-mode:exclusion; z-index:10;
+  opacity:0; animation:fadeUp .9s ease 1.2s forwards;
+  pointer-events:none; white-space:nowrap;
+}
+@keyframes expandImg { to { clip-path:inset(0 0 0 0 round 24px); } }
+@keyframes scaleImg  { to { transform:scale(1); } }
+@keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+/* ============================================================
+   DIARY PARALLAX
+   ============================================================ */
+.diary-container { height:120vh; position:relative; z-index:15; }
+.diary-sticky {
+  position:sticky; top:0; height:100vh;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.diary-text {
+  font-size:clamp(2.2rem,5vw,5rem);
+  font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
+  color:var(--text); text-align:center; opacity:0;
+  letter-spacing:-1px; transform:scale(.68);
+  will-change:transform,opacity; line-height:1.2;
+  transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1);
+}
+
+/* ============================================================
+   STORY VERTICAL TIMELINE + SPINE
+   ============================================================ */
+#story  { background:var(--bg); }
+#arsenal{ background:var(--bg); }
+
+/* Spine wrap contains #story + #arsenal */
+.spine-wrap { position:relative; }
+
+/* Spine: hidden, wavy SVGs are used instead */
+.timeline-spine { display:none; }
+
+/* Wavy connector between nodes */
+.snode-wave {
+  display:block;
+  margin:0 auto;
+  padding-left:calc(5% + 96px + 55px - 1px); /* align centre of dot */
+  pointer-events:none;
+  overflow:visible;
+}
+@media(max-width:860px){
+  .snode-wave { padding-left:calc(5% + 44px + 55px - 1px); }
+}
+
+/* ── Story node row ── */
+.snode {
+  position:relative;
+  display:flex;
+  align-items:flex-start;
+  gap:1.6rem;
+  padding:0 5% 3rem;
+  max-width:900px;
+  margin:0 auto;
+  z-index:2;
+  transition:opacity .2s;
+}
+/* When any snode is active, dim siblings slightly */
+.snode-active-sibling { opacity:.55; }
+/* Only the trigger zone is clickable */
+.snode-trigger {
+  display:flex; align-items:flex-start; gap:1.6rem;
+  cursor:pointer;
+  flex:1;
+  transition:opacity .2s;
+}
+.snode-trigger:hover { opacity:.92; }
+.snode-trigger:hover .snode-img-wrap {
+  border-color:var(--accent);
+  box-shadow:0 8px 28px rgba(41,151,255,.2);
+  transform:scale(1.06) translateY(-3px);
+}
+.snode.active .snode-trigger .snode-img-wrap {
+  border-color:var(--accent);
+  box-shadow:0 8px 28px rgba(41,151,255,.2);
+  transform:scale(1.06) translateY(-3px);
+}
+/* Hint text pulse when active */
+.snode.active .snode-hint { color:var(--accent); }
+.snode-hint::before { content:"→ "; }
+.snode.active .snode-hint::before { content:"✓ "; }
+
+/* Blue dot on spine */
+.snode-dot {
+  position:absolute;
+  left:calc(5% + 96px - 9px);
+  top:30px;
+  width:18px; height:18px; border-radius:50%;
+  background:#fff;
+  border:2.5px solid var(--accent);
+  box-shadow:0 0 0 4px rgba(41,151,255,.1);
+  z-index:3;
+  transition:background .25s, box-shadow .25s;
+}
+.snode.active .snode-dot {
+  background:var(--accent);
+  box-shadow:0 0 0 6px rgba(41,151,255,.18);
+}
+@media(max-width:860px){ .snode-dot { left:calc(5% + 44px - 9px); } }
+
+/* Image button */
+.snode-img-wrap {
+  flex-shrink:0;
+  margin-left:calc(96px + 1.6rem);
+  width:110px; height:110px;
+  border-radius:14px;
+  overflow:hidden;
+  border:2px solid rgba(41,151,255,.18);
+  box-shadow:0 4px 16px rgba(0,0,0,.07);
+  position:relative;
+  background:var(--accent-lt);        /* consistent tint bg */
+  transition:border-color .25s, box-shadow .25s, transform .3s;
+  cursor:pointer;
+}
+.snode.active .snode-img-wrap {
+  border-color:var(--accent);
+  box-shadow:0 8px 28px rgba(41,151,255,.2);
+  transform:scale(1.06) translateY(-3px);
+}
+/* mix-blend-mode:multiply removes white bg from illustration images */
+.snode-img-wrap img {
+  width:100%; height:100%; object-fit:contain; display:block;
+  padding:8px;
+  mix-blend-mode:multiply;
+}
+
+.snode-img-overlay {
+  display:none; /* removed — no blue overlay on images */
+}
+@media(max-width:860px){ .snode-img-wrap { margin-left:calc(44px + 1.2rem); width:80px; height:80px; } }
+
+/* Label */
+.snode-label {
+  flex-shrink:0;
+  display:flex; flex-direction:column; gap:3px;
+  padding-top:6px;
+}
+.snode-year  { font-family:"Space Grotesk",sans-serif; font-size:.72rem; font-weight:800; color:var(--accent); letter-spacing:1.5px; text-transform:uppercase; }
+.snode-title { font-family:"Space Grotesk",sans-serif; font-size:1rem; font-weight:700; color:var(--text); line-height:1.3; }
+.snode-hint  { font-size:.78rem; color:var(--muted); margin-top:2px; }
+
+/* Tooltip panel — fixed to right side of viewport */
+.snode-tooltip {
+  position:fixed;
+  top:50%;
+  right:24px;
+  transform:translateY(-50%) translateX(20px);
+  width:min(320px, calc(100vw - 48px));
+  background:var(--card-bg);
+  border:1.5px solid rgba(41,151,255,.22);
+  border-radius:20px;
+  padding:1.4rem 1.4rem 1.2rem;
+  box-shadow:0 24px 60px rgba(0,0,0,.16), 0 0 0 4px rgba(41,151,255,.05);
+  opacity:0; pointer-events:none;
+  transition:opacity .32s cubic-bezier(.16,1,.3,1), transform .32s cubic-bezier(.16,1,.3,1);
+  z-index:200;
+  max-height:80vh;
+  overflow-y:auto;
+}
+.snode.active .snode-tooltip {
+  opacity:1; pointer-events:all;
+  transform:translateY(-50%) translateX(0);
+}
+.snode-tooltip:hover {
+  box-shadow:0 28px 70px rgba(0,0,0,.18);
+}
+/* No arrow needed for fixed panel */
+.snode-tooltip::before, .snode-tooltip::after { display:none; }
+
+/* On narrow screens, panel sits at bottom */
+@media(max-width:900px){
+  .snode-tooltip {
+    position:fixed;
+    top:auto; right:0; bottom:0; left:0;
+    transform:translateY(100%);
+    width:100%; border-radius:20px 20px 0 0;
+    max-height:70vh;
+  }
+  .snode.active .snode-tooltip {
+    transform:translateY(0);
+  }
+}
+
+.snode-tooltip-close {
+  position:absolute; top:.65rem; right:.65rem;
+  width:22px; height:22px; border-radius:50%;
+  border:none; background:var(--surface2); cursor:pointer;
+  font-size:.75rem; color:var(--muted);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .2s;
+}
+.snode-tooltip-close:hover { background:var(--border); }
+.stt-year  { font-size:.7rem; font-weight:700; color:var(--accent); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:.25rem; }
+.stt-title { font-family:"Space Grotesk",sans-serif; font-size:.97rem; font-weight:700; margin-bottom:.5rem; color:var(--text); }
+.snode-tooltip p { color:var(--muted); font-size:.86rem; line-height:1.65; margin-bottom:.7rem; }
+.stt-imgs { display:flex; gap:7px; overflow-x:auto; }
+.stt-imgs::-webkit-scrollbar { display:none; }
+.stt-imgs figure { flex:0 0 auto; }
+.stt-imgs img { width:88px; height:62px; object-fit:cover; border-radius:8px; display:block; }
+.stt-imgs figcaption { font-size:.68rem; color:var(--muted); margin-top:3px; text-align:center; max-width:88px; }
+
+/* Bridge 2022 → O2O card */
+.story-bridge {
+  display:flex; flex-direction:column; align-items:flex-start;
+  padding-left:calc(5% + 96px);
+  padding-bottom:1rem; max-width:900px; margin:0 auto;
+}
+.bridge-line { width:2px; height:32px; background:linear-gradient(to bottom,rgba(41,151,255,.55),rgba(41,151,255,.1)); }
+.bridge-label { font-size:.75rem; font-weight:600; color:var(--accent); opacity:.7; margin-top:.2rem; padding-left:2px; }
+
+/* O2O trigger card */
+.o2o-trigger {
+  background:var(--card-bg); border:1.5px solid var(--border);
+  border-radius:20px; padding:1.8rem 2rem; cursor:pointer;
+  transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
+}
+.o2o-trigger::before {
+  content:''; position:absolute; inset:0; border-radius:20px;
+  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 55%);
+  opacity:0; transition:opacity .3s;
+}
+.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 12px 40px var(--accent-glow); }
+.o2o-trigger:hover::before { opacity:1; }
+.o2o-inner { display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; position:relative; z-index:1; }
+.o2o-icon  { width:56px; height:56px; object-fit:contain; background:#fff; border-radius:12px; padding:5px; border:1.5px solid var(--border); flex-shrink:0; }
+.o2o-text  { flex:1; min-width:0; }
+
+/* hide old horizontal stuff */
+.snode-connector { display:none; }
+.map-node        { display:none; }
+
+/* Section label shown inline above nodes list */
+.story-section-pad {
+  padding:5rem 5% 0;
+  max-width:1280px; margin:0 auto; position:relative;
+}
+
+/* Story popup */
+.story-popup {
+  position:fixed; inset:0; z-index:500;
+  display:flex; align-items:center; justify-content:center;
+  padding:1rem;
+  pointer-events:none; opacity:0;
+  transition:opacity .3s;
+}
+.story-popup.open { opacity:1; pointer-events:all; }
+.story-popup-overlay {
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.4); backdrop-filter:blur(6px);
+}
+.story-popup-card {
+  position:relative; z-index:1;
+  background:var(--card-bg); border-radius:24px;
+  padding:2.5rem; max-width:480px; width:100%;
+  box-shadow:0 32px 80px rgba(0,0,0,.18);
+  transform:scale(.92) translateY(20px);
+  transition:transform .35s cubic-bezier(.16,1,.3,1);
+}
+.story-popup.open .story-popup-card { transform:scale(1) translateY(0); }
+.popup-close {
+  position:absolute; top:1.2rem; right:1.2rem;
+  width:32px; height:32px; border-radius:50%;
+  border:none; background:var(--surface2); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--muted); font-size:1.1rem;
+  transition:background .2s;
+}
+.popup-close:hover { background:var(--border); }
+.popup-year { color:var(--accent); font-size:.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:.5rem; }
+.popup-title { font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; margin-bottom:1rem; }
+.popup-desc { color:var(--muted); line-height:1.75; font-size:.98rem; }
+.popup-img { width:100%; height:180px; object-fit:cover; border-radius:14px; margin-bottom:1.2rem; }
+
+/* ============================================================
+   O2O DRAWER
+   ============================================================ */
+.drawer-overlay {
+  position:fixed; inset:0; z-index:400;
+  background:rgba(0,0,0,.35); backdrop-filter:blur(4px);
+  opacity:0; pointer-events:none;
+  transition:opacity .35s;
+}
+.drawer-overlay.open { opacity:1; pointer-events:all; }
+
+.drawer {
+  position:fixed; top:0; right:0; bottom:0; z-index:401;
+  width:min(680px, 96vw);
+  background:var(--card-bg);
+  box-shadow:-24px 0 80px rgba(0,0,0,.16);
+  transform:translateX(100%);
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+  overflow-y:auto; padding:3rem;
+  border-radius:24px 0 0 24px;
+}
+.drawer.open { transform:translateX(0); }
+.drawer-close {
+  display:flex; align-items:center; justify-content:center;
+  width:36px; height:36px; border-radius:50%;
+  border:none; background:var(--surface2); cursor:pointer;
+  color:var(--muted); font-size:1.1rem;
+  margin-bottom:2rem; transition:background .2s;
+}
+.drawer-close:hover { background:var(--border); }
+.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:700; margin:.5rem 0 1.2rem; }
+.drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.5rem 0; }
+.drawer .kpi { background:var(--bg); border:1.5px solid var(--border); border-radius:14px; padding:1.2rem; }
+.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:2.2rem; font-weight:800; color:var(--accent); line-height:1; }
+.drawer .kpi-label { font-size:.78rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
+.drawer-gallery { display:flex; gap:12px; overflow-x:auto; margin-top:1.5rem; padding-bottom:4px; scroll-snap-type:x mandatory; }
+.drawer-gallery::-webkit-scrollbar { display:none; }
+.drawer-gallery figure { flex:0 0 auto; scroll-snap-align:center; }
+.drawer-gallery img { height:200px; width:auto; object-fit:cover; border-radius:12px; }
+.drawer-gallery figcaption { margin-top:6px; font-size:.8rem; color:var(--muted); }
+.drawer-bullets { padding-left:1.1rem; color:var(--muted); font-size:.97rem; }
+.drawer-bullets li { margin-bottom:.75rem; line-height:1.65; }
+
+/* O2O trigger card */
+.o2o-trigger {
+  background:var(--card-bg); border:1.5px solid var(--border); border-radius:20px;
+  padding:2rem; margin-top:2rem; cursor:pointer;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  position:relative; overflow:hidden;
+}
+.o2o-trigger::after {
+  content:''; position:absolute; inset:0; border-radius:20px;
+  background:linear-gradient(135deg, var(--accent-lt) 0%, transparent 60%);
+  opacity:0; transition:opacity .3s;
+}
+.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 12px 32px var(--accent-glow); }
+.o2o-trigger:hover::after { opacity:1; }
+.o2o-tag { display:inline-flex; align-items:center; gap:.4rem; }
+.o2o-open-hint {
+  display:inline-flex; align-items:center; gap:.6rem;
+  color:#fff; font-size:.92rem; font-weight:700; margin-top:1.4rem;
+  background:var(--accent); padding:.65rem 1.4rem; border-radius:40px;
+  box-shadow:0 4px 18px var(--accent-glow);
+  transition:background .2s, box-shadow .2s, transform .2s;
+  letter-spacing:.3px;
+}
+.o2o-trigger:hover .o2o-open-hint {
+  background:var(--accent-dk);
+  box-shadow:0 8px 28px rgba(41,151,255,.4);
+  transform:translateX(4px);
+}
+.o2o-open-hint svg { transition:transform .2s; }
+.o2o-trigger:hover .o2o-open-hint svg { transform:translateX(4px); }
+
+/* ============================================================
+   ACCORDION — Professional Arsenal
+   ============================================================ */
+#arsenal { background:var(--bg); }
+
+.accordion-container { display:flex; flex-direction:column; gap:.8rem; margin-top:2rem; }
+.accordion-item {
+  background:var(--card-bg); border:1.5px solid var(--border);
+  border-radius:18px; overflow:hidden;
+  transition:border-color .25s, box-shadow .25s, transform .3s cubic-bezier(.16,1,.3,1);
+  position:relative;
+}
+.accordion-item:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(41,151,255,.1); border-color:rgba(41,151,255,.25); }
+.accordion-item.open { transform:none; }
+/* Gradient flash overlay — same feel as O2O card */
+.accordion-item::after {
+  content:''; position:absolute; inset:0; border-radius:18px;
+  background:linear-gradient(120deg, rgba(41,151,255,.06) 0%, transparent 50%);
+  opacity:0; transition:opacity .3s; pointer-events:none;
+}
+.accordion-item:hover::after { opacity:1; }
+.accordion-item.open::after  { opacity:0; }
+.accordion-item::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk));
+  border-radius:4px 0 0 4px;
+  opacity:0; transition:opacity .3s;
+}
+.accordion-item.open { border-color:rgba(41,151,255,.3); box-shadow:0 8px 40px rgba(41,151,255,.08), 0 2px 12px rgba(0,0,0,.04); }
+.accordion-item.open::before { opacity:1; }
+
+.accordion-header {
+  display:flex; align-items:center; gap:1.2rem;
+  padding:1.5rem 1.8rem 1.5rem 2rem; cursor:pointer;
+  transition:background .2s;
+}
+.accordion-header:hover { background:rgba(41,151,255,.03); }
+
+.acc-logo { width:56px; height:56px; object-fit:contain; background:var(--bg); padding:6px; border-radius:12px; border:1.5px solid var(--border); flex-shrink:0; }
+.acc-meta { flex:1; min-width:0; }
+.acc-period  { font-size:.82rem; color:var(--accent); font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:.25rem; }
+.acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.25rem; font-weight:700; line-height:1.25; margin-bottom:.4rem; }
+.acc-focus {
+  display:inline-block;
+  font-size:.82rem; font-weight:600; color:var(--accent);
+  background:rgba(41,151,255,.08);
+  border:1px solid rgba(41,151,255,.2);
+  border-radius:40px; padding:.22rem .8rem;
+  letter-spacing:.2px;
+}
+.acc-chevron {
+  width:30px; height:30px; border-radius:50%; flex-shrink:0;
+  border:1.5px solid var(--border); background:var(--bg);
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .35s cubic-bezier(.16,1,.3,1), background .2s, border-color .2s;
+}
+.accordion-item.open .acc-chevron { transform:rotate(180deg); background:var(--accent); border-color:var(--accent); }
+.acc-chevron svg { width:14px; height:14px; stroke:var(--muted); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; transition:stroke .2s; }
+.accordion-item.open .acc-chevron svg { stroke:#fff; }
+
+.accordion-body {
+  max-height:0; overflow:hidden;
+  transition:max-height .5s cubic-bezier(.16,1,.3,1);
+}
+.accordion-item.open .accordion-body { max-height:1000px; }
+.accordion-inner {
+  padding:0 1.8rem 2rem 2rem; border-top:1px solid var(--border);
+  background:linear-gradient(to bottom, rgba(41,151,255,.02) 0%, transparent 60%);
+}
+.acc-bullets { padding-left:1.2rem; color:var(--text); font-size:1.02rem; margin:1.4rem 0; }
+.acc-bullets li { margin-bottom:.9rem; line-height:1.75; }
+
+.acc-gallery { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x mandatory; margin-top:1rem; }
+.acc-gallery::-webkit-scrollbar { display:none; }
+.acc-gallery figure { flex:0 0 auto; scroll-snap-align:center; }
+.acc-gallery img { height:200px; width:auto; object-fit:cover; border-radius:12px; filter:saturate(.9) sepia(.08); transition:filter .3s; }
+.acc-gallery img:hover { filter:none; }
+.acc-gallery figcaption { margin-top:6px; font-size:.8rem; color:var(--muted); }
+
+/* ============================================================
+   KPI
+   ============================================================ */
+.kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; margin:1.5rem 0; }
+.kpi { background:var(--bg); border:1.5px solid var(--border); border-radius:14px; padding:1.3rem; transition:border-color .25s, transform .3s, box-shadow .3s; }
+.kpi:hover { border-color:var(--accent); transform:translateY(-4px); box-shadow:0 10px 28px rgba(41,151,255,.1); }
+.kpi:hover { border-color:var(--accent); }
+.kpi-num   { font-family:'Space Grotesk',sans-serif; font-size:2.6rem; font-weight:800; color:var(--accent); line-height:1; }
+.kpi-label { font-size:.78rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
+.kpi-badge {
+  display:inline-block; padding:.6rem 1.1rem;
+  background:var(--accent-lt); color:var(--accent);
+  border-radius:10px; font-weight:600; font-size:.9rem; margin:.8rem 0;
+}
+
+/* ============================================================
+   TRANSITION SCATTER BAND
+   ============================================================ */
+.transition-band {
+  height:100vh; position:relative; overflow:hidden;
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  margin:2rem 0;
+}
+.transition-words {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-family:'Space Grotesk',sans-serif; font-size:clamp(2rem,4.5vw,4.5rem);
+  font-weight:800; color:var(--text); opacity:.05;
+  text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase;
+  white-space:nowrap;
+}
+.scatter {
+  position:absolute; left:50%; top:50%;
+  border-radius:14px; object-fit:cover;
+  border:4px solid var(--card-bg);
+  box-shadow:0 20px 40px rgba(0,0,0,.1);
+  opacity:0; z-index:2;
+  transform:translate(-50%,-50%);
+  filter:saturate(.9) sepia(.08);
+}
+
+/* ============================================================
+   AI DEMO
+   ============================================================ */
+#demo { background:var(--bg); }
+.ai-card {
+  display:grid; grid-template-columns:1fr 1.2fr; gap:3rem;
+  align-items:start; background:var(--card-bg);
+  border:1.5px solid var(--border); border-radius:28px;
+  padding:3rem 3.5rem; position:relative; overflow:hidden; isolation:isolate;
+}
+.ai-card::before {
+  content:''; position:absolute; top:-30%; right:-5%;
+  width:400px; height:400px; border-radius:50%;
+  background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events:none;
+}
+.ai-card > * { position:relative; z-index:1; }
+.ai-card h3 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.4rem); font-weight:800; margin:.5rem 0 1rem; line-height:1.2; }
+.ai-card p  { color:var(--muted); font-size:1rem; line-height:1.8; }
+.ai-card p+p { margin-top:.75rem; }
+
+.browser { border:1.5px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.1); background:#fff; min-width:0; }
+.browser-bar { height:36px; background:#F2F2F2; display:flex; align-items:center; padding-left:14px; gap:7px; border-bottom:1px solid var(--border); }
+.b-dot { width:11px; height:11px; border-radius:50%; }
+.b-dot:nth-child(1){background:#ff5f56} .b-dot:nth-child(2){background:#ffbd2e} .b-dot:nth-child(3){background:#27c93f}
+.browser iframe { width:100%; height:440px; border:none; display:block; background:#fff; }
+
+/* ============================================================
+   HOBBIES — hover expand row
+   ============================================================ */
+#hobbies { background:var(--bg); }
+
+.hobby-stack {
+  display:flex;
+  gap:16px;
+  margin-top:3rem;
+  height:420px;
+  align-items:stretch;
+}
+
+.hobby-card {
+  flex:1;
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  transition:flex .5s cubic-bezier(.16,1,.3,1), box-shadow .4s;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  min-width:0;
+}
+
+/* When any sibling is hovered, shrink non-hovered */
+.hobby-stack:hover .hobby-card { flex:.4; }
+.hobby-stack:hover .hobby-card:hover { flex:2; box-shadow:0 20px 50px rgba(0,0,0,.14); }
+
+.hobby-img {
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.hobby-card:hover .hobby-img { transform:scale(1.05); }
+
+/* Gradient overlay always present; darkens on hover */
+.hobby-gradient {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.1) 55%, transparent 100%);
+  transition:opacity .4s;
+}
+
+.hobby-body {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:1.4rem 1.4rem 1.6rem;
+  color:#fff;
+}
+.hobby-body h4 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.1rem; font-weight:700;
+  margin-bottom:6px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.hobby-body p {
+  font-size:.88rem; line-height:1.6; opacity:0;
+  transform:translateY(8px);
+  transition:opacity .4s .1s, transform .4s .1s;
+  /* clamp to 3 lines */
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+}
+.hobby-stack .hobby-card:hover .hobby-body p {
+  opacity:.92; transform:translateY(0);
+}
+
+/* Mobile: vertical stack */
+@media(max-width:700px) {
+  .hobby-stack {
+    flex-direction:column;
+    height:auto;
+  }
+  .hobby-card { flex:none; height:200px; }
+  .hobby-stack:hover .hobby-card { flex:none; height:200px; }
+  .hobby-stack:hover .hobby-card:hover { flex:none; height:280px; }
+  .hobby-body p { opacity:.9; transform:none; }
+}
+
+/* Doodle stickers */
+.doodle { position:absolute; pointer-events:none; opacity:.8; mix-blend-mode:multiply; z-index:0; filter:contrast(1.1); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  border-top:1px solid var(--border);
+  padding:3.5rem 5% 5rem;
+  max-width:1280px; margin:0 auto;
+  display:flex; flex-direction:column; align-items:center; gap:1.5rem;
+}
+.footer-contact { display:flex; flex-wrap:wrap; justify-content:center; gap:.9rem; }
+.footer-copy { font-size:.82rem; color:var(--muted); text-align:center; }
+
+/* ============================================================
+   SECTION TITLE HELPER
+   ============================================================ */
+.section-title-block { margin-bottom:3rem; }
+.section-title-block h2 { font-size:clamp(2rem,4vw,3.2rem); margin:.4rem 0 .6rem; }
+.section-title-block p  { color:var(--muted); font-size:1.02rem; max-width:560px; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:860px) {
+  .hero { grid-template-columns:1fr; gap:2rem; padding:2.5rem 5% 1.5rem; min-height:auto; }
+  .hero-right { order:-1; }
+  .hero-img-wrap { height:56vw; }
+  .hero-name-overlay { font-size:3.5rem; left:0; mix-blend-mode:normal; color:var(--text); opacity:1; animation:none; }
+  .kpi-row { grid-template-columns:repeat(3,1fr); gap:.8rem; }
+  .kpi-num { font-size:1.8rem; }
+  .ai-card { grid-template-columns:1fr; padding:2rem; gap:2rem; }
+  .browser iframe { height:340px; }
+  .nav-brand span { display:none; }
+  .nav-right .btn span { display:none; }
+  .floating-nav { bottom:12px; padding:6px 8px; }
+  .fnav-item { padding:.5rem .75rem; font-size:.65rem; min-width:44px; }
+  .drawer { width:100vw; border-radius:24px 24px 0 0; top:auto; height:90vh; transform:translateY(100%); }
+  .drawer.open { transform:translateY(0); }
+  .accordion-header { padding:1.2rem; gap:.9rem; }
+  .acc-logo { width:44px; height:44px; }
+}
+@media (max-width:500px) {
+  .kpi-row { grid-template-columns:1fr; }
+  .fnav-item span { display:none; }
+  .fnav-item { padding:.5rem .7rem; }
+  .story-svg { min-height:420px; }
+}
+
+/* ============================================================
+   PAGE INTRO — Accordion Strip Reveal
+   ============================================================ */
+#page-intro {
+  position:fixed; inset:0; z-index:9999; pointer-events:none;
+  display:flex; flex-direction:column;
+}
+.intro-strip {
+  flex:1;
+  background:var(--text);
+  transform:translateY(0);
+  transition:transform .9s cubic-bezier(.76,0,.24,1);
+}
+.intro-strip:nth-child(1){ transition-delay:.00s; }
+.intro-strip:nth-child(2){ transition-delay:.05s; }
+.intro-strip:nth-child(3){ transition-delay:.10s; }
+.intro-strip:nth-child(4){ transition-delay:.15s; }
+.intro-strip:nth-child(5){ transition-delay:.20s; }
+.intro-strip:nth-child(6){ transition-delay:.25s; }
+#page-intro.done .intro-strip { transform:translateY(-100%); }
+#page-intro.gone { display:none; }
+
+/* Intro centre logo/name */
+.intro-brand {
+  position:fixed; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  z-index:10000; text-align:center; pointer-events:none;
+  opacity:1; transition:opacity .4s ease .2s;
+}
+.intro-brand.fade { opacity:0; }
+.intro-name {
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(2.5rem,6vw,4.5rem); font-weight:800; color:#fff;
+  letter-spacing:-1px; line-height:1.1;
+  opacity:0; transform:translateY(20px);
+  animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both;
+}
+.intro-role {
+  font-family:'Space Grotesk',sans-serif; font-size:clamp(.85rem,1.5vw,1rem);
+  font-weight:500; color:rgba(255,255,255,.55); letter-spacing:3px;
+  text-transform:uppercase; margin-top:.5rem;
+  opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .3s both;
+}
+@keyframes introBrandIn {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:none; }
+}
+
+/* ============================================================
+   STORY GALLERY — Bon Jovi inspired photo windows
+   ============================================================ */
+.story-gallery-section {
+  padding:6rem 0 4rem;
+  position:relative;
+  overflow:hidden;
+  background:var(--bg);
+}
+.story-gallery-header {
+  text-align:center; margin-bottom:4rem; padding:0 5%;
+}
+.story-gallery-header .sg-eyebrow {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.72rem; font-weight:700; letter-spacing:3px;
+  text-transform:uppercase; color:var(--muted);
+  margin-bottom:1rem;
+}
+.story-gallery-header h2 {
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(2rem,4vw,3.5rem); font-weight:800;
+  color:var(--text); line-height:1.1; letter-spacing:-1px;
+}
+.story-gallery-header .sg-sub {
+  font-size:1rem; color:var(--muted); margin-top:.8rem;
+  max-width:520px; margin-left:auto; margin-right:auto;
+}
+
+/* Horizontal track */
+.sg-track-wrap {
+  position:relative;
+  cursor:grab;
+  user-select:none;
+}
+.sg-track-wrap:active { cursor:grabbing; }
+.sg-track {
+  display:flex; gap:2rem;
+  padding:1rem 5% 3rem;
+  overflow-x:auto; scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.sg-track::-webkit-scrollbar { display:none; }
+
+/* Chapter divider within track */
+.sg-chapter {
+  flex:0 0 auto;
+  display:flex; flex-direction:column;
+  align-items:flex-start;
+  gap:1.4rem;
+  scroll-snap-align:start;
+}
+.sg-chapter-label {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.7rem; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--accent);
+  padding:.3rem .8rem; border:1px solid rgba(41,151,255,.25);
+  border-radius:40px; background:var(--accent-lt);
+  white-space:nowrap;
+}
+.sg-chapter-title {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.05rem; font-weight:700; color:var(--text);
+  max-width:200px; line-height:1.35;
+}
+.sg-chapter-desc {
+  font-size:.82rem; color:var(--muted); line-height:1.6;
+  max-width:200px;
+}
+
+/* Photo card */
+.sg-photo {
+  flex:0 0 auto;
+  scroll-snap-align:center;
+  position:relative;
+  width:260px;
+}
+.sg-photo-inner {
+  width:260px; height:320px;
+  border-radius:16px; overflow:hidden;
+  position:relative;
+  box-shadow:0 12px 40px rgba(0,0,0,.12);
+  transition:transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s;
+}
+.sg-photo:hover .sg-photo-inner {
+  transform:translateY(-8px) rotate(-0.5deg);
+  box-shadow:0 24px 60px rgba(0,0,0,.18);
+}
+.sg-photo-inner img {
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.sg-photo:hover .sg-photo-inner img { transform:scale(1.05); }
+.sg-photo-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 55%);
+}
+.sg-photo-caption {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:1.2rem 1.2rem 1.4rem;
+  color:#fff;
+}
+.sg-photo-caption .sg-cap-label {
+  font-size:.65rem; font-weight:700; letter-spacing:1.5px;
+  text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:3px;
+}
+.sg-photo-caption .sg-cap-text {
+  font-size:.88rem; font-weight:600; line-height:1.35;
+}
+
+/* Wide photo variant */
+.sg-photo.wide { width:340px; }
+.sg-photo.wide .sg-photo-inner { width:340px; height:320px; }
+
+/* Tall photo variant */
+.sg-photo.tall .sg-photo-inner { height:380px; }
+
+/* Chapter connector */
+.sg-connector {
+  flex:0 0 auto; align-self:center;
+  display:flex; align-items:center; gap:6px;
+  padding:0 .5rem;
+}
+.sg-connector-line {
+  width:48px; height:1px;
+  background:linear-gradient(to right, rgba(41,151,255,.4), rgba(41,151,255,.1));
+}
+.sg-connector-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:rgba(41,151,255,.35);
+}
+
+/* Drag hint */
+.sg-hint {
+  text-align:center; margin-top:1.5rem;
+  font-size:.8rem; color:var(--muted);
+  display:flex; align-items:center; justify-content:center; gap:.5rem;
+}
+.sg-hint svg { width:16px; height:16px; stroke:var(--muted); fill:none; stroke-width:2; }
+.sg-hint-arrow { animation: sgDrag 2s ease-in-out infinite; display:inline-block; }
+@keyframes sgDrag { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
+
+/* ============================================================
+   CV FLIP SECTION — Page-turn inspired
+   ============================================================ */
+.cv-flip-section {
+  padding:6rem 5%;
+  max-width:1280px; margin:0 auto;
+  position:relative;
+}
+.cv-flip-header {
+  text-align:center; margin-bottom:4rem;
+}
+.cv-flip-header h2 {
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(2rem,4vw,3.2rem); font-weight:800;
+  letter-spacing:-1px; line-height:1.1;
+}
+.cv-flip-header p {
+  color:var(--muted); margin-top:.7rem; font-size:1rem;
+}
+
+/* CV switcher */
+.cv-switcher {
+  display:flex; justify-content:center; gap:.5rem; margin-bottom:3rem;
+}
+.cv-tab {
+  padding:.55rem 1.4rem; border-radius:40px; font-size:.88rem; font-weight:600;
+  cursor:pointer; border:1.5px solid var(--border);
+  background:var(--card-bg); color:var(--muted);
+  transition:all .22s;
+}
+.cv-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 16px var(--accent-glow); }
+
+/* CV book */
+.cv-book-wrap {
+  perspective:1800px;
+  display:flex; justify-content:center; align-items:center;
+}
+.cv-book {
+  position:relative; width:min(560px, 90vw);
+}
+.cv-page {
+  width:100%; border-radius:12px; overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.2), -8px 0 24px rgba(0,0,0,.06);
+  cursor:pointer;
+  transform-origin:left center;
+  transition:transform .6s cubic-bezier(.16,1,.3,1), opacity .4s;
+  position:relative;
+}
+.cv-page img {
+  width:100%; display:block; border-radius:12px;
+}
+/* Page curl shadow */
+.cv-page::after {
+  content:''; position:absolute; inset:0; border-radius:12px;
+  background:linear-gradient(to right, rgba(0,0,0,.08) 0%, transparent 15%);
+  pointer-events:none;
+}
+.cv-page:hover { transform:rotate3d(0,1,0,-8deg); }
+
+/* Fullscreen lightbox */
+.cv-lightbox {
+  position:fixed; inset:0; z-index:800;
+  background:rgba(0,0,0,.88); backdrop-filter:blur(12px);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition:opacity .3s;
+}
+.cv-lightbox.open { opacity:1; pointer-events:all; }
+.cv-lightbox img {
+  max-width:min(700px,92vw); max-height:90vh;
+  border-radius:12px; box-shadow:0 40px 100px rgba(0,0,0,.5);
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+  transform:scale(.9);
+}
+.cv-lightbox.open img { transform:scale(1); }
+.cv-lightbox-close {
+  position:absolute; top:1.5rem; right:1.5rem;
+  width:40px; height:40px; border-radius:50%;
+  border:none; background:rgba(255,255,255,.15); cursor:pointer;
+  color:#fff; font-size:1.2rem;
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(8px); transition:background .2s;
+}
+.cv-lightbox-close:hover { background:rgba(255,255,255,.25); }
+.cv-lightbox-hint {
+  position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+  color:rgba(255,255,255,.5); font-size:.82rem; letter-spacing:.5px;
+}
+
+/* CV download row */
+.cv-download-row {
+  display:flex; justify-content:center; gap:1rem; margin-top:2.5rem; flex-wrap:wrap;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<!-- ===== PAGE INTRO ANIMATION ===== -->
+<div id="page-intro">
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+</div>
+<div class="intro-brand" id="intro-brand">
+  <div class="intro-name">Liyi GAO</div>
+  <div class="intro-role">Brand Builder &amp; Product Manager</div>
+</div>
+
+<nav class="top-nav">
+  <div class="nav-brand">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
+    <span>Audencia GE Program (PGE)</span>
+  </div>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <a href="pro.html"    class="lang-btn active" data-lang="en">EN</a>
+      <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
+      <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
+    </div>
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+      <span>Contact</span>
+    </a>
+    <div class="cv-dropdown" id="nav-cv">
+      <button class="btn btn-solid">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download CV ▾
+      </button>
+      <div class="cv-menu">
+        <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
+        <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
+      </div>
+    </div>
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn</a>
+  </div>
+</nav>
+
+<!-- ===== FLOATING NAV ===== -->
+<nav class="floating-nav" id="floating-nav">
+  <a class="fnav-item active" href="#hero">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+    <span>Home</span>
+  </a>
+  <a class="fnav-item" href="#story">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+    <span>Story</span>
+  </a>
+  <a class="fnav-item" href="#arsenal">
+    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+    <span>Work</span>
+  </a>
+  <a class="fnav-item" href="#demo">
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+    <span>Project</span>
+  </a>
+  <a class="fnav-item" href="#hobbies">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+    <span>Life</span>
+  </a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="avail-badge reveal">
+        <span class="avail-dot"></span>
+        Available · Internship from July 2026
+      </div>
+      <h1 class="display hero-h1 reveal">
+        The Evolution<br>of a <em>Brand Builder.</em>
+      </h1>
+      <p class="hero-desc reveal delay-1">
+        Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
+      </p>
+      <div class="hero-ctas reveal delay-2">
+        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          liyi.gao.dm@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+      </div>
+      <div class="skill-tags reveal delay-2">
+        <div class="skill-pill">🇨🇳 Mandarin</div>
+        <div class="skill-pill">🇫🇷 French C1</div>
+        <div class="skill-pill">🇬🇧 English C2</div>
+        <div class="skill-pill">SQL</div>
+        <div class="skill-pill">Google Analytics</div>
+        <div class="skill-pill">Microsoft Office</div>
+        <div class="skill-pill">PowerPoint</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img-wrap">
+        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a37a0f8db.webp" alt="Liyi Gao">
+      </div>
+      <div class="hero-name-overlay">Liyi GAO</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DIARY PARALLAX ===== -->
+<div class="diary-container" id="diary-container">
+  <div class="diary-sticky">
+    <h2 class="diary-text" id="diary-text">It all started<br>with empathy.</h2>
+  </div>
+</div>
+
+<!-- ===== STORY MAP (vertical timeline) ===== -->
+
+<!-- ===== STORY GALLERY SECTION ===== -->
+<section id="story" class="story-gallery-section reveal">
+  <div class="story-gallery-header">
+    <div class="sg-eyebrow">Personal Journey</div>
+    <h2>How I grew up<br><em style="color:var(--accent);">in my self-exploration</em></h2>
+    <p class="sg-sub">Three chapters, one continuous thread — curiosity turned into action.</p>
+  </div>
+
+  <div class="sg-track-wrap" id="sg-track-wrap">
+    <div class="sg-track" id="sg-track">
+
+      <!-- CHAPTER 1: Grandma's Stall 2013 -->
+      <div class="sg-chapter">
+        <div class="sg-chapter-label">2013 · Consumer Insights</div>
+        <div class="sg-chapter-title">The Ultimate MVP:<br>Grandma's Stall</div>
+        <div class="sg-chapter-desc">First A/B test on a cardboard sign. Reducing cognitive load with direct copywriting at a rural market.</div>
+      </div>
+
+      <div class="sg-photo tall">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt="Fresh harvest">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Harvest</div>
+            <div class="sg-cap-text">Freshly harvested produce.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-photo">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt="Copywriting sign" style="object-fit:cover;">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Copywriting</div>
+            <div class="sg-cap-text">Bio veggies &amp; cardboard copywriting.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-photo">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt="Holding veggies" style="object-position:top;">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Connection</div>
+            <div class="sg-cap-text">Direct consumer connection.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter connector -->
+      <div class="sg-connector">
+        <div class="sg-connector-line"></div>
+        <div class="sg-connector-dot"></div>
+        <div class="sg-connector-line"></div>
+      </div>
+
+      <!-- CHAPTER 2: DTC Stationery 2015 -->
+      <div class="sg-chapter">
+        <div class="sg-chapter-label">2015 · Brand Positioning</div>
+        <div class="sg-chapter-title">My First Lesson<br>in DTC</div>
+        <div class="sg-chapter-desc">Japanese stationery trend + unified visual display → premium pricing validated. Aesthetics is a growth lever.</div>
+      </div>
+
+      <div class="sg-photo wide">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt="Brand identity">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Identity</div>
+            <div class="sg-cap-text">Establishing brand identity.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-photo">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt="Trend curation">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Curation</div>
+            <div class="sg-cap-text">Trend curation.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-photo">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp" alt="Visual merchandising" style="object-position:top;">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Merchandising</div>
+            <div class="sg-cap-text">Visual merchandising.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter connector -->
+      <div class="sg-connector">
+        <div class="sg-connector-line"></div>
+        <div class="sg-connector-dot"></div>
+        <div class="sg-connector-line"></div>
+      </div>
+
+      <!-- CHAPTER 3: O2O Campus 2022 -->
+      <div class="sg-chapter">
+        <div class="sg-chapter-label">2022 · O2O · Entrepreneurship</div>
+        <div class="sg-chapter-title">Architecting a<br>Campus O2O Network</div>
+        <div class="sg-chapter-desc">400+ MAU, 80% repurchase, &lt;5% waste. Online ordering meets offline delivery at campus scale.</div>
+      </div>
+
+      <div class="sg-photo wide">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt="Shelf system">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Operations</div>
+            <div class="sg-cap-text">Dorm-level shelf system.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-photo">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt="Order data">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Data</div>
+            <div class="sg-cap-text">Data-driven order system.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-photo">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt="UI">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">Product</div>
+            <div class="sg-cap-text">Frictionless UI design.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-photo">
+        <div class="sg-photo-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt="CRM">
+          <div class="sg-photo-overlay"></div>
+          <div class="sg-photo-caption">
+            <div class="sg-cap-label">CRM</div>
+            <div class="sg-cap-text">High-retention CRM.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- End padding -->
+      <div style="flex:0 0 2rem;"></div>
+
+    </div><!-- /sg-track -->
+  </div>
+
+  <div class="sg-hint">
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    <span class="sg-hint-arrow">Drag to explore →</span>
+  </div>
+</section>
+
+<!-- spine-wrap spans #o2o-story through #arsenal -->
+<div class="spine-wrap" id="spine-wrap">
+  <div class="timeline-spine" id="timeline-spine"></div>
+
+  <!-- O2O Case Study -->
+  <section style="padding:3rem 0 0; position:relative;">
+    <div style="max-width:900px;margin:0 auto;padding:0 5% 4rem;">
+      <div class="o2o-trigger reveal" id="o2o-trigger">
+        <div class="o2o-inner">
+          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b173d32086c.webp" alt="O2O" class="o2o-icon" style="object-fit:cover;">
+          <div class="o2o-text">
+            <p class="label" style="margin-bottom:.3rem;">Phase 2 (2022) · Flagship Deep Dive</p>
+            <h3 class="heading" style="font-size:1.5rem;">Architecting a Campus O2O Network</h3>
+            <p style="color:var(--muted);font-size:.92rem;margin-top:.3rem;line-height:1.6;">400+ MAU · 80% repurchase · &lt;5% waste · 1,000+ private-domain users</p>
+          </div>
+          <div class="o2o-open-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            Explore Case Study
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ===== DRAWER: O2O detail ===== -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="o2o-drawer">
+  <button class="drawer-close" id="drawer-close">✕</button>
+  <p class="label">Phase 2 (2022) · Campus Startup</p>
+  <h3>Architecting a Campus O2O Network</h3>
+  <p style="color:var(--muted);font-size:.97rem;line-height:1.75;margin-bottom:1rem;">
+    Founded a new digital business ecosystem with online ordering and offline delivery — from a blank page to a thriving campus brand.
+  </p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num">400+</div><div class="kpi-label">Monthly Active Users</div></div>
+    <div class="kpi"><div class="kpi-num">80%</div><div class="kpi-label">Repurchase Rate</div></div>
+    <div class="kpi"><div class="kpi-num">&lt;5%</div><div class="kpi-label">Perishable Waste</div></div>
+  </div>
+  <div class="kpi-badge">Designed materials driving engagement across <strong>1,000+ private-domain users</strong></div>
+  <ul class="drawer-bullets" style="margin-top:1.2rem;">
+    <li><strong>Founded</strong> a new digital business ecosystem with online ordering and offline delivery, initially focusing on fresh fruit and successfully scaling to high-margin fruit by-products.</li>
+    <li><strong>Directed</strong> end-to-end operations, taking full ownership of procurement, SKU selection, team coordination, and daily customer service management.</li>
+    <li><strong>Forged</strong> strategic partnerships with student clubs and local coffee shops, effectively securing offline pop-up spaces and co-hosting promotional events.</li>
+  </ul>
+  <div class="drawer-gallery">
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt=""><figcaption>Dorm-level shelf system</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt=""><figcaption>Data-driven orders</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt=""><figcaption>Frictionless UI</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt=""><figcaption>High-retention CRM</figcaption></figure>
+  </div>
+</div>
+
+<!-- ===== TRANSITION SCATTER ===== -->
+<div data-theme="theme-dark" class="theme-trigger"></div>
+<div class="transition-band" id="trans-band">
+  <div class="transition-words">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
+  <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:340px;height:240px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:270px;height:340px;">
+</div>
+<div data-theme="theme-light" class="theme-trigger"></div>
+
+<!-- ===== PROFESSIONAL ARSENAL — ACCORDION ===== -->
+<section id="arsenal" class="section-full" style="padding-bottom:5rem;">
+  <div style="max-width:1280px;margin:0 auto;padding:0 5%;">
+    <div class="section-title-block reveal" style="text-align:center;margin-bottom:3.5rem;">
+      <p class="label" style="margin-bottom:.5rem;">Experience</p>
+      <h2 class="display" style="font-size:clamp(2.4rem,4.5vw,3.8rem);font-style:italic;line-height:1.1;">Sharpening the<br><em style="color:var(--accent);">Professional Arsenal</em></h2>
+    </div>
+
+    <div class="accordion-container">
+
+      <!-- WL -->
+      <div class="accordion-item" data-acc="wl">
+        <div class="accordion-header">
+          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
+          <div class="acc-meta">
+            <div class="acc-period">Canton, China · Mar 2025 – Jun 2025</div>
+            <div class="acc-company">Wealthfields Lohmann (FMCG)</div>
+            <div class="acc-focus">360° Brand Partnerships & Go-to-Market</div>
+          </div>
+          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <ul class="acc-bullets">
+              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
+              <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
+              <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
+            </ul>
+            <div class="acc-gallery">
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>Marathon Live</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>50k+ Stream</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>Event Setup</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>Offline Sales</figcaption></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MMA -->
+      <div class="accordion-item" data-acc="mma">
+        <div class="accordion-header">
+          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
+          <div class="acc-meta">
+            <div class="acc-period">Canton, China · Jan 2023 – Aug 2023</div>
+            <div class="acc-company">MMA Brand Services Pte. Ltd.</div>
+            <div class="acc-focus">Product Lifecycle Management & E-Commerce Strategy</div>
+          </div>
+          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <ul class="acc-bullets">
+              <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
+              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
+            </ul>
+            <div class="acc-gallery">
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAL -->
+      <div class="accordion-item" data-acc="tal">
+        <div class="accordion-header">
+          <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
+          <div class="acc-meta">
+            <div class="acc-period">Guangzhou, China · Nov 2023 – Jun 2024</div>
+            <div class="acc-company">TAL Education Group</div>
+            <div class="acc-focus">EdTech & Audience Engagement</div>
+          </div>
+          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <ul class="acc-bullets">
+              <li><strong>Public Speaking:</strong> Delivered high-pressure live presentations to large audiences, achieving <strong>#1 performance</strong> among new instructors.</li>
+              <li><strong>Knowledge Synthesis:</strong> Deconstructed complex Olympiad Math logic into simplified, engaging content.</li>
+              <li><strong>CRM & Retention:</strong> Secured a <strong>100% renewal rate</strong> through proactive client relationship management.</li>
+            </ul>
+            <div class="acc-gallery">
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>Top Performance</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>Live Presentation</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>Engagement</figcaption></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACE -->
+      <div class="accordion-item" data-acc="ace">
+        <div class="accordion-header">
+          <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
+          <div class="acc-meta">
+            <div class="acc-period">Nantes, France · Ongoing</div>
+            <div class="acc-company">Audencia Entrepreneur Club (ACE)</div>
+            <div class="acc-focus">PR, External Communication & Resource Orchestration</div>
+          </div>
+          <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-inner">
+            <ul class="acc-bullets">
+              <li><strong>Spearheaded</strong> external communications for the "DARE" initiative, successfully pitching and securing <strong>high-profile industry guest speakers</strong>.</li>
+              <li><strong>Directed</strong> cross-functional collaboration across departments, aligning core messaging.</li>
+              <li><strong>Produced</strong> high-impact visual media assets and integrated promotional campaigns.</li>
+            </ul>
+            <div class="acc-gallery">
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Event Planning</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>Coordination</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE Execution</figcaption></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end accordion-container -->
+  </div>
+</section>
+</div><!-- /.spine-wrap -->
+
+<!-- ===== AI DEMO ===== -->
+<section id="demo" class="section reveal">
+  <div class="ai-card">
+    <div>
+      <p class="label">Current Exploration · Agile Prototyping</p>
+      <h3>Building the<br>Skincare Copilot</h3>
+      <p>I treat AI as a strategic co-pilot. By translating my consumer intuition into structured logic, I rapidly coded and deployed this functional web application.</p>
+      <p>Designed to solve the real pain point of overwhelming skincare choices — providing personalized routine analysis and reducing cognitive load for beauty consumers.</p>
+      <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
+        Experience the Live Prototype ↗
+      </a>
+    </div>
+    <div class="browser">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+      </div>
+      <iframe src="https://lygao-ducky.github.io/skincare_assistant/index.html" title="Skincare Copilot"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOBBIES ===== -->
+<section id="hobbies" class="section reveal" style="position:relative;overflow:visible;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle" style="top:5%;left:0;width:150px;transform:rotate(10deg);" alt="">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle" style="bottom:10%;right:0;width:140px;transform:rotate(-12deg);" alt="">
+  <div class="section-title-block" style="text-align:center;">
+    <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">When I'm not in front of my laptop...</h2>
+    <p>Maintaining the "hardware" and optimizing the "flow state".</p>
+  </div>
+  <div class="hobby-stack">
+    <div class="hobby-card" id="hc1">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing" class="hobby-img">
+      <div class="hobby-gradient"></div>
+      <div class="hobby-body">
+        <h4>🚣 Aviron</h4>
+        <p>That pure magic of perfect team sync. And when I'm solo? Just me, a boat, chasing the wind.</p>
+      </div>
+    </div>
+    <div class="hobby-card" id="hc2">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" class="hobby-img" style="object-position:top;">
+      <div class="hobby-gradient"></div>
+      <div class="hobby-body">
+        <h4>🥾 Randonnée</h4>
+        <p>Scrambling up rocky trails for that one epic view. Leg burn? Yes. Worth it? Always.</p>
+      </div>
+    </div>
+    <div class="hobby-card" id="hc3">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming" class="hobby-img">
+      <div class="hobby-gradient"></div>
+      <div class="hobby-body">
+        <h4>🏊 Swimming</h4>
+        <p>Honestly? I love it because there's no sweat to wipe away! Just the pure, carefree joy of uninhibited movement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== CV FLIP SECTION ===== -->
+<section class="cv-flip-section reveal">
+  <div class="cv-flip-header">
+    <p class="label" style="margin-bottom:.6rem;">Download & Preview</p>
+    <h2>My CV,<br><em style="font-style:italic; color:var(--accent);">at a glance</em></h2>
+    <p>Swipe to preview · Click to enlarge · Download below</p>
+  </div>
+
+  <div class="cv-switcher">
+    <button class="cv-tab active" data-cv="en" onclick="switchCV('en')">🇬🇧 English</button>
+    <button class="cv-tab" data-cv="fr" onclick="switchCV('fr')">🇫🇷 Français</button>
+  </div>
+
+  <div class="cv-book-wrap">
+    <div class="cv-book">
+      <div class="cv-page" id="cv-page-en" onclick="openCVLight('en')">
+        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b176a41b074.webp" alt="English CV" id="cv-img-en">
+      </div>
+      <div class="cv-page" id="cv-page-fr" style="display:none;" onclick="openCVLight('fr')">
+        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b176a4165d0.webp" alt="French CV" id="cv-img-fr">
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-download-row">
+    <a href="Liyi_GAO_Product_assistant.pdf" download class="btn btn-accent">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download English CV
+    </a>
+    <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download class="btn btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Télécharger CV Français
+    </a>
+  </div>
+</section>
+
+<!-- CV Lightbox -->
+<div class="cv-lightbox" id="cv-lightbox" onclick="closeCVLight()">
+  <img src="" alt="CV Preview" id="cv-lightbox-img">
+  <button class="cv-lightbox-close" onclick="closeCVLight()">✕</button>
+  <div class="cv-lightbox-hint">Click anywhere to close</div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-contact">
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+      liyi.gao.dm@gmail.com
+    </a>
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
+    <div class="cv-dropdown footer-cv">
+      <button class="btn btn-ghost">↓ Download CV ▾</button>
+      <div class="cv-menu">
+        <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
+        <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
+      </div>
+    </div>
+  </div>
+  <p class="footer-copy">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
+</footer>
+
+<!-- ===== THEME TRIGGER (invisible, for scroll-based theme swap) ===== -->
+<div data-theme="theme-light" class="theme-trigger" style="position:absolute;top:0;height:1px;"></div>
+
+<script>
+/* ================================================================
+   1. REVEAL ON SCROLL
+   ================================================================ */
+(function(){
+  function init(){
+    document.querySelectorAll('.reveal').forEach(function(el){
+      el.classList.add('will-reveal');
+    });
+    function check(){
+      document.querySelectorAll('.will-reveal').forEach(function(el){
+        if(el.getBoundingClientRect().top < window.innerHeight - 60)
+          el.classList.add('active');
+      });
+    }
+    window.addEventListener('scroll', check, {passive:true});
+    check();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
+})();
+
+/* ================================================================
+   2. DIARY PARALLAX — fade in once, stay visible
+   ================================================================ */
+(function(){
+  var diaryCont = document.getElementById('diary-container');
+  var diaryTxt  = document.getElementById('diary-text');
+  var locked = false;
+  function update(){
+    if(!diaryCont||!diaryTxt||locked) return;
+    var rect = diaryCont.getBoundingClientRect();
+    var wh   = window.innerHeight;
+    var total = rect.height - wh;
+    if(total <= 0) { lock(); return; }
+    var p = Math.max(0, Math.min(1, -rect.top / total));
+    var opacity = Math.min(1, p / 0.18);
+    var scale   = 0.65 + Math.pow(p, .5) * 0.42;
+    diaryTxt.style.opacity   = opacity;
+    diaryTxt.style.transform = 'scale('+Math.min(scale,1.05)+')';
+    if(p >= 0.22) lock();
+  }
+  function lock(){
+    locked = true;
+    diaryTxt.style.cssText = 'opacity:1 !important; transform:scale(1) !important; will-change:auto; transition:none !important;';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('load',   update);
+  update();
+  // Safety net: force visible after 2s in case scroll never fires
+  setTimeout(function(){ if(!locked) lock(); }, 2500);
+})();
+
+/* ================================================================
+   3. SCATTER BAND
+   ================================================================ */
+(function(){
+  var transBand = document.getElementById('trans-band');
+  var si1=document.getElementById('s1'),
+      si2=document.getElementById('s2'),
+      si3=document.getElementById('s3');
+  function update(){
+    if(!transBand) return;
+    var r=transBand.getBoundingClientRect(), wh=window.innerHeight;
+    var p=Math.max(0,Math.min(1,1-r.bottom/(wh+r.height)));
+    var o=Math.sin(p*Math.PI);
+    [si1,si2,si3].forEach(function(img){ if(img) img.style.opacity=o; });
+    if(si1) si1.style.transform='translate(calc(-50% + '+(-170+p*110)+'px),calc(-50% + '+(55-p*110)+'px)) rotate('+(-12+p*4)+'deg)';
+    if(si2) si2.style.transform='translate(calc(-50% + '+(15-p*55)+'px),calc(-50% + '+(-75+p*75)+'px)) rotate('+(4-p*8)+'deg)';
+    if(si3) si3.style.transform='translate(calc(-50% + '+(155-p*95)+'px),calc(-50% + '+(35-p*55)+'px)) rotate('+(12-p*12)+'deg)';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('load', update);
+  update();
+  // Fallback: fire again after images load
+  setTimeout(update, 800);
+})();
+
+/* ================================================================
+   4. ACCORDION — independent toggle (multiple can be open)
+   ================================================================ */
+document.querySelectorAll('.accordion-header').forEach(function(header){
+  header.addEventListener('click', function(){
+    header.closest('.accordion-item').classList.toggle('open');
+  });
+});
+
+/* ================================================================
+   5. DRAWER — O2O
+   ================================================================ */
+(function(){
+  var overlay = document.getElementById('drawer-overlay');
+  var drawer  = document.getElementById('o2o-drawer');
+  var close   = document.getElementById('drawer-close');
+  var trigger = document.getElementById('o2o-trigger');
+  function open(){ if(!drawer||!overlay) return; drawer.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow='hidden'; }
+  function shut(){ if(!drawer||!overlay) return; drawer.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow=''; }
+  if(trigger) trigger.addEventListener('click', open);
+  if(close)   close.addEventListener('click', shut);
+  if(overlay) overlay.addEventListener('click', shut);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') shut(); });
+})();
+
+/* ================================================================
+   6. STORY NODES — tooltip toggle
+   Clicks on .snode-trigger (left side) toggle the panel.
+   Clicks inside .snode-tooltip (right panel) are absorbed.
+   ================================================================ */
+(function(){
+  function setActive(node, active){
+    if(active){
+      document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
+      node.classList.add('active');
+    } else {
+      node.classList.remove('active');
+    }
+    // Dim/undim siblings
+    var hasActive = !!document.querySelector('.snode.active');
+    document.querySelectorAll('.snode').forEach(function(n){
+      n.classList.toggle('snode-active-sibling', hasActive && !n.classList.contains('active'));
+    });
+  }
+
+  // Only .snode-trigger (img+label side) triggers toggle
+  document.querySelectorAll('.snode-trigger').forEach(function(trigger){
+    trigger.addEventListener('click', function(e){
+      e.stopPropagation();
+      var node = trigger.closest('.snode');
+      setActive(node, !node.classList.contains('active'));
+    });
+  });
+
+  // Tooltip panel absorbs all clicks — does NOT propagate to document
+  document.querySelectorAll('.snode-tooltip').forEach(function(tip){
+    tip.addEventListener('click', function(e){
+      e.stopPropagation();
+    });
+  });
+
+  // ✕ close button
+  document.querySelectorAll('.snode-tooltip-close').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      setActive(btn.closest('.snode'), false);
+    });
+  });
+
+  // Click anywhere else → close all
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
+    document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('snode-active-sibling'); });
+  });
+
+  // ESC key closes panels
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
+      document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('snode-active-sibling'); });
+    }
+  });
+})();
+
+/* ================================================================
+   7. TIMELINE SPINE — span story section through arsenal
+   ================================================================ */
+(function(){
+  function setSpine(){
+    var spine   = document.getElementById('timeline-spine');
+    var story   = document.getElementById('story');
+    var arsenal = document.getElementById('arsenal');
+    if(!spine||!story||!arsenal) return;
+    var top    = story.getBoundingClientRect().top    + window.scrollY;
+    var bottom = arsenal.getBoundingClientRect().bottom + window.scrollY;
+    spine.style.top    = '0px';
+    spine.style.height = (bottom - top) + 'px';
+  }
+  window.addEventListener('load',   setSpine);
+  window.addEventListener('resize', setSpine);
+  setTimeout(setSpine, 400);
+})();
+
+/* ================================================================
+   8. FLOATING NAV — active section highlight
+   ================================================================ */
+(function(){
+  var sections  = ['hero','story','arsenal','demo','hobbies'];
+  var fnavItems = document.querySelectorAll('.fnav-item');
+  window.addEventListener('scroll', function(){
+    var scrollY  = window.scrollY + window.innerHeight/2;
+    var current  = 'hero';
+    sections.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= scrollY) current = id;
+    });
+    fnavItems.forEach(function(item){
+      item.classList.toggle('active', item.getAttribute('href')==='#'+current);
+    });
+  }, {passive:true});
+})();
+
+/* ================================================================
+   9. CV DROPDOWN
+   ================================================================ */
+(function(){
+  document.querySelectorAll('.cv-dropdown button').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var dd     = btn.closest('.cv-dropdown');
+      var menu   = dd.querySelector('.cv-menu');
+      var isOpen = dd.classList.contains('open');
+      document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
+      if(!isOpen){
+        var rect = btn.getBoundingClientRect();
+        menu.style.top  = (rect.bottom+8)+'px';
+        var left = rect.left;
+        if(left+230 > window.innerWidth-16) left = window.innerWidth-246;
+        menu.style.left = left+'px';
+        dd.classList.add('open');
+      }
+    });
+  });
+  document.addEventListener('click',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); });
+  window.addEventListener('scroll',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); },{passive:true});
+})();
+
+/* ================================================================
+   10. HOBBY CARDS — click to toggle active
+   ================================================================ */
+document.querySelectorAll('.hobby-card').forEach(function(card){
+  card.addEventListener('click', function(){
+    var was = card.classList.contains('active');
+    document.querySelectorAll('.hobby-card.active').forEach(function(c){ c.classList.remove('active'); });
+    if(!was) card.classList.add('active');
+  });
+});
+
+
+/* ================================================================
+   11. PAGE INTRO — accordion strips reveal
+   ================================================================ */
+(function(){
+  var intro = document.getElementById('page-intro');
+  var brand = document.getElementById('intro-brand');
+  if(!intro) return;
+  // Lock scroll during intro
+  document.body.style.overflow = 'hidden';
+
+  function startIntro(){
+    // After 900ms — fade out brand name
+    setTimeout(function(){
+      if(brand) brand.classList.add('fade');
+    }, 820);
+    // After 1100ms — strip accordion reveal
+    setTimeout(function(){
+      intro.classList.add('done');
+    }, 1050);
+    // After 2100ms — remove intro entirely, unlock scroll
+    setTimeout(function(){
+      intro.classList.add('gone');
+      document.body.style.overflow = '';
+      // Also trigger reveals in case they were blocked
+      document.querySelectorAll('.will-reveal').forEach(function(el){
+        if(el.getBoundingClientRect().top < window.innerHeight - 60)
+          el.classList.add('active');
+      });
+    }, 2000);
+  }
+
+  if(document.readyState === 'complete'){
+    startIntro();
+  } else {
+    window.addEventListener('load', startIntro);
+    // Fallback timeout
+    setTimeout(startIntro, 400);
+  }
+})();
+
+/* ================================================================
+   12. GALLERY DRAG SCROLL
+   ================================================================ */
+(function(){
+  var track = document.getElementById('sg-track');
+  if(!track) return;
+  var isDragging = false, startX = 0, scrollLeft = 0;
+  track.addEventListener('mousedown', function(e){
+    isDragging = true;
+    startX = e.pageX - track.offsetLeft;
+    scrollLeft = track.scrollLeft;
+    track.style.cursor = 'grabbing';
+  });
+  document.addEventListener('mouseup', function(){
+    isDragging = false;
+    if(track) track.style.cursor = 'grab';
+  });
+  track.addEventListener('mousemove', function(e){
+    if(!isDragging) return;
+    e.preventDefault();
+    var x = e.pageX - track.offsetLeft;
+    var walk = (x - startX) * 1.4;
+    track.scrollLeft = scrollLeft - walk;
+  });
+  // Touch support
+  var touchStartX = 0, touchScrollLeft = 0;
+  track.addEventListener('touchstart', function(e){
+    touchStartX = e.touches[0].pageX;
+    touchScrollLeft = track.scrollLeft;
+  }, {passive:true});
+  track.addEventListener('touchmove', function(e){
+    var walk = touchStartX - e.touches[0].pageX;
+    track.scrollLeft = touchScrollLeft + walk;
+  }, {passive:true});
+})();
+
+/* ================================================================
+   13. CV FLIP — tab switching + lightbox
+   ================================================================ */
+function switchCV(lang) {
+  var enPage = document.getElementById('cv-page-en');
+  var frPage = document.getElementById('cv-page-fr');
+  var tabs   = document.querySelectorAll('.cv-tab');
+  tabs.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-cv') === lang); });
+  if(lang === 'en'){
+    if(enPage) enPage.style.display = '';
+    if(frPage) frPage.style.display = 'none';
+  } else {
+    if(enPage) enPage.style.display = 'none';
+    if(frPage) frPage.style.display = '';
+  }
+}
+
+var _cvCurrentLang = 'en';
+function openCVLight(lang) {
+  _cvCurrentLang = lang || 'en';
+  var imgs = {
+    en: 'https://picui.ogmua.cn/s1/2026/03/11/69b176a41b074.webp',
+    fr: 'https://picui.ogmua.cn/s1/2026/03/11/69b176a4165d0.webp'
+  };
+  var lb  = document.getElementById('cv-lightbox');
+  var lbi = document.getElementById('cv-lightbox-img');
+  if(!lb || !lbi) return;
+  lbi.src = imgs[_cvCurrentLang] || imgs.en;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCVLight() {
+  var lb = document.getElementById('cv-lightbox');
+  if(lb) lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeCVLight();
+});
+// Stop lightbox image click from closing
+(function(){
+  var lbi = document.getElementById('cv-lightbox-img');
+  if(lbi) lbi.addEventListener('click', function(e){ e.stopPropagation(); });
+})();
+
+</script>
+</body>
+</html>
