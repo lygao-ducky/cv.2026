@@ -410,51 +410,11 @@ strong { font-weight:600; color:var(--accent); }
 .o2o-icon  { width:56px; height:56px; object-fit:contain; background:#fff; border-radius:12px; padding:5px; border:1.5px solid var(--border); flex-shrink:0; }
 .o2o-text  { flex:1; min-width:0; }
 
-/* hide old horizontal stuff */
-.snode-connector { display:none; }
-.map-node        { display:none; }
-
 /* Section label shown inline above nodes list */
 .story-section-pad {
   padding:5rem 5% 0;
   max-width:1280px; margin:0 auto; position:relative;
 }
-
-/* Story popup */
-.story-popup {
-  position:fixed; inset:0; z-index:500;
-  display:flex; align-items:center; justify-content:center;
-  padding:1rem;
-  pointer-events:none; opacity:0;
-  transition:opacity .3s;
-}
-.story-popup.open { opacity:1; pointer-events:all; }
-.story-popup-overlay {
-  position:absolute; inset:0;
-  background:rgba(0,0,0,.4); backdrop-filter:blur(6px);
-}
-.story-popup-card {
-  position:relative; z-index:1;
-  background:var(--card-bg); border-radius:24px;
-  padding:2.5rem; max-width:480px; width:100%;
-  box-shadow:0 32px 80px rgba(0,0,0,.18);
-  transform:scale(.92) translateY(20px);
-  transition:transform .35s cubic-bezier(.16,1,.3,1);
-}
-.story-popup.open .story-popup-card { transform:scale(1) translateY(0); }
-.popup-close {
-  position:absolute; top:1.2rem; right:1.2rem;
-  width:32px; height:32px; border-radius:50%;
-  border:none; background:var(--surface2); cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  color:var(--muted); font-size:1.1rem;
-  transition:background .2s;
-}
-.popup-close:hover { background:var(--border); }
-.popup-year { color:var(--accent); font-size:.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:.5rem; }
-.popup-title { font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; margin-bottom:1rem; }
-.popup-desc { color:var(--muted); line-height:1.75; font-size:.98rem; }
-.popup-img { width:100%; height:180px; object-fit:cover; border-radius:14px; margin-bottom:1.2rem; }
 
 /* ============================================================
    O2O DRAWER
@@ -499,21 +459,7 @@ strong { font-weight:600; color:var(--accent); }
 .drawer-bullets { padding-left:1.1rem; color:var(--muted); font-size:.97rem; }
 .drawer-bullets li { margin-bottom:.75rem; line-height:1.65; }
 
-/* O2O trigger card */
-.o2o-trigger {
-  background:var(--card-bg); border:1.5px solid var(--border); border-radius:20px;
-  padding:2rem; margin-top:2rem; cursor:pointer;
-  transition:all .3s cubic-bezier(.16,1,.3,1);
-  position:relative; overflow:hidden;
-}
-.o2o-trigger::after {
-  content:''; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(135deg, var(--accent-lt) 0%, transparent 60%);
-  opacity:0; transition:opacity .3s;
-}
-.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 12px 32px var(--accent-glow); }
-.o2o-trigger:hover::after { opacity:1; }
-.o2o-tag { display:inline-flex; align-items:center; gap:.4rem; }
+/* O2O trigger card hints */
 .o2o-open-hint {
   display:inline-flex; align-items:center; gap:.6rem;
   color:#fff; font-size:.92rem; font-weight:700; margin-top:1.4rem;
@@ -529,6 +475,31 @@ strong { font-weight:600; color:var(--accent); }
 }
 .o2o-open-hint svg { transition:transform .2s; }
 .o2o-trigger:hover .o2o-open-hint svg { transform:translateX(4px); }
+
+/* ============================================================
+   TRANSITION SCATTER
+   ============================================================ */
+.transition-band {
+  height:100vh; position:relative; overflow:hidden;
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  margin:2rem 0; background: var(--bg);
+}
+.transition-words {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-family:'Space Grotesk',sans-serif; font-size:clamp(2rem,4.5vw,4.5rem);
+  font-weight:800; color:var(--text); opacity:.05;
+  text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase;
+  white-space:nowrap;
+}
+.scatter {
+  position:absolute; left:50%; top:50%;
+  border-radius:14px; object-fit:cover;
+  border:4px solid var(--card-bg);
+  box-shadow:0 20px 40px rgba(0,0,0,.1);
+  opacity:0; z-index:2;
+  transform:translate(-50%,-50%);
+  filter:saturate(.9) sepia(.08);
+}
 
 /* ============================================================
    ACCORDION — Professional Arsenal
@@ -600,45 +571,6 @@ strong { font-weight:600; color:var(--accent); }
 .acc-gallery figcaption { margin-top:6px; font-size:.8rem; color:var(--muted); }
 
 /* ============================================================
-   KPI
-   ============================================================ */
-.kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; margin:1.5rem 0; }
-.kpi { background:var(--bg); border:1.5px solid var(--border); border-radius:14px; padding:1.3rem; transition:border-color .25s; }
-.kpi:hover { border-color:var(--accent); }
-.kpi-num   { font-family:'Space Grotesk',sans-serif; font-size:2.6rem; font-weight:800; color:var(--accent); line-height:1; }
-.kpi-label { font-size:.78rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
-.kpi-badge {
-  display:inline-block; padding:.6rem 1.1rem;
-  background:var(--accent-lt); color:var(--accent);
-  border-radius:10px; font-weight:600; font-size:.9rem; margin:.8rem 0;
-}
-
-/* ============================================================
-   TRANSITION SCATTER BAND
-   ============================================================ */
-.transition-band {
-  height:100vh; position:relative; overflow:hidden;
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-  margin:2rem 0;
-}
-.transition-words {
-  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-  font-family:'Space Grotesk',sans-serif; font-size:clamp(2rem,4.5vw,4.5rem);
-  font-weight:800; color:var(--text); opacity:.05;
-  text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase;
-  white-space:nowrap;
-}
-.scatter {
-  position:absolute; left:50%; top:50%;
-  border-radius:14px; object-fit:cover;
-  border:4px solid var(--card-bg);
-  box-shadow:0 20px 40px rgba(0,0,0,.1);
-  opacity:0; z-index:2;
-  transform:translate(-50%,-50%);
-  filter:saturate(.9) sepia(.08);
-}
-
-/* ============================================================
    AI DEMO
    ============================================================ */
 #demo { background:var(--bg); }
@@ -689,7 +621,6 @@ strong { font-weight:600; color:var(--accent); }
   min-width:0;
 }
 
-/* When any sibling is hovered, shrink non-hovered */
 .hobby-stack:hover .hobby-card { flex:.4; }
 .hobby-stack:hover .hobby-card:hover { flex:2; box-shadow:0 20px 50px rgba(0,0,0,.14); }
 
@@ -700,7 +631,6 @@ strong { font-weight:600; color:var(--accent); }
 }
 .hobby-card:hover .hobby-img { transform:scale(1.05); }
 
-/* Gradient overlay always present; darkens on hover */
 .hobby-gradient {
   position:absolute; inset:0;
   background:linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.1) 55%, transparent 100%);
@@ -722,7 +652,6 @@ strong { font-weight:600; color:var(--accent); }
   font-size:.88rem; line-height:1.6; opacity:0;
   transform:translateY(8px);
   transition:opacity .4s .1s, transform .4s .1s;
-  /* clamp to 3 lines */
   display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
 }
 .hobby-stack .hobby-card:hover .hobby-body p {
@@ -731,18 +660,12 @@ strong { font-weight:600; color:var(--accent); }
 
 /* Mobile: vertical stack */
 @media(max-width:700px) {
-  .hobby-stack {
-    flex-direction:column;
-    height:auto;
-  }
+  .hobby-stack { flex-direction:column; height:auto; }
   .hobby-card { flex:none; height:200px; }
   .hobby-stack:hover .hobby-card { flex:none; height:200px; }
   .hobby-stack:hover .hobby-card:hover { flex:none; height:280px; }
   .hobby-body p { opacity:.9; transform:none; }
 }
-
-/* Doodle stickers */
-.doodle { position:absolute; pointer-events:none; opacity:.12; mix-blend-mode:multiply; z-index:0; }
 
 /* ============================================================
    FOOTER
@@ -782,29 +705,24 @@ footer {
   .drawer.open { transform:translateY(0); }
   .accordion-header { padding:1.2rem; gap:.9rem; }
   .acc-logo { width:44px; height:44px; }
+  /* Prevent horizontal scroll on mobile scatter */
+  .scatter { max-width: 75vw; height: auto !important; }
 }
 @media (max-width:500px) {
   .kpi-row { grid-template-columns:1fr; }
   .fnav-item span { display:none; }
   .fnav-item { padding:.5rem .7rem; }
-  .story-svg { min-height:420px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ===== TOP NAV ===== -->
 <nav class="top-nav">
   <div class="nav-brand">
     <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
     <span>Audencia GE Program (PGE)</span>
   </div>
   <div class="nav-right">
-    <div class="lang-switcher">
-      <a href="pro.html"    class="lang-btn active" data-lang="en">EN</a>
-      <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
-      <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
-    </div>
     <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
       <span>Contact</span>
@@ -823,7 +741,6 @@ footer {
   </div>
 </nav>
 
-<!-- ===== FLOATING NAV ===== -->
 <nav class="floating-nav" id="floating-nav">
   <a class="fnav-item active" href="#hero">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
@@ -847,7 +764,6 @@ footer {
   </a>
 </nav>
 
-<!-- ===== HERO ===== -->
 <section id="hero">
   <div class="hero">
     <div class="hero-left">
@@ -887,20 +803,15 @@ footer {
   </div>
 </section>
 
-<!-- ===== DIARY PARALLAX ===== -->
 <div class="diary-container" id="diary-container">
   <div class="diary-sticky">
     <h2 class="diary-text" id="diary-text">It all started<br>with empathy.</h2>
   </div>
 </div>
 
-<!-- ===== STORY MAP (vertical timeline) ===== -->
-
-<!-- spine-wrap spans #story through #arsenal -->
 <div class="spine-wrap" id="spine-wrap">
   <div class="timeline-spine" id="timeline-spine"></div>
 
-  <!-- STORY SECTION -->
   <section id="story" style="padding:5rem 0 0; position:relative;">
     <div style="max-width:900px; margin:0 auto; padding:0 5%;">
 
@@ -910,7 +821,6 @@ footer {
         <p style="color:var(--muted);margin-top:.4rem;">Click each chapter to expand the story.</p>
       </div>
 
-      <!-- NODE 2013 -->
       <div class="snode reveal" data-story="s2013">
         <div class="snode-dot"></div>
         <div class="snode-img-wrap">
@@ -934,7 +844,6 @@ footer {
         </div>
       </div>
 
-      <!-- NODE 2015 -->
       <div class="snode reveal" data-story="s2015">
         <div class="snode-dot"></div>
         <div class="snode-img-wrap">
@@ -958,7 +867,6 @@ footer {
         </div>
       </div>
 
-      <!-- NODE 2022 -->
       <div class="snode reveal" data-story="s2022">
         <div class="snode-dot"></div>
         <div class="snode-img-wrap">
@@ -984,15 +892,13 @@ footer {
         </div>
       </div>
 
-      <!-- Bridge to O2O card -->
       <div class="story-bridge">
         <div class="bridge-line"></div>
         <div class="bridge-label">↓ Full Case Study</div>
       </div>
 
-    </div><!-- /inner -->
+    </div>
 
-    <!-- O2O card (full width inside story, outside inner container) -->
     <div style="max-width:900px;margin:0 auto;padding:0 5% 4rem;">
       <div class="o2o-trigger reveal" id="o2o-trigger">
         <div class="o2o-inner">
@@ -1010,9 +916,8 @@ footer {
       </div>
     </div>
 
-  </section><!-- /#story -->
+  </section>
 
-<!-- ===== DRAWER: O2O detail ===== -->
 <div class="drawer-overlay" id="drawer-overlay"></div>
 <div class="drawer" id="o2o-drawer">
   <button class="drawer-close" id="drawer-close">✕</button>
@@ -1040,7 +945,6 @@ footer {
   </div>
 </div>
 
-<!-- ===== TRANSITION SCATTER ===== -->
 <div data-theme="theme-dark" class="theme-trigger"></div>
 <div class="transition-band" id="trans-band">
   <div class="transition-words">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
@@ -1050,7 +954,6 @@ footer {
 </div>
 <div data-theme="theme-light" class="theme-trigger"></div>
 
-<!-- ===== PROFESSIONAL ARSENAL — ACCORDION ===== -->
 <section id="arsenal" class="section-full" style="padding-bottom:5rem;">
   <div style="max-width:1280px;margin:0 auto;padding:0 5%;">
     <div class="section-title-block reveal" style="text-align:center;margin-bottom:3.5rem;">
@@ -1060,7 +963,6 @@ footer {
 
     <div class="accordion-container">
 
-      <!-- WL -->
       <div class="accordion-item" data-acc="wl">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
@@ -1088,7 +990,6 @@ footer {
         </div>
       </div>
 
-      <!-- MMA -->
       <div class="accordion-item" data-acc="mma">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
@@ -1112,7 +1013,6 @@ footer {
         </div>
       </div>
 
-      <!-- TAL -->
       <div class="accordion-item" data-acc="tal">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
@@ -1138,8 +1038,7 @@ footer {
           </div>
         </div>
       </div>
-
-      <!-- ACE -->
+      
       <div class="accordion-item" data-acc="ace">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
@@ -1166,13 +1065,10 @@ footer {
         </div>
       </div>
 
-    </div><!-- end accordion-container -->
+    </div>
   </div>
 </section>
-</div><!-- /.spine-wrap -->
-
-<!-- ===== AI DEMO ===== -->
-<section id="demo" class="section reveal">
+</div><section id="demo" class="section reveal">
   <div class="ai-card">
     <div>
       <p class="label">Current Exploration · Agile Prototyping</p>
@@ -1192,7 +1088,6 @@ footer {
   </div>
 </section>
 
-<!-- ===== HOBBIES ===== -->
 <section id="hobbies" class="section reveal" style="position:relative;overflow:hidden;">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle" style="top:5%;left:0;width:150px;transform:rotate(10deg);" alt="">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle" style="bottom:10%;right:0;width:140px;transform:rotate(-12deg);" alt="">
@@ -1228,7 +1123,6 @@ footer {
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
 <footer>
   <div class="footer-contact">
     <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
@@ -1247,7 +1141,6 @@ footer {
   <p class="footer-copy">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
 </footer>
 
-<!-- ===== THEME TRIGGER (invisible, for scroll-based theme swap) ===== -->
 <div data-theme="theme-light" class="theme-trigger" style="position:absolute;top:0;height:1px;"></div>
 
 <script>
