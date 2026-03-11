@@ -29,15 +29,15 @@
 *:focus { outline: none; }
 
 /* 锁定基准字号 */
-html { scroll-behavior: smooth; font-size: 15px; width: 100%; height: 100%; } 
+html { scroll-behavior: smooth; font-size: 15px; } 
 
+/* [🔥 修复 Sticky 失效的罪魁祸首] 移除 body 的 overflow-x: hidden */
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', -apple-system, sans-serif;
   line-height: 1.6;
-  overflow-x: hidden;
-  width: 100%;
+  margin: 0;
 }
 
 /* ---- Type Scale ---- */
@@ -51,7 +51,9 @@ strong { font-weight:600; color:var(--accent); }
 #hero, #hero * { animation-play-state:running !important; }
 .will-reveal { opacity:0; transform:translateY(28px); transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
 .will-reveal.active { opacity:1; transform:none; }
-.delay-1 { transition-delay:.1s; } .delay-2 { transition-delay:.2s; } .delay-3 { transition-delay:.3s; }
+.delay-1 { transition-delay:.1s; }
+.delay-2 { transition-delay:.2s; }
+.delay-3 { transition-delay:.3s; }
 
 /* ---- Buttons ---- */
 .btn {
@@ -59,7 +61,8 @@ strong { font-weight:600; color:var(--accent); }
   padding:.55rem 1.2rem; border-radius:40px;
   font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:600;
   text-decoration:none; cursor:pointer; border:none;
-  transition:all .22s cubic-bezier(.16,1,.3,1); white-space:nowrap;
+  transition:all .22s cubic-bezier(.16,1,.3,1);
+  white-space:nowrap;
 }
 .btn:hover { transform:translateY(-2px); }
 .btn-accent  { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
@@ -71,52 +74,37 @@ strong { font-weight:600; color:var(--accent); }
 .btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.3); } }
 
-/* 全局涂鸦贴纸 */
+/* 全局透明涂鸦贴纸：作为极淡的水印背景 */
 .doodle-sticker { 
   position: absolute; height: auto; 
   z-index: -1; pointer-events: none; 
-  mix-blend-mode: multiply; opacity: 0.05; 
+  mix-blend-mode: multiply; opacity: 0.06; 
   filter: grayscale(100%);
 }
 
 .section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
 p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
+/* 防止页面撑破的基础设置 */
+.overflow-protector {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
 /* 全屏跑马灯 */
 .marquee-bg {
-  position: fixed; top: 40%; left: 0; width: 100vw; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
+  position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
 }
 @keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 /* ============================================================
-   PAGE INTRO
-   ============================================================ */
-#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
-.intro-strip { 
-    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
-}
-.intro-strip:nth-child(1){ transition-delay:.00s; }
-.intro-strip:nth-child(2){ transition-delay:.05s; }
-.intro-strip:nth-child(3){ transition-delay:.10s; }
-.intro-strip:nth-child(4){ transition-delay:.15s; }
-.intro-strip:nth-child(5){ transition-delay:.20s; }
-.intro-strip:nth-child(6){ transition-delay:.25s; }
-#page-intro.done .intro-strip { transform:translateY(-100%); }
-#page-intro.gone { display:none; }
-
-.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width: 100%;}
-.intro-brand.fade { opacity:0; }
-.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,6vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
-.intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
-@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-
-/* ============================================================
-   TOP NAV
+   [🔥 修复] TOP NAV
    ============================================================ */
 .top-nav {
   display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 5%; position:sticky; top:0; 
-  z-index:2000;
+  padding:1.2rem 5%; 
+  position: sticky; top: 0; /* 恢复 Sticky 效果 */
+  z-index: 2000; 
   backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
   background:var(--nav-bg); border-bottom:1px solid var(--border);
 }
@@ -125,11 +113,27 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
 .nav-right { display:flex; align-items:center; gap:.7rem; }
 
+/* 语言切换 */
+.lang-switcher {
+  display:flex; align-items:center;
+  border:1.5px solid var(--border); border-radius:40px;
+  overflow:hidden; background:var(--card-bg);
+}
+.lang-btn {
+  padding:.35rem .8rem; font-size:.78rem; font-weight:600;
+  color:var(--muted); text-decoration:none;
+  transition:background .2s, color .2s;
+}
+.lang-btn:hover { color:var(--accent); }
+.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
+
+/* CV dropdown */
 .cv-dropdown { position:relative; }
 .cv-menu {
   position:absolute; top:calc(100% + 10px); right:0;
   background:var(--card-bg); border:1px solid var(--border);
-  border-radius:12px; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,.08);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
   min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
   pointer-events:none; transition:all .22s; z-index:9999;
 }
@@ -151,37 +155,49 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
 
 /* ============================================================
+   PAGE INTRO
+   ============================================================ */
+#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
+.intro-strip { 
+    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+}
+.intro-strip:nth-child(1){ transition-delay:.00s; }
+.intro-strip:nth-child(2){ transition-delay:.05s; }
+.intro-strip:nth-child(3){ transition-delay:.10s; }
+.intro-strip:nth-child(4){ transition-delay:.15s; }
+.intro-strip:nth-child(5){ transition-delay:.20s; }
+.intro-strip:nth-child(6){ transition-delay:.25s; }
+#page-intro.done .intro-strip { transform:translateY(-100%); }
+#page-intro.gone { display:none; }
+
+.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width: 100%;}
+.intro-brand.fade { opacity:0; }
+.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,6vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
+.intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
+@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+/* ============================================================
    HERO SECTION
    ============================================================ */
 .hero { 
-    display:grid; grid-template-columns: 1.1fr 1fr; 
-    align-items:center; gap:5rem; 
-    min-height:85vh; padding:4rem 5% 2rem; 
-    max-width: 1040px; 
-    margin:0 auto; position:relative; z-index:10; 
+    display:grid; grid-template-columns:1.1fr 1fr; 
+    align-items:center; gap:4rem; 
+    min-height:80vh; padding:4rem 5% 1rem; 
+    max-width:1040px; margin:0 auto; position:relative; z-index:10; 
 }
-.hero-left { position:relative; max-width: 600px; }
-.hero-right { position:relative; width: 100%; max-width: 400px; margin-left: auto; } 
+.hero-left { position:relative; }
+.hero-right { position:relative; width: 100%; max-width: 400px; margin-left: auto; }
         
 .hero-kicker { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:1.2rem; border-left:3px solid var(--accent); padding-left:10px; }
 .hero-h1 { font-size:clamp(2.5rem, 4vw, 3.5rem); margin-bottom:1rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
 .hero-desc { font-size:1.05rem; color:var(--text); max-width:480px; margin-bottom:2rem; line-height:1.7; }
 
-/* [🔥 修复] 邮箱和 LinkedIn 并排显示 */
-.hero-ctas { display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin-bottom:2rem; }
-
-.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem;}
+.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem;}
 .skill-pill { padding:.3rem .8rem; border:1px solid var(--border); border-radius:6px; font-size:.75rem; font-weight:500; background:var(--card-bg); color:var(--text); transition:border-color .2s; }
 .skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow: 0 2px 8px var(--accent-glow);}
 
-.hero-img-wrap { 
-    width:100%; height: 55vh; max-height: 520px; 
-    border-radius:20px; overflow:hidden; 
-    clip-path:inset(30% 30% 30% 30% round 20px); 
-    animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; 
-    box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);
-}
+.hero-img-wrap { width:100%; height:55vh; max-height: 520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);}
 .hero-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center 20%; transform:scale(1.15); animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; }
 .hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(3rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
 
@@ -213,7 +229,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .timeline-wrapper { position: relative; max-width: 800px; margin: 0 auto; padding: 0 5%; }
 .timeline-spine { position: absolute; left: calc(5% + 38px); top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--accent); opacity: 0.25; z-index: 1;}
 
-.snode { position: relative; margin-bottom: 2.5rem; z-index: 2; }
+.snode { position: relative; margin-bottom: 2rem; z-index: 2; }
 .snode-dot { position: absolute; left: 32px; top: 25px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); z-index: 3; transition: all 0.3s; }
 .snode.open .snode-dot { background: var(--accent); box-shadow: 0 0 0 6px var(--accent-glow); }
 
@@ -256,26 +272,23 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode-wave-container svg { height: 30px; margin-left: calc(96px - 12px); display: block; } 
 
 .story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin: 1.5rem 0 2rem; opacity:.6; }
-.story-bridge-v2 .sbv-line { width:2px; height:30px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
+.story-bridge-v2 .sbv-line { width:2px; height:40px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
 .story-bridge-v2 .sbv-label { font-size:.7rem; font-weight:600; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
 
 /* ============================================================
-   [🔥 修复] O2O CARD & DRAWER
+   O2O CARD & DRAWER
    ============================================================ */
 .o2o-trigger {
   background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
   padding:2rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
   max-width: 900px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
-/* 添加悬浮渐变光效 */
-.o2o-trigger::after {
+.o2o-trigger::before {
   content:''; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%);
-  opacity:0; transition:opacity .3s; pointer-events: none;
+  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 60%); opacity:0; transition:opacity .3s;
 }
-.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-5px) scale(1.01); box-shadow:0 20px 40px var(--accent-glow); }
-.o2o-trigger:hover::after { opacity:1; }
-
+.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 15px 35px var(--accent-glow); }
+.o2o-trigger:hover::before { opacity:1; }
 .o2o-inner { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; position:relative; z-index:1; }
 .o2o-icon  { width:64px; height:64px; object-fit:contain; background:#fff; border-radius:14px; padding:5px; border:1px solid var(--border); flex-shrink:0; }
 .o2o-text  { flex:1; min-width:0; }
@@ -287,26 +300,26 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 }
 .o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(4px); }
 
-/* [🔥 修复] Drawer 加宽至 720px，平铺 4 张图 */
+/* Drawer */
 .drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
 .drawer-overlay.open { opacity:1; pointer-events:all; }
 .drawer {
-  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw);
+  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw); /* [🔥加宽抽屉，平铺4图] */
   background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
   transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
-  overflow-y:auto; padding:3rem; border-radius:24px 0 0 24px;
+  overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
 }
 .drawer.open { transform:translateX(0); }
 .drawer-close {
-  display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%;
-  border:none; background:var(--surface2); cursor:pointer; color:var(--muted); font-size:1.1rem;
+  display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%;
+  border:none; background:var(--surface2); cursor:pointer; color:var(--muted); font-size:1rem;
   margin-bottom:1.5rem; transition:background .2s;
 }
 .drawer-close:hover { background:var(--border); }
-.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:700; margin:.5rem 0 1rem; line-height: 1.2;}
+.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin:.5rem 0 1rem; line-height: 1.2;}
 .drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.2rem 0; }
 .drawer .kpi { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:1rem; }
-.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); line-height:1; }
+.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:800; color:var(--accent); line-height:1; }
 .drawer .kpi-label { font-size:.75rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
 .kpi-badge { display:inline-block; padding:.5rem 1rem; background:var(--accent-lt); color:var(--accent); border-radius:8px; font-weight:600; font-size:.85rem; margin:.8rem 0; border: 1px solid rgba(41, 151, 255, 0.15);}
 
@@ -318,20 +331,21 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .drawer-gallery img { width:100%; height:140px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
 .drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center;}
 
+
 /* ============================================================
    TRANSITION SCATTER BAND & BIG TITLE
    ============================================================ */
+/* 用 overflow-protector 包裹会撑爆屏幕的散落区 */
 .transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); width: 100vw; margin-left: calc(-50vw + 50%);}
 .transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
 .scatter { position:absolute; left:50%; top:50%; border-radius:12px; object-fit:cover; border:5px solid var(--card-bg); box-shadow:0 15px 30px rgba(0,0,0,.08); opacity:0; z-index:2; transform:translate(-50%,-50%); }
 
-/* [🔥 修复] 标题文字修改 */
 .arsenal-header { text-align:center; margin-bottom:2.5rem; padding-top: 3rem; }
 .arsenal-header p.label { margin-bottom:.4rem; }
 .arsenal-header h2 { font-size:clamp(2rem,3.5vw,3rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; color: var(--text);}
 
 /* ============================================================
-   [🔥 修复] ACCORDION — Professional Arsenal 悬停效果统一
+   ACCORDION — Professional Arsenal
    ============================================================ */
 #arsenal { background:var(--bg); padding-bottom:4rem; }
 .accordion-container { display:flex; flex-direction:column; gap:.8rem; max-width:900px; margin: 0 auto; position:relative;}
@@ -339,7 +353,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
     background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; 
     transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s; position:relative; 
 }
-/* 悬浮渐变与放大 */
+/* 悬浮渐变与放大光效 */
 .accordion-item::after { 
     content:''; position:absolute; inset:0; border-radius:16px; 
     background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%); 
@@ -354,6 +368,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .accordion-item.open::after { opacity:0; }
 
 .accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; position:relative; z-index:2;}
+
 .acc-logo { width:50px; height:50px; object-fit:contain; background:var(--bg); padding:5px; border-radius:12px; border:1px solid var(--border); flex-shrink:0; }
 .acc-meta { flex:1; min-width:0; }
 .acc-period  { font-size:.75rem; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:.2rem; }
@@ -420,11 +435,11 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
 
 /* ============================================================
-   [🔥 修复] CV FLIP SECTION (完整加回)
+   [🔥 修复] CV FLIP SECTION
    ============================================================ */
 .cv-flip-section { padding:6rem 5%; max-width:1040px; margin:0 auto; position:relative; }
 .cv-flip-header { text-align:center; margin-bottom:4rem; }
-.cv-flip-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,4vw,3.2rem); font-weight:800; letter-spacing:-1px; line-height:1.1; }
+.cv-flip-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,4vw,3.2rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color: var(--text); }
 .cv-switcher { display:flex; justify-content:center; gap:.5rem; margin-bottom:3rem; }
 .cv-tab { padding:.55rem 1.4rem; border-radius:40px; font-size:.88rem; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:var(--card-bg); color:var(--muted); transition:all .22s; }
 .cv-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 16px var(--accent-glow); }
@@ -478,6 +493,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   .fnav-item { padding:.4rem .6rem; font-size:.6rem; min-width:40px;}
   
   .accordion-header { padding:1.2rem; gap:.8rem; }
+  .acc-hint { display: none;} /* 手机上隐藏 Click to expand */
   .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
   .acc-logo { width:44px; height:44px; }
   .hobby-stack { flex-direction:column; height:auto; }
@@ -503,7 +519,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <div class="intro-role">Brand Builder &amp; Product Manager</div>
 </div>
 
-<nav class="top-nav">
+<div class="overflow-protector"> <nav class="top-nav">
   <div class="nav-brand">
     <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
     <span>Audencia GE Program (PGE)</span>
@@ -514,6 +530,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
       <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
     </div>
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none; /* hidden on small screen if needed */">Contact</a>
     <div class="cv-dropdown" id="nav-cv">
       <button class="btn btn-ghost">Download CV ▾</button>
       <div class="cv-menu">
@@ -521,6 +538,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
         <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
       </div>
     </div>
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
   </div>
 </nav>
 
@@ -550,8 +568,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 <section id="hero" class="section-wrapper">
   <div class="hero">
     <div class="hero-left reveal">
-      <div class="hero-kicker">
-        Audencia PGE | Internship from July 2026
+      <div class="avail-badge">
+        <span class="avail-dot"></span>
+        Internship from July 2026
       </div>
       <h1 class="display hero-h1">
         The Evolution<br>of a <em>Brand Builder.</em>
@@ -724,7 +743,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <div class="transition-words heading">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
   <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:350px;height:250px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.scatter" id="s3" style="width:280px;height:350px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:280px;height:350px;">
 </div>
 
 <div class="arsenal-header reveal" id="arsenal">
@@ -751,7 +770,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
         <div class="accordion-body">
           <div class="accordion-inner">
             <ul class="acc-bullets">
-              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong>.</li>
+              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
               <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
               <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
             </ul>
@@ -780,7 +799,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <div class="accordion-inner">
             <ul class="acc-bullets">
               <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
-              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong>.</li>
+              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
             </ul>
             <div class="acc-gallery">
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
@@ -959,7 +978,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <p class="footer-copy" style="margin-top: 1rem;">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
 </footer>
 
-<script>
+</div><script>
 /* ================================================================
    1. PAGE INTRO — Fixed Accordion Strip Reveal (Anti-Lock)
    ================================================================ */
