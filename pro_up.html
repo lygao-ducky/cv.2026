@@ -21,7 +21,6 @@
   --accent-glow: rgba(41,151,255,0.15);
   --accent-dk:   #0071E3;
   --accent-lt:   rgba(41,151,255,0.06);
-  --timeline-bg: rgba(0,0,0,0.10);
   --surface2:    #F2F2F7;
   --nav-bg:      rgba(248,247,245,0.85);
 }
@@ -29,16 +28,15 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 *:focus { outline: none; }
 
-/* 锁定基准字号，移除会导致滚动的 100vw */
-html { scroll-behavior: smooth; font-size: 15px; width: 100%; height: 100%; } 
+/* 锁定基准字号 */
+html { scroll-behavior: smooth; font-size: 15px; } 
 
+/* [🔥 修复 Sticky 失效的罪魁祸首] 移除 body 的 overflow-x: hidden */
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', -apple-system, sans-serif;
   line-height: 1.6;
-  overflow-x: hidden;
-  width: 100%;
   margin: 0;
 }
 
@@ -58,10 +56,25 @@ strong { font-weight:600; color:var(--accent); }
 .delay-3 { transition-delay:.3s; }
 
 /* ---- Buttons ---- */
+.btn {
+  display:inline-flex; align-items:center; gap:.45rem;
+  padding:.55rem 1.2rem; border-radius:40px;
+  font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:600;
+  text-decoration:none; cursor:pointer; border:none;
+  transition:all .22s cubic-bezier(.16,1,.3,1);
+  white-space:nowrap;
+}
+.btn:hover { transform:translateY(-2px); }
+.btn-accent  { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
+.btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(41,151,255,.25); }
+.btn-ghost   { border:1.5px solid var(--border); color:var(--text); background:transparent; }
+.btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+.btn-solid   { background:var(--text); color:var(--bg); }
+.btn-solid:hover { background:var(--accent); }
 .btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.3); } }
 
-/* 全局涂鸦贴纸：极淡的水印背景 */
+/* 全局透明涂鸦贴纸：作为极淡的水印背景 */
 .doodle-sticker { 
   position: absolute; height: auto; 
   z-index: -1; pointer-events: none; 
@@ -72,11 +85,74 @@ strong { font-weight:600; color:var(--accent); }
 .section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
 p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
+/* 防止页面撑破的基础设置 */
+.overflow-protector {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
 /* 全屏跑马灯 */
 .marquee-bg {
-  position: fixed; top: 40%; left: 0; width: 100vw; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
+  position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
 }
 @keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ============================================================
+   [🔥 修复] TOP NAV
+   ============================================================ */
+.top-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 5%; 
+  position: sticky; top: 0; /* 恢复 Sticky 效果 */
+  z-index: 2000; 
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  background:var(--nav-bg); border-bottom:1px solid var(--border);
+}
+.nav-brand { display:flex; align-items:center; gap:.8rem; }
+.nav-brand img { height:26px; object-fit:contain; }
+.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
+.nav-right { display:flex; align-items:center; gap:.7rem; }
+
+/* 语言切换 */
+.lang-switcher {
+  display:flex; align-items:center;
+  border:1.5px solid var(--border); border-radius:40px;
+  overflow:hidden; background:var(--card-bg);
+}
+.lang-btn {
+  padding:.35rem .8rem; font-size:.78rem; font-weight:600;
+  color:var(--muted); text-decoration:none;
+  transition:background .2s, color .2s;
+}
+.lang-btn:hover { color:var(--accent); }
+.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
+
+/* CV dropdown */
+.cv-dropdown { position:relative; }
+.cv-menu {
+  position:absolute; top:calc(100% + 10px); right:0;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
+  pointer-events:none; transition:all .22s; z-index:9999;
+}
+.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.cv-menu a { display:flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; text-decoration:none; color:var(--text); font-size:.85rem; font-weight:500; transition:background .2s; }
+.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
+.cv-menu a + a { border-top:1px solid var(--border); }
+
+/* ============================================================
+   FLOATING BOTTOM NAV
+   ============================================================ */
+.floating-nav {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:50px; padding:6px 10px; box-shadow:0 10px 30px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.05);
+}
+.fnav-item {
+  display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.65rem; font-weight:600; transition:all .22s; min-width:52px;
+}
+.fnav-item svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
 
 /* ============================================================
    PAGE INTRO
@@ -101,79 +177,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 @keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
 
 /* ============================================================
-   [🔥 修复] TOP NAV — 胶囊按钮风格
-   ============================================================ */
-.top-nav {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 5%; position:sticky; top:0; z-index:2000; 
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  background:var(--nav-bg); border-bottom:1px solid var(--border);
-}
-.nav-brand { display:flex; align-items:center; gap:.8rem; }
-.nav-brand img { height:26px; object-fit:contain; }
-.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
-.nav-right { display:flex; align-items:center; gap:12px; }
-
-/* Language Pill */
-.lang-switcher {
-  display:flex; align-items:center;
-  background:#FFFFFF; border:1px solid var(--border); border-radius:40px;
-  padding:3px; gap:2px;
-}
-.lang-btn {
-  padding:.35rem .9rem; font-size:.78rem; font-weight:600;
-  color:var(--muted); text-decoration:none;
-  border-radius:40px; transition:all .2s;
-}
-.lang-btn.active { background:var(--accent); color:#fff; }
-
-/* Download CV Pill */
-.cv-dropdown { position:relative; }
-.nav-cv-btn {
-  display:inline-flex; align-items:center; gap:6px;
-  padding:.45rem 1.2rem; font-size:.85rem; font-weight:600;
-  background:#FFFFFF; color:var(--text); 
-  border:1px solid var(--border); border-radius:40px;
-  cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif;
-}
-.nav-cv-btn:hover { border-color:var(--muted); }
-
-.cv-menu {
-  position:absolute; top:calc(100% + 10px); right:0;
-  background:var(--card-bg); border:1px solid var(--border);
-  border-radius:12px; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,.08);
-  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
-  pointer-events:none; transition:all .22s; z-index:9999;
-}
-.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
-.cv-menu a { display:flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; text-decoration:none; color:var(--text); font-size:.85rem; font-weight:500; transition:background .2s; }
-.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
-.cv-menu a + a { border-top:1px solid var(--border); }
-
-/* LinkedIn Pill */
-.nav-linkedin-btn {
-  display:inline-flex; align-items:center; gap:6px;
-  padding:.45rem 1.2rem; font-size:.85rem; font-weight:600;
-  background:var(--accent); color:#fff; 
-  border-radius:40px; border:none; text-decoration:none; 
-  transition:all .2s; box-shadow:0 4px 12px var(--accent-glow);
-  font-family:'DM Sans',sans-serif;
-}
-.nav-linkedin-btn:hover { background:var(--accent-dk); transform:translateY(-1px); }
-
-/* ============================================================
-   FLOATING BOTTOM NAV
-   ============================================================ */
-.floating-nav {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:50px; padding:6px 10px; box-shadow:0 10px 30px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.05);
-}
-.fnav-item {
-  display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.65rem; font-weight:600; transition:all .22s; min-width:52px;
-}
-.fnav-item svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
-
-/* ============================================================
    HERO SECTION
    ============================================================ */
 .hero { 
@@ -182,13 +185,13 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
     min-height:80vh; padding:4rem 5% 1rem; 
     max-width:1040px; margin:0 auto; position:relative; z-index:10; 
 }
-.hero-left { position:relative; max-width: 540px; }
-.hero-right { position:relative; width: 100%; max-width: 420px; margin-left: auto; }
+.hero-left { position:relative; }
+.hero-right { position:relative; width: 100%; max-width: 400px; margin-left: auto; }
         
 .hero-kicker { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:1.2rem; border-left:3px solid var(--accent); padding-left:10px; }
 .hero-h1 { font-size:clamp(2.5rem, 4vw, 3.5rem); margin-bottom:1rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
-.hero-desc { font-size:1.05rem; color:var(--text); margin-bottom:2rem; line-height:1.7; }
+.hero-desc { font-size:1.05rem; color:var(--text); max-width:480px; margin-bottom:2rem; line-height:1.7; }
 
 .skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem;}
 .skill-pill { padding:.3rem .8rem; border:1px solid var(--border); border-radius:6px; font-size:.75rem; font-weight:500; background:var(--card-bg); color:var(--text); transition:border-color .2s; }
@@ -196,7 +199,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
 .hero-img-wrap { width:100%; height:55vh; max-height: 520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);}
 .hero-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center 20%; transform:scale(1.15); animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; }
-.hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.8rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
+.hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(3rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
 
 @keyframes expandImg { to { clip-path:inset(0 0 0 0 round 20px); } }
 @keyframes scaleImg  { to { transform:scale(1); } }
@@ -226,7 +229,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .timeline-wrapper { position: relative; max-width: 800px; margin: 0 auto; padding: 0 5%; }
 .timeline-spine { position: absolute; left: calc(5% + 38px); top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--accent); opacity: 0.25; z-index: 1;}
 
-.snode { position: relative; margin-bottom: 2.5rem; z-index: 2; }
+.snode { position: relative; margin-bottom: 2rem; z-index: 2; }
 .snode-dot { position: absolute; left: 32px; top: 25px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); z-index: 3; transition: all 0.3s; }
 .snode.open .snode-dot { background: var(--accent); box-shadow: 0 0 0 6px var(--accent-glow); }
 
@@ -260,7 +263,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode-gallery::-webkit-scrollbar { height: 3px; }
 .snode-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 3px; }
 .snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
-.snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; margin: 0; }
+.snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; }
 .snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
 .snode-gallery figcaption { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; }
 
@@ -269,42 +272,39 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode-wave-container svg { height: 30px; margin-left: calc(96px - 12px); display: block; } 
 
 .story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin: 1.5rem 0 2rem; opacity:.6; }
-.story-bridge-v2 .sbv-line { width:2px; height:30px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
+.story-bridge-v2 .sbv-line { width:2px; height:40px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
 .story-bridge-v2 .sbv-label { font-size:.7rem; font-weight:600; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
 
 /* ============================================================
-   O2O CARD & DRAWER (悬浮发光)
+   O2O CARD & DRAWER
    ============================================================ */
 .o2o-trigger {
   background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
-  padding:2.5rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
+  padding:2rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
   max-width: 900px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
-/* 添加悬浮渐变光效 */
-.o2o-trigger::after {
+.o2o-trigger::before {
   content:''; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%);
-  opacity:0; transition:opacity .3s; pointer-events: none;
+  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 60%); opacity:0; transition:opacity .3s;
 }
-.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-4px) scale(1.01); box-shadow:0 15px 35px var(--accent-glow); }
-.o2o-trigger:hover::after { opacity:1; }
-
+.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 15px 35px var(--accent-glow); }
+.o2o-trigger:hover::before { opacity:1; }
 .o2o-inner { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; position:relative; z-index:1; }
 .o2o-icon  { width:64px; height:64px; object-fit:contain; background:#fff; border-radius:14px; padding:5px; border:1px solid var(--border); flex-shrink:0; }
 .o2o-text  { flex:1; min-width:0; }
 .o2o-open-hint {
   display:inline-flex; align-items:center; gap:.5rem;
-  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.5rem;
+  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.2rem;
   background:var(--accent); padding:.6rem 1.2rem; border-radius:40px;
   box-shadow:0 4px 12px var(--accent-glow); transition:background .2s, transform .2s;
 }
-.o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(5px); }
+.o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(4px); }
 
-/* Drawer 宽度加倍，展示4张图 */
+/* Drawer */
 .drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
 .drawer-overlay.open { opacity:1; pointer-events:all; }
 .drawer {
-  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw); /* [🔥修改宽度] */
+  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw); /* [🔥加宽抽屉，平铺4图] */
   background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
   transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
   overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
@@ -325,17 +325,18 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
 .drawer-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; }
 .drawer-bullets li { margin-bottom:.6rem; line-height:1.6; }
-
-/* 抽屉画廊平铺 */
-.drawer-gallery { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:1.5rem; }
+/* 平铺 4 张图的画廊 */
+.drawer-gallery { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:2rem; }
 .drawer-gallery figure { margin:0; }
-.drawer-gallery img { width:100%; height:130px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
-.drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center; }
+.drawer-gallery img { width:100%; height:140px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
+.drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center;}
+
 
 /* ============================================================
-   [🔥 修复飞出边界] TRANSITION SCATTER BAND 
+   TRANSITION SCATTER BAND & BIG TITLE
    ============================================================ */
-.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); width: 100%; }
+/* 用 overflow-protector 包裹会撑爆屏幕的散落区 */
+.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); width: 100vw; margin-left: calc(-50vw + 50%);}
 .transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
 .scatter { position:absolute; left:50%; top:50%; border-radius:12px; object-fit:cover; border:5px solid var(--card-bg); box-shadow:0 15px 30px rgba(0,0,0,.08); opacity:0; z-index:2; transform:translate(-50%,-50%); }
 
@@ -344,16 +345,15 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .arsenal-header h2 { font-size:clamp(2rem,3.5vw,3rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; color: var(--text);}
 
 /* ============================================================
-   ACCORDION — Professional Arsenal (悬浮动画统一)
+   ACCORDION — Professional Arsenal
    ============================================================ */
 #arsenal { background:var(--bg); padding-bottom:4rem; }
 .accordion-container { display:flex; flex-direction:column; gap:.8rem; max-width:900px; margin: 0 auto; position:relative;}
-
 .accordion-item { 
     background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; 
     transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s; position:relative; 
 }
-/* 悬浮渐变与放大 */
+/* 悬浮渐变与放大光效 */
 .accordion-item::after { 
     content:''; position:absolute; inset:0; border-radius:16px; 
     background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%); 
@@ -362,7 +362,9 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .accordion-item:hover { transform:translateY(-4px) scale(1.01); border-color:var(--accent); box-shadow:0 15px 30px var(--accent-glow); }
 .accordion-item:hover::after { opacity:1; }
 
+.accordion-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk)); opacity:0; transition:opacity .3s; }
 .accordion-item.open { transform:none; border-color:rgba(41,151,255,.3); box-shadow:0 8px 30px rgba(41,151,255,.06); }
+.accordion-item.open::before { opacity:1; }
 .accordion-item.open::after { opacity:0; }
 
 .accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; position:relative; z-index:2;}
@@ -373,7 +375,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700; line-height:1.2; margin-bottom:.3rem; }
 .acc-focus { display:inline-block; font-size:.75rem; font-weight:600; color:var(--text-muted); background:var(--surface2); border-radius:40px; padding:.2rem .6rem; }
 
-/* [🔥 修复] Click to expand hint */
+/* Click to expand hint */
 .acc-hint { font-size: 0.75rem; font-weight: 600; color: var(--accent); opacity: 0; transition: opacity 0.3s; padding-right: 1rem;}
 .accordion-item:hover .acc-hint { opacity: 1; }
 .accordion-item.open .acc-hint { opacity: 0; }
@@ -392,7 +394,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .acc-gallery::-webkit-scrollbar { height: 4px; }
 .acc-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
 .acc-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
-.acc-gallery figure { flex:0 0 auto; scroll-snap-align:center; margin:0;}
+.acc-gallery figure { flex:0 0 auto; scroll-snap-align:center; }
 .acc-gallery img { height:160px; width:auto; max-width:240px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
 .acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center;}
 
@@ -491,7 +493,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   .fnav-item { padding:.4rem .6rem; font-size:.6rem; min-width:40px;}
   
   .accordion-header { padding:1.2rem; gap:.8rem; }
-  .acc-hint { display: none;} 
+  .acc-hint { display: none;} /* 手机上隐藏 Click to expand */
   .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
   .acc-logo { width:44px; height:44px; }
   .hobby-stack { flex-direction:column; height:auto; }
@@ -517,7 +519,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <div class="intro-role">Brand Builder &amp; Product Manager</div>
 </div>
 
-<nav class="top-nav">
+<div class="overflow-protector"> <nav class="top-nav">
   <div class="nav-brand">
     <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
     <span>Audencia GE Program (PGE)</span>
@@ -528,18 +530,15 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
       <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
     </div>
-    
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none; /* hidden on small screen if needed */">Contact</a>
     <div class="cv-dropdown" id="nav-cv">
-      <button class="nav-cv-btn">Download CV <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="btn btn-ghost">Download CV ▾</button>
       <div class="cv-menu">
         <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
         <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
       </div>
     </div>
-    
-    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="nav-linkedin-btn">
-      LinkedIn <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-    </a>
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
   </div>
 </nav>
 
@@ -569,8 +568,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 <section id="hero" class="section-wrapper">
   <div class="hero">
     <div class="hero-left reveal">
-      <div class="hero-kicker">
-        Audencia PGE | Internship from July 2026
+      <div class="avail-badge">
+        <span class="avail-dot"></span>
+        Internship from July 2026
       </div>
       <h1 class="display hero-h1">
         The Evolution<br>of a <em>Brand Builder.</em>
@@ -578,17 +578,16 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <p class="hero-desc reveal delay-1">
         Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
       </p>
-      
       <div class="hero-ctas reveal delay-2">
         <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
           liyi.gao.dm@gmail.com
         </a>
-        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost" style="background:#fff;">
-          LinkedIn ↗
+        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            LinkedIn ↗
         </a>
       </div>
-
       <div class="skill-tags reveal delay-2">
         <div class="skill-pill">🇨🇳 Mandarin</div>
         <div class="skill-pill">🇫🇷 French C1</div>
@@ -669,8 +668,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
         </div>
         <div class="snode-info">
-          <span class="snode-year">2015 · DTC & Merchandising</span>
-          <h3 class="snode-title heading">The Flea Market Pop-Up</h3>
+          <span class="snode-year">2015 · Brand Positioning</span>
+          <h3 class="snode-title heading">DTC Stationery</h3>
           <span class="snode-hint">Click to expand</span>
         </div>
       </div>
@@ -678,11 +677,11 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <div class="snode-expansion">
         <div class="snode-expansion-inner">
           <div class="snode-detail-card">
-            <p>Who knew a flea market stall could be a masterclass in DTC branding? By <strong>curating trending Japanese stationery</strong> and elevating the visual merchandising, I successfully validated premium pricing in a highly price-sensitive crowd. A playful but powerful lesson: <strong>aesthetics is a legitimate growth lever</strong>.</p>
+            <p>Spotted the early trend of Japanese stationery. By <strong>curating high-quality items</strong> and unifying the visual display, I created a distinct brand vibe at a flea market. I learned that aesthetics is a growth lever — and that the experience around the product is the product.</p>
             <div class="snode-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt=""><figcaption>Brand identity</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt=""><figcaption>Trend curation</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp" alt=""><figcaption>Visual merchandising</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt=""><figcaption>Trend curation</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt=""><figcaption>Visual display</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa98149e08.webp" alt=""><figcaption>Merchandising</figcaption></figure>
             </div>
           </div>
         </div>
@@ -742,9 +741,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 
 <div class="transition-band" id="trans-band">
   <div class="transition-words heading">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
-  <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:260px;height:180px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:300px;height:200px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:240px;height:300px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:350px;height:250px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:280px;height:350px;">
 </div>
 
 <div class="arsenal-header reveal" id="arsenal">
@@ -771,7 +770,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
         <div class="accordion-body">
           <div class="accordion-inner">
             <ul class="acc-bullets">
-              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong>.</li>
+              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
               <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
               <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
             </ul>
@@ -800,7 +799,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
           <div class="accordion-inner">
             <ul class="acc-bullets">
               <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
-              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong>.</li>
+              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
             </ul>
             <div class="acc-gallery">
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
@@ -979,9 +978,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   <p class="footer-copy" style="margin-top: 1rem;">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
 </footer>
 
-<script>
+</div><script>
 /* ================================================================
-   1. PAGE INTRO — Fixed Accordion Strip Reveal
+   1. PAGE INTRO — Fixed Accordion Strip Reveal (Anti-Lock)
    ================================================================ */
 (function(){
   var intro = document.getElementById('page-intro');
@@ -1029,15 +1028,14 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 })();
 
 /* ================================================================
-   3. [🔥 动画] DIARY PARALLAX — 锁定后不再消失
+   3. DIARY PARALLAX — Empathy Animation
    ================================================================ */
 (function(){
   var diaryCont = document.getElementById('diary-container');
   var diaryTxt  = document.getElementById('diary-text');
-  var locked = false; // Add a lock flag
   
   function update(){
-    if(!diaryCont||!diaryTxt || locked) return; // if locked, stop updating
+    if(!diaryCont||!diaryTxt) return;
     var rect = diaryCont.getBoundingClientRect();
     var wh   = window.innerHeight;
     var total = rect.height - wh;
@@ -1049,21 +1047,12 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     var scale = 0.9 + Math.pow(p, 0.6) * 0.15; 
     
     var opacity = 0;
-    if (p < 0.25) { 
-        opacity = p * 4; 
-    } else {
-        // Once it reaches full opacity, lock it
-        opacity = 1; 
-        locked = true;
-    }
+    if (p < 0.25) { opacity = p * 4; } 
+    else if (p < 0.8) { opacity = 1; } 
+    else { opacity = 1 - (p - 0.8) * 5; }
 
     diaryTxt.style.opacity   = Math.max(opacity, 0);
     diaryTxt.style.transform = `translateY(${translateY}px) scale(${scale})`;
-    
-    // When locked, ensure it stays fixed nicely
-    if (locked) {
-        diaryTxt.style.transform = `translateY(0px) scale(${scale})`;
-    }
   }
   
   window.addEventListener('scroll', update, {passive:true});
@@ -1082,7 +1071,7 @@ function toggleSnode(id) {
 }
 
 /* ================================================================
-   5. [🔥 修复] SCATTER BAND - 图片紧凑不飞出边缘
+   5. SCATTER BAND
    ================================================================ */
 (function(){
   var transBand = document.getElementById('trans-band');
@@ -1095,10 +1084,9 @@ function toggleSnode(id) {
     var p=Math.max(0,Math.min(1,1-r.bottom/(wh+r.height)));
     var o=Math.sin(p*Math.PI);
     [si1,si2,si3].forEach(function(img){ if(img) img.style.opacity=o; });
-    // Tighter offsets to prevent horizontal overflow
-    if(si1) si1.style.transform='translate(calc(-50% + '+(-120+p*60)+'px),calc(-50% + '+(40-p*80)+'px)) rotate('+(-10+p*4)+'deg)';
-    if(si2) si2.style.transform='translate(calc(-50% + '+(10-p*30)+'px),calc(-50% + '+(-50+p*50)+'px)) rotate('+(4-p*6)+'deg)';
-    if(si3) si3.style.transform='translate(calc(-50% + '+(130-p*60)+'px),calc(-50% + '+(20-p*40)+'px)) rotate('+(10-p*10)+'deg)';
+    if(si1) si1.style.transform='translate(calc(-50% + '+(-170+p*110)+'px),calc(-50% + '+(55-p*110)+'px)) rotate('+(-12+p*4)+'deg)';
+    if(si2) si2.style.transform='translate(calc(-50% + '+(15-p*55)+'px),calc(-50% + '+(-75+p*75)+'px)) rotate('+(4-p*8)+'deg)';
+    if(si3) si3.style.transform='translate(calc(-50% + '+(155-p*95)+'px),calc(-50% + '+(35-p*55)+'px)) rotate('+(12-p*12)+'deg)';
   }
   window.addEventListener('scroll', update, {passive:true});
   update();
