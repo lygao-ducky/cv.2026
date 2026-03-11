@@ -9,45 +9,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   DESIGN TOKENS — Apple-inspired Ice Blue System
+   DESIGN TOKENS — Warm Silver & Ice Blue System
    ============================================================ */
 :root {
-  --bg:          #F5F5F7;
-  --card-bg:     #FFFFFF;
-  --text:        #1D1D1F;
-  --muted:       #86868B;
+  --bg:          #F8F7F5; 
+  --card-bg:     #FFFFFF; 
+  --text:        #2C2C2E; 
+  --muted:       #8E8E93; 
   --border:      rgba(0,0,0,0.06);
-  --accent:      #2997FF;
-  --accent-glow: rgba(41,151,255,0.12);
+  --accent:      #2997FF; 
+  --accent-glow: rgba(41,151,255,0.15);
   --accent-dk:   #0071E3;
-  --accent-lt:   rgba(41,151,255,0.08);
+  --accent-lt:   rgba(41,151,255,0.06);
   --timeline-bg: rgba(0,0,0,0.10);
-  --surface2:    #F2F2F2;
-  --nav-bg:      rgba(245,245,247,0.82);
+  --surface2:    #F2F2F7;
+  --nav-bg:      rgba(248,247,245,0.85);
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+*:focus { outline: none; }
 
-html { scroll-behavior:smooth; }
+/* 修复大屏过大的问题，锁定基准字号 */
+html { scroll-behavior: smooth; font-size: 15px; } 
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', -apple-system, sans-serif;
-  line-height: 1.65;
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
 /* ---- Type Scale ---- */
 .display   { font-family:'Playfair Display',serif; font-weight:800; letter-spacing:-1px; line-height:1.05; }
 .heading   { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.5px; }
-.label     { font-size:.75rem; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--accent); }
-
+.label     { font-size:.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
 strong { font-weight:600; color:var(--accent); }
 
-/* ---- Reveal ---- */
+/* ---- Reveal Animations ---- */
 .reveal { opacity:1; transform:none; }
-/* Hero never blocked by reveal system */
 #hero, #hero * { animation-play-state:running !important; }
 .will-reveal { opacity:0; transform:translateY(28px); transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
 .will-reveal.active { opacity:1; transform:none; }
@@ -58,26 +58,39 @@ strong { font-weight:600; color:var(--accent); }
 /* ---- Buttons ---- */
 .btn {
   display:inline-flex; align-items:center; gap:.45rem;
-  padding:.6rem 1.4rem; border-radius:40px;
-  font-family:'DM Sans',sans-serif; font-size:.88rem; font-weight:600;
+  padding:.55rem 1.2rem; border-radius:40px;
+  font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:600;
   text-decoration:none; cursor:pointer; border:none;
   transition:all .22s cubic-bezier(.16,1,.3,1);
   white-space:nowrap;
 }
 .btn:hover { transform:translateY(-2px); }
 .btn-accent  { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
-.btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(41,151,255,.3); }
+.btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(41,151,255,.25); }
 .btn-ghost   { border:1.5px solid var(--border); color:var(--text); background:transparent; }
 .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
 .btn-solid   { background:var(--text); color:var(--bg); }
 .btn-solid:hover { background:var(--accent); }
-.btn-pulse {
-  animation: pulse 2.5s ease-in-out infinite;
+.btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.3); } }
+
+/* 全局涂鸦贴纸：作为极淡的水印背景 */
+.doodle-sticker { 
+  position: absolute; height: auto; 
+  z-index: -1; pointer-events: none; 
+  mix-blend-mode: multiply; opacity: 0.05; 
+  filter: grayscale(100%);
 }
-@keyframes pulse {
-  0%,100% { box-shadow:0 4px 16px var(--accent-glow); }
-  50%      { box-shadow:0 4px 28px rgba(41,151,255,.45); }
+
+/* [🔥 核心修正] 统一且克制的宽度 */
+.section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
+p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
+
+/* 全屏跑马灯 */
+.marquee-bg {
+  position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
 }
+@keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 /* ============================================================
    TOP NAV
@@ -86,48 +99,25 @@ strong { font-weight:600; color:var(--accent); }
   display:flex; align-items:center; justify-content:space-between;
   padding:1.2rem 5%; position:sticky; top:0; z-index:200;
   backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  background:var(--nav-bg);
-  border-bottom:1px solid var(--border);
+  background:var(--nav-bg); border-bottom:1px solid var(--border);
 }
 .nav-brand { display:flex; align-items:center; gap:.8rem; }
-.nav-brand img { height:30px; object-fit:contain; }
-.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; }
+.nav-brand img { height:26px; object-fit:contain; }
+.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
 .nav-right { display:flex; align-items:center; gap:.7rem; }
-
-/* Lang switcher */
-.lang-switcher {
-  display:flex; align-items:center;
-  border:1.5px solid var(--border); border-radius:40px;
-  overflow:hidden; background:var(--card-bg);
-}
-.lang-btn {
-  padding:.38rem .8rem; font-size:.78rem; font-weight:600;
-  color:var(--muted); text-decoration:none;
-  transition:background .2s, color .2s;
-}
-.lang-btn:hover { color:var(--accent); }
-.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
-.lang-btn + .lang-btn { border-left:1px solid var(--border); }
-.lang-btn.active + .lang-btn { border-left:none; }
 
 /* CV dropdown */
 .cv-dropdown { position:relative; }
 .cv-menu {
-  position:fixed;
+  position:absolute; top:calc(100% + 10px); right:0;
   background:var(--card-bg); border:1px solid var(--border);
-  border-radius:14px; overflow:hidden;
-  box-shadow:0 16px 40px rgba(0,0,0,.12);
-  min-width:220px; opacity:0; transform:translateY(-8px) scale(.97);
-  pointer-events:none; transition:all .22s cubic-bezier(.16,1,.3,1);
-  z-index:9999;
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
+  pointer-events:none; transition:all .22s; z-index:9999;
 }
-.cv-dropdown.open .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
-.cv-menu a {
-  display:flex; align-items:center; gap:.7rem;
-  padding:.9rem 1.3rem; text-decoration:none;
-  color:var(--text); font-size:.88rem; font-weight:500;
-  transition:background .2s;
-}
+.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.cv-menu a { display:flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; text-decoration:none; color:var(--text); font-size:.85rem; font-weight:500; transition:background .2s; }
 .cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
 .cv-menu a + a { border-top:1px solid var(--border); }
 
@@ -135,743 +125,349 @@ strong { font-weight:600; color:var(--accent); }
    FLOATING BOTTOM NAV
    ============================================================ */
 .floating-nav {
-  position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
-  z-index:300; display:flex; align-items:center; gap:6px;
-  background:rgba(255,255,255,0.92);
-  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
-  border:1.5px solid rgba(0,0,0,0.08);
-  border-radius:50px;
-  padding:8px 12px;
-  box-shadow:0 12px 40px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.07);
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:50px; padding:6px 10px; box-shadow:0 10px 30px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.05);
 }
 .fnav-item {
-  display:flex; flex-direction:column; align-items:center; gap:3px;
-  padding:.6rem 1.1rem; border-radius:40px;
-  text-decoration:none; color:var(--muted);
-  font-size:.72rem; font-weight:600; letter-spacing:.4px;
-  transition:all .22s cubic-bezier(.16,1,.3,1); cursor:pointer;
-  border:none; background:transparent;
-  white-space:nowrap; min-width:56px;
+  display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.65rem; font-weight:600; transition:all .22s; min-width:52px;
 }
-.fnav-item svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.fnav-item:hover { color:var(--accent); background:var(--accent-lt); }
-.fnav-item.active { color:var(--accent); background:rgba(41,151,255,.12); }
+.fnav-item svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
 
 /* ============================================================
-   SECTION WRAPPER
+   PAGE INTRO
    ============================================================ */
-.section { padding:5rem 5%; max-width:1280px; margin:0 auto; }
-.section-full { padding:5rem 5%; }
+#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
+.intro-strip { 
+    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+}
+.intro-strip:nth-child(1){ transition-delay:.00s; }
+.intro-strip:nth-child(2){ transition-delay:.05s; }
+.intro-strip:nth-child(3){ transition-delay:.10s; }
+.intro-strip:nth-child(4){ transition-delay:.15s; }
+.intro-strip:nth-child(5){ transition-delay:.20s; }
+.intro-strip:nth-child(6){ transition-delay:.25s; }
+#page-intro.done .intro-strip { transform:translateY(-100%); }
+#page-intro.gone { display:none; }
+
+.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; }
+.intro-brand.fade { opacity:0; }
+.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,5vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
+@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
 
 /* ============================================================
-   HERO
+   [🔥 比例修复] HERO SECTION
    ============================================================ */
-.hero {
-  display:grid; grid-template-columns:1fr 1fr;
-  align-items:center; gap:4rem;
-  min-height:92vh; padding:4rem 5% 2rem;
-  max-width:1280px; margin:0 auto; position:relative; z-index:10;
+.hero { 
+    display:grid; grid-template-columns:1.1fr 1fr; /* 平衡左右比例 */
+    align-items:center; gap:4rem; 
+    min-height:80vh; padding:4rem 5% 1rem; 
+    max-width:1040px; /* 锁死最大宽度 */
+    margin:0 auto; position:relative; z-index:10; 
 }
-.avail-badge {
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:.42rem 1.1rem; border-radius:40px;
-  border:1.5px solid var(--accent); background:var(--accent-lt);
-  color:var(--accent); font-size:.78rem; font-weight:600;
-  letter-spacing:.8px; text-transform:uppercase; margin-bottom:1.6rem;
-}
-.avail-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 1.8s ease-in-out infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
-
-.hero-h1 { font-size:clamp(3rem,5.5vw,5.2rem); margin-bottom:1.3rem; }
+.hero-left { position:relative; }
+.hero-right { position:relative; width: 100%; max-width: 400px; margin-left: auto; } /* 图片克制缩放 */
+        
+.hero-kicker { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:1.2rem; border-left:3px solid var(--accent); padding-left:10px; }
+.hero-h1 { font-size:clamp(2.5rem, 4vw, 3.5rem); margin-bottom:1rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
-.hero-desc { font-size:1.05rem; color:var(--muted); max-width:560px; margin-bottom:2rem; line-height:1.8; }
-.hero-ctas { display:flex; flex-wrap:wrap; align-items:center; gap:.9rem; margin-bottom:2.4rem; }
-.skill-tags { display:flex; flex-wrap:wrap; gap:.6rem; }
-.skill-pill {
-  padding:.38rem .9rem; border:1.5px solid var(--border);
-  border-radius:8px; font-size:.82rem; font-weight:500;
-  background:var(--card-bg); color:var(--text);
-  transition:border-color .2s, color .2s;
-}
-.skill-pill:hover { border-color:var(--accent); color:var(--accent); }
+.hero-desc { font-size:1rem; color:var(--text); max-width:480px; margin-bottom:2rem; line-height:1.7; }
 
-/* Hero photo */
-.hero-right { position:relative; }
-.hero-img-wrap {
-  width:100%; height:72vh; border-radius:24px; overflow:hidden;
-  clip-path:inset(30% 30% 30% 30% round 24px);
-  animation:expandImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
-  animation-play-state:running;
-  box-shadow:0 32px 64px rgba(0,0,0,.1);
-  will-change:clip-path;
-}
-.hero-img-wrap img {
-  width:100%; height:100%; object-fit:cover; object-position:center 15%;
-  transform:scale(1.18);
-  animation:scaleImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
-  will-change:transform;
-}
-.hero-name-overlay {
-  position:absolute; bottom:-2%; left:-6%;
-  font-family:'Playfair Display',serif; font-style:italic;
-  font-size:clamp(3.5rem,7vw,6rem); font-weight:800;
-  color:#fff; mix-blend-mode:exclusion; z-index:10;
-  opacity:0; animation:fadeUp .9s ease 1.2s forwards;
-  pointer-events:none; white-space:nowrap;
-}
-@keyframes expandImg { to { clip-path:inset(0 0 0 0 round 24px); } }
+.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem;}
+.skill-pill { padding:.3rem .8rem; border:1px solid var(--border); border-radius:6px; font-size:.75rem; font-weight:500; background:var(--card-bg); color:var(--text); transition:border-color .2s; }
+.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow: 0 2px 8px var(--accent-glow);}
+
+.hero-img-wrap { width:100%; height:55vh; max-height: 520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);}
+.hero-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center 20%; transform:scale(1.15); animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; }
+.hero-name-overlay { position:absolute; bottom:-3%; left:-5%; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(3rem,5vw,4.5rem); font-weight:800; color:#fff; mix-blend-mode:exclusion; z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; }
+
+@keyframes expandImg { to { clip-path:inset(0 0 0 0 round 20px); } }
 @keyframes scaleImg  { to { transform:scale(1); } }
 @keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
 
 /* ============================================================
-   DIARY PARALLAX
+   DIARY PARALLAX (Empathy)
    ============================================================ */
-.diary-container { height:120vh; position:relative; z-index:15; }
-.diary-sticky {
-  position:sticky; top:0; height:100vh;
-  display:flex; align-items:center; justify-content:center; overflow:hidden;
-}
+.diary-container { height:150vh; position:relative; z-index:15; margin-bottom: -5vh;}
+.diary-sticky { position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .diary-text {
-  font-size:clamp(2.2rem,5vw,5rem);
-  font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
-  color:var(--text); text-align:center; opacity:0;
-  letter-spacing:-1px; transform:scale(.68);
-  will-change:transform,opacity; line-height:1.2;
-  transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1);
+  font-size:clamp(2rem,4.5vw,4rem); font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
+  color:var(--text); text-align:center; opacity:0; transform:scale(0.9) translateY(20px);
+  letter-spacing:-1px; line-height:1.2; will-change:transform, opacity;
 }
 
 /* ============================================================
-   STORY VERTICAL TIMELINE + SPINE
+   STORY SECTION: INLINE EXPANSION 
    ============================================================ */
-#story  { background:var(--bg); }
-#arsenal{ background:var(--bg); }
+#story  { background:var(--bg); padding-bottom: 4rem; position: relative;}
 
-/* Spine wrap contains #story + #arsenal */
-.spine-wrap { position:relative; }
+.story-header { text-align: center; margin-bottom: 3rem; }
+.story-header .st-eyebrow { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:.6rem; }
+.story-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color:var(--text); }
+.story-header .st-sub { font-size:.9rem; color:var(--muted); margin-top:.5rem; }
 
-/* Spine: hidden, wavy SVGs are used instead */
-.timeline-spine { display:none; }
+.timeline-wrapper { position: relative; max-width: 800px; margin: 0 auto; padding: 0 5%; }
+.timeline-spine { position: absolute; left: calc(5% + 38px); top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--accent); opacity: 0.25; z-index: 1;}
 
-/* Wavy connector between nodes */
-.snode-wave {
-  display:block;
-  margin:0 auto;
-  padding-left:calc(5% + 96px + 55px - 1px); /* align centre of dot */
-  pointer-events:none;
-  overflow:visible;
-}
-@media(max-width:860px){
-  .snode-wave { padding-left:calc(5% + 44px + 55px - 1px); }
-}
+.snode { position: relative; margin-bottom: 2rem; z-index: 2; }
+.snode-dot { position: absolute; left: 32px; top: 25px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); z-index: 3; transition: all 0.3s; }
+.snode.open .snode-dot { background: var(--accent); box-shadow: 0 0 0 6px var(--accent-glow); }
 
-/* ── Story node row ── */
-.snode {
-  position:relative;
-  display:flex;
-  align-items:flex-start;
-  gap:1.6rem;
-  padding:0 5% 3rem;
-  max-width:900px;
-  margin:0 auto;
-  z-index:2;
-  transition:opacity .2s;
-}
-/* When any snode is active, dim siblings slightly */
-.snode-active-sibling { opacity:.55; }
-/* Only the trigger zone is clickable */
-.snode-trigger {
-  display:flex; align-items:flex-start; gap:1.6rem;
-  cursor:pointer;
-  flex:1;
-  transition:opacity .2s;
-}
-.snode-trigger:hover { opacity:.92; }
-.snode-trigger:hover .snode-img-wrap {
-  border-color:var(--accent);
-  box-shadow:0 8px 28px rgba(41,151,255,.2);
-  transform:scale(1.06) translateY(-3px);
-}
-.snode.active .snode-trigger .snode-img-wrap {
-  border-color:var(--accent);
-  box-shadow:0 8px 28px rgba(41,151,255,.2);
-  transform:scale(1.06) translateY(-3px);
-}
-/* Hint text pulse when active */
-.snode.active .snode-hint { color:var(--accent); }
-.snode-hint::before { content:"→ "; }
-.snode.active .snode-hint::before { content:"✓ "; }
+.snode-trigger { display: flex; align-items: center; gap: 1.5rem; padding-left: 70px; cursor: pointer; transition: opacity 0.3s; }
+.snode-trigger:hover { opacity: 0.8; }
+.snode-icon { width: 64px; height: 64px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); box-shadow: 0 8px 16px rgba(0,0,0,0.03); padding: 6px; flex-shrink: 0; transition: transform 0.3s, border-color 0.3s; }
+.snode-icon img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.snode.open .snode-icon { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px var(--accent-glow); }
 
-/* Blue dot on spine */
-.snode-dot {
-  position:absolute;
-  left:calc(5% + 96px - 9px);
-  top:30px;
-  width:18px; height:18px; border-radius:50%;
-  background:#fff;
-  border:2.5px solid var(--accent);
-  box-shadow:0 0 0 4px rgba(41,151,255,.1);
-  z-index:3;
-  transition:background .25s, box-shadow .25s;
-}
-.snode.active .snode-dot {
-  background:var(--accent);
-  box-shadow:0 0 0 6px rgba(41,151,255,.18);
-}
-@media(max-width:860px){ .snode-dot { left:calc(5% + 44px - 9px); } }
+.snode-info { display: flex; flex-direction: column; gap: 2px; }
+.snode-year { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
+.snode-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+.snode-hint { font-size: 0.75rem; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; transition: color 0.3s; margin-top: 2px;}
+.snode-hint::before { content: '→'; transition: transform 0.3s; }
+.snode.open .snode-hint { color: var(--accent); }
+.snode.open .snode-hint::before { transform: rotate(90deg); }
 
-/* Image button */
-.snode-img-wrap {
-  flex-shrink:0;
-  margin-left:calc(96px + 1.6rem);
-  width:110px; height:110px;
-  border-radius:14px;
-  overflow:hidden;
-  border:2px solid rgba(41,151,255,.18);
-  box-shadow:0 4px 16px rgba(0,0,0,.07);
-  position:relative;
-  background:var(--accent-lt);        /* consistent tint bg */
-  transition:border-color .25s, box-shadow .25s, transform .3s;
-  cursor:pointer;
-}
-.snode.active .snode-img-wrap {
-  border-color:var(--accent);
-  box-shadow:0 8px 28px rgba(41,151,255,.2);
-  transform:scale(1.06) translateY(-3px);
-}
-/* mix-blend-mode:multiply removes white bg from illustration images */
-.snode-img-wrap img {
-  width:100%; height:100%; object-fit:contain; display:block;
-  padding:8px;
-  mix-blend-mode:multiply;
-}
+/* Inline Accordion Expansion (The "Long Window") */
+.snode-expansion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 70px; }
+.snode.open .snode-expansion { grid-template-rows: 1fr; }
+.snode-expansion-inner { overflow: hidden; }
 
-.snode-img-overlay {
-  display:none; /* removed — no blue overlay on images */
+.snode-detail-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.5rem; margin-top: 1rem; margin-bottom: 0.5rem;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.04);
 }
-@media(max-width:860px){ .snode-img-wrap { margin-left:calc(44px + 1.2rem); width:80px; height:80px; } }
+.snode-detail-card p { font-size: 0.95rem; color: var(--text); line-height: 1.6; margin-bottom: 1.2rem; }
 
-/* Label */
-.snode-label {
-  flex-shrink:0;
-  display:flex; flex-direction:column; gap:3px;
-  padding-top:6px;
-}
-.snode-year  { font-family:"Space Grotesk",sans-serif; font-size:.72rem; font-weight:800; color:var(--accent); letter-spacing:1.5px; text-transform:uppercase; }
-.snode-title { font-family:"Space Grotesk",sans-serif; font-size:1rem; font-weight:700; color:var(--text); line-height:1.3; }
-.snode-hint  { font-size:.78rem; color:var(--muted); margin-top:2px; }
+.snode-gallery { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+.snode-gallery::-webkit-scrollbar { height: 3px; }
+.snode-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 3px; }
+.snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+.snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; }
+/* 限制高度，防止竖图爆炸 */
+.snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+.snode-gallery figcaption { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; }
 
-/* Tooltip panel — fixed to right side of viewport */
-.snode-tooltip {
-  position:fixed;
-  top:50%;
-  right:24px;
-  transform:translateY(-50%) translateX(20px);
-  width:min(320px, calc(100vw - 48px));
-  background:var(--card-bg);
-  border:1.5px solid rgba(41,151,255,.22);
-  border-radius:20px;
-  padding:1.4rem 1.4rem 1.2rem;
-  box-shadow:0 24px 60px rgba(0,0,0,.16), 0 0 0 4px rgba(41,151,255,.05);
-  opacity:0; pointer-events:none;
-  transition:opacity .32s cubic-bezier(.16,1,.3,1), transform .32s cubic-bezier(.16,1,.3,1);
-  z-index:200;
-  max-height:80vh;
-  overflow-y:auto;
-}
-.snode.active .snode-tooltip {
-  opacity:1; pointer-events:all;
-  transform:translateY(-50%) translateX(0);
-}
-.snode-tooltip:hover {
-  box-shadow:0 28px 70px rgba(0,0,0,.18);
-}
-/* No arrow needed for fixed panel */
-.snode-tooltip::before, .snode-tooltip::after { display:none; }
+/* Bridge Wavy Line */
+.snode-wave-container { text-align: center; margin: 0; line-height: 0; position: relative; z-index: 1;}
+.snode-wave-container svg { height: 30px; margin-left: calc(96px - 12px); display: block; } 
 
-/* On narrow screens, panel sits at bottom */
-@media(max-width:900px){
-  .snode-tooltip {
-    position:fixed;
-    top:auto; right:0; bottom:0; left:0;
-    transform:translateY(100%);
-    width:100%; border-radius:20px 20px 0 0;
-    max-height:70vh;
-  }
-  .snode.active .snode-tooltip {
-    transform:translateY(0);
-  }
-}
+.story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin: 1.5rem 0 2rem; opacity:.6; }
+.story-bridge-v2 .sbv-line { width:2px; height:30px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
+.story-bridge-v2 .sbv-label { font-size:.7rem; font-weight:600; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
 
-.snode-tooltip-close {
-  position:absolute; top:.65rem; right:.65rem;
-  width:22px; height:22px; border-radius:50%;
-  border:none; background:var(--surface2); cursor:pointer;
-  font-size:.75rem; color:var(--muted);
-  display:flex; align-items:center; justify-content:center;
-  transition:background .2s;
-}
-.snode-tooltip-close:hover { background:var(--border); }
-.stt-year  { font-size:.7rem; font-weight:700; color:var(--accent); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:.25rem; }
-.stt-title { font-family:"Space Grotesk",sans-serif; font-size:.97rem; font-weight:700; margin-bottom:.5rem; color:var(--text); }
-.snode-tooltip p { color:var(--muted); font-size:.86rem; line-height:1.65; margin-bottom:.7rem; }
-.stt-imgs { display:flex; gap:7px; overflow-x:auto; }
-.stt-imgs::-webkit-scrollbar { display:none; }
-.stt-imgs figure { flex:0 0 auto; }
-.stt-imgs img { width:88px; height:62px; object-fit:cover; border-radius:8px; display:block; }
-.stt-imgs figcaption { font-size:.68rem; color:var(--muted); margin-top:3px; text-align:center; max-width:88px; }
-
-/* Bridge 2022 → O2O card */
-.story-bridge {
-  display:flex; flex-direction:column; align-items:flex-start;
-  padding-left:calc(5% + 96px);
-  padding-bottom:1rem; max-width:900px; margin:0 auto;
-}
-.bridge-line { width:2px; height:32px; background:linear-gradient(to bottom,rgba(41,151,255,.55),rgba(41,151,255,.1)); }
-.bridge-label { font-size:.75rem; font-weight:600; color:var(--accent); opacity:.7; margin-top:.2rem; padding-left:2px; }
-
-/* O2O trigger card */
+/* ============================================================
+   O2O CARD & DRAWER (内收尺寸)
+   ============================================================ */
 .o2o-trigger {
-  background:var(--card-bg); border:1.5px solid var(--border);
-  border-radius:20px; padding:1.8rem 2rem; cursor:pointer;
-  transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
+  background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
+  padding:2rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
+  max-width: 900px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
 }
 .o2o-trigger::before {
   content:''; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 55%);
-  opacity:0; transition:opacity .3s;
+  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 60%); opacity:0; transition:opacity .3s;
 }
-.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 12px 40px var(--accent-glow); }
+.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 15px 35px var(--accent-glow); }
 .o2o-trigger:hover::before { opacity:1; }
-.o2o-inner { display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; position:relative; z-index:1; }
-.o2o-icon  { width:56px; height:56px; object-fit:contain; background:#fff; border-radius:12px; padding:5px; border:1.5px solid var(--border); flex-shrink:0; }
+.o2o-inner { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; position:relative; z-index:1; }
+.o2o-icon  { width:64px; height:64px; object-fit:contain; background:#fff; border-radius:14px; padding:5px; border:1px solid var(--border); flex-shrink:0; }
 .o2o-text  { flex:1; min-width:0; }
+.o2o-open-hint {
+  display:inline-flex; align-items:center; gap:.5rem;
+  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.2rem;
+  background:var(--accent); padding:.6rem 1.2rem; border-radius:40px;
+  box-shadow:0 4px 12px var(--accent-glow); transition:background .2s, transform .2s;
+}
+.o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(4px); }
 
-/* hide old horizontal stuff */
-.snode-connector { display:none; }
-.map-node        { display:none; }
-
-/* Section label shown inline above nodes list */
-.story-section-pad {
-  padding:5rem 5% 0;
-  max-width:1280px; margin:0 auto; position:relative;
-}
-
-/* Story popup */
-.story-popup {
-  position:fixed; inset:0; z-index:500;
-  display:flex; align-items:center; justify-content:center;
-  padding:1rem;
-  pointer-events:none; opacity:0;
-  transition:opacity .3s;
-}
-.story-popup.open { opacity:1; pointer-events:all; }
-.story-popup-overlay {
-  position:absolute; inset:0;
-  background:rgba(0,0,0,.4); backdrop-filter:blur(6px);
-}
-.story-popup-card {
-  position:relative; z-index:1;
-  background:var(--card-bg); border-radius:24px;
-  padding:2.5rem; max-width:480px; width:100%;
-  box-shadow:0 32px 80px rgba(0,0,0,.18);
-  transform:scale(.92) translateY(20px);
-  transition:transform .35s cubic-bezier(.16,1,.3,1);
-}
-.story-popup.open .story-popup-card { transform:scale(1) translateY(0); }
-.popup-close {
-  position:absolute; top:1.2rem; right:1.2rem;
-  width:32px; height:32px; border-radius:50%;
-  border:none; background:var(--surface2); cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  color:var(--muted); font-size:1.1rem;
-  transition:background .2s;
-}
-.popup-close:hover { background:var(--border); }
-.popup-year { color:var(--accent); font-size:.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:.5rem; }
-.popup-title { font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:700; margin-bottom:1rem; }
-.popup-desc { color:var(--muted); line-height:1.75; font-size:.98rem; }
-.popup-img { width:100%; height:180px; object-fit:cover; border-radius:14px; margin-bottom:1.2rem; }
-
-/* ============================================================
-   O2O DRAWER
-   ============================================================ */
-.drawer-overlay {
-  position:fixed; inset:0; z-index:400;
-  background:rgba(0,0,0,.35); backdrop-filter:blur(4px);
-  opacity:0; pointer-events:none;
-  transition:opacity .35s;
-}
+/* Drawer 宽度克制 */
+.drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
 .drawer-overlay.open { opacity:1; pointer-events:all; }
-
 .drawer {
-  position:fixed; top:0; right:0; bottom:0; z-index:401;
-  width:min(680px, 96vw);
-  background:var(--card-bg);
-  box-shadow:-24px 0 80px rgba(0,0,0,.16);
-  transform:translateX(100%);
-  transition:transform .4s cubic-bezier(.16,1,.3,1);
-  overflow-y:auto; padding:3rem;
-  border-radius:24px 0 0 24px;
+  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(580px, 96vw);
+  background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
+  transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
+  overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
 }
 .drawer.open { transform:translateX(0); }
 .drawer-close {
-  display:flex; align-items:center; justify-content:center;
-  width:36px; height:36px; border-radius:50%;
-  border:none; background:var(--surface2); cursor:pointer;
-  color:var(--muted); font-size:1.1rem;
-  margin-bottom:2rem; transition:background .2s;
+  display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%;
+  border:none; background:var(--surface2); cursor:pointer; color:var(--muted); font-size:1rem;
+  margin-bottom:1.5rem; transition:background .2s;
 }
 .drawer-close:hover { background:var(--border); }
-.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:700; margin:.5rem 0 1.2rem; }
-.drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.5rem 0; }
-.drawer .kpi { background:var(--bg); border:1.5px solid var(--border); border-radius:14px; padding:1.2rem; }
-.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:2.2rem; font-weight:800; color:var(--accent); line-height:1; }
-.drawer .kpi-label { font-size:.78rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
-.drawer-gallery { display:flex; gap:12px; overflow-x:auto; margin-top:1.5rem; padding-bottom:4px; scroll-snap-type:x mandatory; }
+.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin:.5rem 0 1rem; }
+.drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.2rem 0; }
+.drawer .kpi { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:1rem; }
+.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); line-height:1; }
+.drawer .kpi-label { font-size:.75rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
+.kpi-badge { display:inline-block; padding:.5rem 1rem; background:var(--accent-lt); color:var(--accent); border-radius:8px; font-weight:600; font-size:.85rem; margin:.8rem 0; border: 1px solid rgba(41, 151, 255, 0.15);}
+
+.drawer-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; }
+.drawer-bullets li { margin-bottom:.6rem; line-height:1.6; }
+.drawer-gallery { display:flex; gap:10px; overflow-x:auto; margin-top:1.5rem; padding-bottom:4px; scroll-snap-type:x mandatory; }
 .drawer-gallery::-webkit-scrollbar { display:none; }
 .drawer-gallery figure { flex:0 0 auto; scroll-snap-align:center; }
-.drawer-gallery img { height:200px; width:auto; object-fit:cover; border-radius:12px; }
-.drawer-gallery figcaption { margin-top:6px; font-size:.8rem; color:var(--muted); }
-.drawer-bullets { padding-left:1.1rem; color:var(--muted); font-size:.97rem; }
-.drawer-bullets li { margin-bottom:.75rem; line-height:1.65; }
-
-/* O2O trigger card */
-.o2o-trigger {
-  background:var(--card-bg); border:1.5px solid var(--border); border-radius:20px;
-  padding:2rem; margin-top:2rem; cursor:pointer;
-  transition:all .3s cubic-bezier(.16,1,.3,1);
-  position:relative; overflow:hidden;
-}
-.o2o-trigger::after {
-  content:''; position:absolute; inset:0; border-radius:20px;
-  background:linear-gradient(135deg, var(--accent-lt) 0%, transparent 60%);
-  opacity:0; transition:opacity .3s;
-}
-.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 12px 32px var(--accent-glow); }
-.o2o-trigger:hover::after { opacity:1; }
-.o2o-tag { display:inline-flex; align-items:center; gap:.4rem; }
-.o2o-open-hint {
-  display:inline-flex; align-items:center; gap:.6rem;
-  color:#fff; font-size:.92rem; font-weight:700; margin-top:1.4rem;
-  background:var(--accent); padding:.65rem 1.4rem; border-radius:40px;
-  box-shadow:0 4px 18px var(--accent-glow);
-  transition:background .2s, box-shadow .2s, transform .2s;
-  letter-spacing:.3px;
-}
-.o2o-trigger:hover .o2o-open-hint {
-  background:var(--accent-dk);
-  box-shadow:0 8px 28px rgba(41,151,255,.4);
-  transform:translateX(4px);
-}
-.o2o-open-hint svg { transition:transform .2s; }
-.o2o-trigger:hover .o2o-open-hint svg { transform:translateX(4px); }
+.drawer-gallery img { height:160px; width:auto; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
+.drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); }
 
 /* ============================================================
-   ACCORDION — Professional Arsenal
+   TRANSITION SCATTER BAND & BIG TITLE
    ============================================================ */
-#arsenal { background:var(--bg); }
+.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg);}
+.transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
+.scatter { position:absolute; left:50%; top:50%; border-radius:12px; object-fit:cover; border:5px solid var(--card-bg); box-shadow:0 15px 30px rgba(0,0,0,.08); opacity:0; z-index:2; transform:translate(-50%,-50%); }
 
-.accordion-container { display:flex; flex-direction:column; gap:.8rem; margin-top:2rem; }
-.accordion-item {
-  background:var(--card-bg); border:1.5px solid var(--border);
-  border-radius:18px; overflow:hidden;
-  transition:border-color .25s, box-shadow .25s, transform .3s cubic-bezier(.16,1,.3,1);
-  position:relative;
-}
-.accordion-item:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(41,151,255,.1); border-color:rgba(41,151,255,.25); }
-.accordion-item.open { transform:none; }
-/* Gradient flash overlay — same feel as O2O card */
-.accordion-item::after {
-  content:''; position:absolute; inset:0; border-radius:18px;
-  background:linear-gradient(120deg, rgba(41,151,255,.06) 0%, transparent 50%);
-  opacity:0; transition:opacity .3s; pointer-events:none;
-}
-.accordion-item:hover::after { opacity:1; }
-.accordion-item.open::after  { opacity:0; }
-.accordion-item::before {
-  content:''; position:absolute; left:0; top:0; bottom:0;
-  width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk));
-  border-radius:4px 0 0 4px;
-  opacity:0; transition:opacity .3s;
-}
-.accordion-item.open { border-color:rgba(41,151,255,.3); box-shadow:0 8px 40px rgba(41,151,255,.08), 0 2px 12px rgba(0,0,0,.04); }
+.arsenal-header { text-align:center; margin-bottom:2.5rem; padding-top: 3rem; }
+.arsenal-header p.label { margin-bottom:.4rem; }
+.arsenal-header h2 { font-size:clamp(2rem,3.5vw,3rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; color: var(--text);}
+
+/* ============================================================
+   ACCORDION — Professional Arsenal (收窄对齐 O2O)
+   ============================================================ */
+#arsenal { background:var(--bg); padding-bottom:4rem; }
+.accordion-container { display:flex; flex-direction:column; gap:.8rem; max-width:900px; margin: 0 auto; position:relative;}
+.accordion-item { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:border-color .25s, box-shadow .25s; position:relative; }
+.accordion-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk)); opacity:0; transition:opacity .3s; }
+.accordion-item.open { border-color:rgba(41,151,255,.3); box-shadow:0 8px 30px rgba(41,151,255,.06); }
 .accordion-item.open::before { opacity:1; }
 
-.accordion-header {
-  display:flex; align-items:center; gap:1.2rem;
-  padding:1.5rem 1.8rem 1.5rem 2rem; cursor:pointer;
-  transition:background .2s;
-}
-.accordion-header:hover { background:rgba(41,151,255,.03); }
+.accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; transition:background .2s; }
+.accordion-header:hover { background:rgba(41,151,255,.02); }
 
-.acc-logo { width:56px; height:56px; object-fit:contain; background:var(--bg); padding:6px; border-radius:12px; border:1.5px solid var(--border); flex-shrink:0; }
+.acc-logo { width:50px; height:50px; object-fit:contain; background:var(--bg); padding:5px; border-radius:12px; border:1px solid var(--border); flex-shrink:0; }
 .acc-meta { flex:1; min-width:0; }
-.acc-period  { font-size:.82rem; color:var(--accent); font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:.25rem; }
-.acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.25rem; font-weight:700; line-height:1.25; margin-bottom:.4rem; }
-.acc-focus {
-  display:inline-block;
-  font-size:.82rem; font-weight:600; color:var(--accent);
-  background:rgba(41,151,255,.08);
-  border:1px solid rgba(41,151,255,.2);
-  border-radius:40px; padding:.22rem .8rem;
-  letter-spacing:.2px;
-}
-.acc-chevron {
-  width:30px; height:30px; border-radius:50%; flex-shrink:0;
-  border:1.5px solid var(--border); background:var(--bg);
-  display:flex; align-items:center; justify-content:center;
-  transition:transform .35s cubic-bezier(.16,1,.3,1), background .2s, border-color .2s;
-}
-.accordion-item.open .acc-chevron { transform:rotate(180deg); background:var(--accent); border-color:var(--accent); }
-.acc-chevron svg { width:14px; height:14px; stroke:var(--muted); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; transition:stroke .2s; }
-.accordion-item.open .acc-chevron svg { stroke:#fff; }
+.acc-period  { font-size:.75rem; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:.2rem; }
+.acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700; line-height:1.2; margin-bottom:.3rem; }
+.acc-focus { display:inline-block; font-size:.75rem; font-weight:600; color:var(--text-muted); background:var(--surface2); border-radius:40px; padding:.2rem .6rem; }
+.acc-chevron { width:28px; height:28px; border-radius:50%; flex-shrink:0; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; transition:transform .3s; }
+.accordion-item.open .acc-chevron { transform:rotate(180deg); background:var(--accent); border-color:var(--accent); color:#fff;}
+.acc-chevron svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
 
-.accordion-body {
-  max-height:0; overflow:hidden;
-  transition:max-height .5s cubic-bezier(.16,1,.3,1);
-}
+.accordion-body { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.16,1,.3,1); }
 .accordion-item.open .accordion-body { max-height:1000px; }
-.accordion-inner {
-  padding:0 1.8rem 2rem 2rem; border-top:1px solid var(--border);
-  background:linear-gradient(to bottom, rgba(41,151,255,.02) 0%, transparent 60%);
-}
-.acc-bullets { padding-left:1.2rem; color:var(--text); font-size:1.02rem; margin:1.4rem 0; }
-.acc-bullets li { margin-bottom:.9rem; line-height:1.75; }
+.accordion-inner { padding:0 1.5rem 2rem calc(1.5rem + 50px + 1rem); }
+.acc-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; margin-bottom:1.2rem; }
+.acc-bullets li { margin-bottom:.6rem; line-height:1.6; }
 
-.acc-gallery { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x mandatory; margin-top:1rem; }
-.acc-gallery::-webkit-scrollbar { display:none; }
+.acc-gallery { display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
+.acc-gallery::-webkit-scrollbar { height: 4px; }
+.acc-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
+.acc-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
 .acc-gallery figure { flex:0 0 auto; scroll-snap-align:center; }
-.acc-gallery img { height:200px; width:auto; object-fit:cover; border-radius:12px; filter:saturate(.9) sepia(.08); transition:filter .3s; }
-.acc-gallery img:hover { filter:none; }
-.acc-gallery figcaption { margin-top:6px; font-size:.8rem; color:var(--muted); }
+.acc-gallery img { height:160px; width:auto; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
+.acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center;}
 
 /* ============================================================
-   KPI
+   AI DEMO (克制版比例)
    ============================================================ */
-.kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; margin:1.5rem 0; }
-.kpi { background:var(--bg); border:1.5px solid var(--border); border-radius:14px; padding:1.3rem; transition:border-color .25s, transform .3s, box-shadow .3s; }
-.kpi:hover { border-color:var(--accent); transform:translateY(-4px); box-shadow:0 10px 28px rgba(41,151,255,.1); }
-.kpi:hover { border-color:var(--accent); }
-.kpi-num   { font-family:'Space Grotesk',sans-serif; font-size:2.6rem; font-weight:800; color:var(--accent); line-height:1; }
-.kpi-label { font-size:.78rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
-.kpi-badge {
-  display:inline-block; padding:.6rem 1.1rem;
-  background:var(--accent-lt); color:var(--accent);
-  border-radius:10px; font-weight:600; font-size:.9rem; margin:.8rem 0;
-}
+#demo { background:var(--bg); position:relative;}
+.ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3rem; position:relative; overflow:hidden; isolation:isolate; max-width:1040px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
+.ai-card::before { content:''; position:absolute; top:-30%; right:-5%; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events:none; }
+.demo-doodle { position:absolute; bottom:15px; right:20px; width:100px; z-index:-1; opacity:0.06; mix-blend-mode:multiply; transform:rotate(10deg); filter:grayscale(100%); pointer-events: none;}
 
-/* ============================================================
-   TRANSITION SCATTER BAND
-   ============================================================ */
-.transition-band {
-  height:100vh; position:relative; overflow:hidden;
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-  margin:2rem 0;
-}
-.transition-words {
-  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-  font-family:'Space Grotesk',sans-serif; font-size:clamp(2rem,4.5vw,4.5rem);
-  font-weight:800; color:var(--text); opacity:.05;
-  text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase;
-  white-space:nowrap;
-}
-.scatter {
-  position:absolute; left:50%; top:50%;
-  border-radius:14px; object-fit:cover;
-  border:4px solid var(--card-bg);
-  box-shadow:0 20px 40px rgba(0,0,0,.1);
-  opacity:0; z-index:2;
-  transform:translate(-50%,-50%);
-  filter:saturate(.9) sepia(.08);
-}
+.ai-card > div { position:relative; z-index:1; }
+.ai-card h3 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; margin:.4rem 0 .8rem; line-height:1.2; }
+.ai-card p  { color:var(--text); font-size:.95rem; line-height:1.7; }
+.ai-card p+p { margin-top:.6rem; }
 
-/* ============================================================
-   AI DEMO
-   ============================================================ */
-#demo { background:var(--bg); }
-.ai-card {
-  display:grid; grid-template-columns:1fr 1.2fr; gap:3rem;
-  align-items:start; background:var(--card-bg);
-  border:1.5px solid var(--border); border-radius:28px;
-  padding:3rem 3.5rem; position:relative; overflow:hidden; isolation:isolate;
-}
-.ai-card::before {
-  content:''; position:absolute; top:-30%; right:-5%;
-  width:400px; height:400px; border-radius:50%;
-  background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-  pointer-events:none;
-}
-.ai-card > * { position:relative; z-index:1; }
-.ai-card h3 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.4rem); font-weight:800; margin:.5rem 0 1rem; line-height:1.2; }
-.ai-card p  { color:var(--muted); font-size:1rem; line-height:1.8; }
-.ai-card p+p { margin-top:.75rem; }
-
-.browser { border:1.5px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.1); background:#fff; min-width:0; }
-.browser-bar { height:36px; background:#F2F2F2; display:flex; align-items:center; padding-left:14px; gap:7px; border-bottom:1px solid var(--border); }
-.b-dot { width:11px; height:11px; border-radius:50%; }
+.browser { border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.08); background:#fff; min-width:0; }
+.browser-bar { height:30px; background:#F2F2F2; display:flex; align-items:center; padding-left:12px; gap:6px; border-bottom:1px solid var(--border); }
+.b-dot { width:10px; height:10px; border-radius:50%; }
 .b-dot:nth-child(1){background:#ff5f56} .b-dot:nth-child(2){background:#ffbd2e} .b-dot:nth-child(3){background:#27c93f}
-.browser iframe { width:100%; height:440px; border:none; display:block; background:#fff; }
+.browser iframe { width:100%; height:360px; border:none; display:block; background:#fff; }
 
 /* ============================================================
-   HOBBIES — hover expand row
+   HOBBIES
    ============================================================ */
-#hobbies { background:var(--bg); }
-
-.hobby-stack {
-  display:flex;
-  gap:16px;
-  margin-top:3rem;
-  height:420px;
-  align-items:stretch;
-}
-
-.hobby-card {
-  flex:1;
-  border-radius:20px;
-  overflow:hidden;
-  position:relative;
-  cursor:pointer;
-  transition:flex .5s cubic-bezier(.16,1,.3,1), box-shadow .4s;
-  box-shadow:0 8px 24px rgba(0,0,0,.08);
-  min-width:0;
-}
-
-/* When any sibling is hovered, shrink non-hovered */
+#hobbies { background:var(--bg); position:relative; padding-bottom: 5rem;}
+.hobby-stack { display:flex; gap:12px; margin-top:2.5rem; height:380px; align-items:stretch; max-width:1040px; margin: 2.5rem auto 0;}
+.hobby-card { flex:1; border-radius:16px; overflow:hidden; position:relative; cursor:pointer; transition:flex .5s cubic-bezier(.16,1,.3,1), box-shadow .4s; box-shadow:0 8px 24px rgba(0,0,0,.05); min-width:0; border: 1px solid var(--border);}
 .hobby-stack:hover .hobby-card { flex:.4; }
-.hobby-stack:hover .hobby-card:hover { flex:2; box-shadow:0 20px 50px rgba(0,0,0,.14); }
-
-.hobby-img {
-  position:absolute; inset:0;
-  width:100%; height:100%; object-fit:cover;
-  transition:transform .5s cubic-bezier(.16,1,.3,1);
-}
+.hobby-stack:hover .hobby-card:hover { flex:2; box-shadow:0 15px 40px rgba(0,0,0,.1); }
+.hobby-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
 .hobby-card:hover .hobby-img { transform:scale(1.05); }
-
-/* Gradient overlay always present; darkens on hover */
-.hobby-gradient {
-  position:absolute; inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.1) 55%, transparent 100%);
-  transition:opacity .4s;
-}
-
-.hobby-body {
-  position:absolute; bottom:0; left:0; right:0;
-  padding:1.4rem 1.4rem 1.6rem;
-  color:#fff;
-}
-.hobby-body h4 {
-  font-family:'Space Grotesk',sans-serif;
-  font-size:1.1rem; font-weight:700;
-  margin-bottom:6px;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.hobby-body p {
-  font-size:.88rem; line-height:1.6; opacity:0;
-  transform:translateY(8px);
-  transition:opacity .4s .1s, transform .4s .1s;
-  /* clamp to 3 lines */
-  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
-}
-.hobby-stack .hobby-card:hover .hobby-body p {
-  opacity:.92; transform:translateY(0);
-}
-
-/* Mobile: vertical stack */
-@media(max-width:700px) {
-  .hobby-stack {
-    flex-direction:column;
-    height:auto;
-  }
-  .hobby-card { flex:none; height:200px; }
-  .hobby-stack:hover .hobby-card { flex:none; height:200px; }
-  .hobby-stack:hover .hobby-card:hover { flex:none; height:280px; }
-  .hobby-body p { opacity:.9; transform:none; }
-}
-
-/* Doodle stickers */
-.doodle { position:absolute; pointer-events:none; opacity:.8; mix-blend-mode:multiply; z-index:0; filter:contrast(1.1); }
+.hobby-gradient { position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.1) 50%, transparent 100%); transition:opacity .4s; }
+.hobby-body { position:absolute; bottom:0; left:0; right:0; padding:1.2rem; color:#fff; }
+.hobby-body h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hobby-body p { font-size:.85rem; line-height:1.5; opacity:0; transform:translateY(8px); transition:opacity .4s .1s, transform .4s .1s; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; color:rgba(255,255,255,0.9);}
+.hobby-stack .hobby-card:hover .hobby-body p { opacity:1; transform:translateY(0); }
 
 /* ============================================================
    FOOTER
    ============================================================ */
-footer {
-  border-top:1px solid var(--border);
-  padding:3.5rem 5% 5rem;
-  max-width:1280px; margin:0 auto;
-  display:flex; flex-direction:column; align-items:center; gap:1.5rem;
-}
-.footer-contact { display:flex; flex-wrap:wrap; justify-content:center; gap:.9rem; }
-.footer-copy { font-size:.82rem; color:var(--muted); text-align:center; }
-
-/* ============================================================
-   SECTION TITLE HELPER
-   ============================================================ */
-.section-title-block { margin-bottom:3rem; }
-.section-title-block h2 { font-size:clamp(2rem,4vw,3.2rem); margin:.4rem 0 .6rem; }
-.section-title-block p  { color:var(--muted); font-size:1.02rem; max-width:560px; }
+footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:1040px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
+.footer-contact { display:flex; flex-wrap:wrap; justify-content:center; gap:.8rem; }
+.footer-copy { font-size:.8rem; color:var(--muted); text-align:center; }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width:860px) {
-  .hero { grid-template-columns:1fr; gap:2rem; padding:2.5rem 5% 1.5rem; min-height:auto; }
-  .hero-right { order:-1; }
-  .hero-img-wrap { height:56vw; }
-  .hero-name-overlay { font-size:3.5rem; left:0; mix-blend-mode:normal; color:var(--text); opacity:1; animation:none; }
-  .kpi-row { grid-template-columns:repeat(3,1fr); gap:.8rem; }
-  .kpi-num { font-size:1.8rem; }
+  .hero { grid-template-columns:1fr; gap:2rem; padding:2rem 5% 1.5rem; min-height:auto; }
+  .hero-right { order:-1; max-width: 100%; }
+  .hero-img-wrap { height:60vw; max-height:none;}
+  .hero-name-overlay { font-size:4rem; left:0; mix-blend-mode:normal; color:var(--text); opacity:1; animation:none; text-shadow:none;}
+  
+  .snode { padding-left: 50px; margin-bottom: 1.5rem;}
+  .timeline-spine { left: calc(5% + 15px); }
+  .snode-dot { left: 9px; top: 22px;}
+  .snode-trigger { padding-left: 0; gap: 1rem; }
+  .snode-icon { width: 56px; height: 56px; }
+  .snode-expansion { margin-left: 0; }
+  .snode-detail-card { padding: 1.2rem; }
+
   .ai-card { grid-template-columns:1fr; padding:2rem; gap:2rem; }
-  .browser iframe { height:340px; }
+  .browser iframe { height:300px; }
   .nav-brand span { display:none; }
-  .nav-right .btn span { display:none; }
-  .floating-nav { bottom:12px; padding:6px 8px; }
-  .fnav-item { padding:.5rem .75rem; font-size:.65rem; min-width:44px; }
+  .floating-nav { bottom:12px; padding:6px 8px; width:90%; justify-content:space-between;}
+  .fnav-item { padding:.4rem .6rem; font-size:.6rem; min-width:40px;}
   .drawer { width:100vw; border-radius:24px 24px 0 0; top:auto; height:90vh; transform:translateY(100%); }
   .drawer.open { transform:translateY(0); }
-  .accordion-header { padding:1.2rem; gap:.9rem; }
+  .accordion-header { padding:1.2rem; gap:.8rem; }
+  .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
   .acc-logo { width:44px; height:44px; }
-}
-@media (max-width:500px) {
-  .kpi-row { grid-template-columns:1fr; }
-  .fnav-item span { display:none; }
-  .fnav-item { padding:.5rem .7rem; }
-  .story-svg { min-height:420px; }
+  .hobby-stack { flex-direction:column; height:auto; }
+  .hobby-card { flex:none; height:180px; }
+  .hobby-stack:hover .hobby-card { flex:none; height:180px; }
+  .hobby-stack:hover .hobby-card:hover { flex:none; height:240px; }
+  .hobby-body p { opacity:.9; transform:none; }
 }
 </style>
 </head>
 <body>
 
-<!-- ===== TOP NAV ===== -->
+<div id="page-intro">
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+</div>
+<div class="intro-brand" id="intro-brand">
+  <div class="intro-name">Liyi GAO</div>
+  <div class="intro-role">Brand Builder &amp; Product Manager</div>
+</div>
+
 <nav class="top-nav">
   <div class="nav-brand">
     <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
     <span>Audencia GE Program (PGE)</span>
   </div>
   <div class="nav-right">
-    <div class="lang-switcher">
-      <a href="pro.html"    class="lang-btn active" data-lang="en">EN</a>
-      <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
-      <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
-    </div>
-    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-      <span>Contact</span>
-    </a>
     <div class="cv-dropdown" id="nav-cv">
-      <button class="btn btn-solid">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download CV ▾
-      </button>
+      <button class="btn btn-ghost">Download CV ▾</button>
       <div class="cv-menu">
-        <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
-        <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
+        <a href="#" download>🇬🇧 English CV</a>
+        <a href="#" download>🇫🇷 CV en Français</a>
       </div>
     </div>
-    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn</a>
+    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost" style="display:none;">Contact</a>
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn ↗</a>
   </div>
 </nav>
 
-<!-- ===== FLOATING NAV ===== -->
 <nav class="floating-nav" id="floating-nav">
   <a class="fnav-item active" href="#hero">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
@@ -895,28 +491,20 @@ footer {
   </a>
 </nav>
 
-<!-- ===== HERO ===== -->
-<section id="hero">
+<section id="hero" class="section-wrapper">
   <div class="hero">
-    <div class="hero-left">
-      <div class="avail-badge reveal">
-        <span class="avail-dot"></span>
-        Available · Internship from July 2026
+    <div class="hero-left reveal">
+      <div class="hero-kicker">
+        Audencia PGE | Internship from July 2026
       </div>
-      <h1 class="display hero-h1 reveal">
+      <h1 class="display hero-h1">
         The Evolution<br>of a <em>Brand Builder.</em>
       </h1>
-      <p class="hero-desc reveal delay-1">
+      <p class="hero-desc">
         Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
       </p>
-      <div class="hero-ctas reveal delay-2">
-        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-          liyi.gao.dm@gmail.com
-        </a>
-        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
-      </div>
-      <div class="skill-tags reveal delay-2">
+      
+      <div class="skill-tags">
         <div class="skill-pill">🇨🇳 Mandarin</div>
         <div class="skill-pill">🇫🇷 French C1</div>
         <div class="skill-pill">🇬🇧 English C2</div>
@@ -926,170 +514,124 @@ footer {
         <div class="skill-pill">PowerPoint</div>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-img-wrap">
-        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a37a0f8db.webp" alt="Liyi Gao">
+    <div class="hero-right reveal delay-2">
+      <div class="hero-image-wrapper">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad689ba1d37.webp" alt="Liyi Gao">
       </div>
       <div class="hero-name-overlay">Liyi GAO</div>
     </div>
   </div>
 </section>
 
-<!-- ===== DIARY PARALLAX ===== -->
 <div class="diary-container" id="diary-container">
   <div class="diary-sticky">
-    <h2 class="diary-text" id="diary-text">It all started<br>with empathy.</h2>
+    <h2 class="diary-text" id="diary-text">IT ALL STARTED WITH EMPATHY.</h2>
   </div>
 </div>
 
-<!-- ===== STORY MAP (vertical timeline) ===== -->
+<section id="story">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle-sticker" style="top:5%; right:5%; width:180px; transform:rotate(15deg);" alt="Doodle">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="Doodle">
 
-<!-- spine-wrap spans #story through #arsenal -->
-<div class="spine-wrap" id="spine-wrap">
-  <div class="timeline-spine" id="timeline-spine"></div>
+  <div class="section-title-block reveal">
+    <p class="label">Journey</p>
+    <h2 class="heading">Self-Growth &amp; Entrepreneurial Journey</h2>
+    <p>Two early sparks that shaped my product intuition.</p>
+  </div>
 
-  <!-- STORY SECTION -->
-  <section id="story" style="padding:5rem 0 0; position:relative;">
-    <div style="max-width:900px; margin:0 auto; padding:0 5%;">
+  <div class="timeline-wrapper">
+    <div class="timeline-spine"></div>
 
-      <div class="section-title-block reveal">
-        <p class="label">Journey</p>
-        <h2 class="heading" style="font-size:clamp(1.8rem,3.5vw,2.8rem);">Self-Growth &amp; Entrepreneurial Journey</h2>
-        <p style="color:var(--muted);margin-top:.4rem;">Click each chapter to expand the story.</p>
-      </div>
-
-      <!-- Journey start marker -->
-      <div style="max-width:900px;margin:0 auto;padding:0 5%;position:relative;z-index:1;">
-        <div style="margin-left:calc(96px - 6px);width:12px;height:12px;border-radius:50%;background:rgba(41,151,255,.35);margin-bottom:8px;"></div>
-      </div>
-      <!-- NODE 2013 -->
-      <div class="snode reveal" data-story="s2013">
-        <div class="snode-dot"></div>
-        <div class="snode-trigger">
-        <div class="snode-img-wrap">
+    <div class="snode reveal" id="node-2013">
+      <div class="snode-dot"></div>
+      
+      <div class="snode-trigger" onclick="toggleSnode('node-2013')">
+        <div class="snode-icon">
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e78d031.webp" alt="2013">
-          <div class="snode-img-overlay"></div>
         </div>
-        <div class="snode-label">
-          <span class="snode-year">2013</span>
-          <span class="snode-title">Grandma's Stall</span>
-          <span class="snode-hint">Tap to read →</span>
-        </div>
-        </div><!-- /.snode-trigger -->
-        <div class="snode-tooltip">
-          <button class="snode-tooltip-close">✕</button>
-          <div class="stt-year">2013 · Consumer Insights</div>
-          <div class="stt-title">The Ultimate MVP: Grandma's Stall</div>
-          <p>When my grandma's garden had a surplus, I took the bio vegetables to the rural market. Reducing cognitive load with <strong>direct copywriting</strong> — my very first A/B test on a cardboard sign.</p>
-          <div class="stt-imgs">
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt=""><figcaption>Fresh harvest</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858ba3c7b4.webp" alt=""><figcaption>First A/B test</figcaption></figure>
-          </div>
+        <div class="snode-info">
+          <span class="snode-year">2013 · Consumer Insights</span>
+          <h3 class="snode-title">Grandma's Stall</h3>
+          <span class="snode-hint">Click to expand</span>
         </div>
       </div>
 
-      <!-- Wavy dashed connector -->
-      <div style="max-width:900px;margin:0 auto;padding:0 5%;position:relative;z-index:1;">
-        <svg class="snode-wave" width="24" height="60" viewBox="0 0 24 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-left:calc(96px - 12px);">
-          <path d="M12,0 C18,10 6,20 12,30 C18,40 6,50 12,60" stroke="#2997FF" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round" fill="none" opacity=".45"/>
-        </svg>
-      </div>
-
-      <!-- NODE 2015 -->
-      <div class="snode reveal" data-story="s2015">
-        <div class="snode-dot"></div>
-        <div class="snode-trigger">
-        <div class="snode-img-wrap">
-          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
-          <div class="snode-img-overlay"></div>
-        </div>
-        <div class="snode-label">
-          <span class="snode-year">2015</span>
-          <span class="snode-title">DTC Stationery</span>
-          <span class="snode-hint">Tap to read →</span>
-        </div>
-        </div><!-- /.snode-trigger -->
-        <div class="snode-tooltip">
-          <button class="snode-tooltip-close">✕</button>
-          <div class="stt-year">2015 · Brand Positioning</div>
-          <div class="stt-title">My First Lesson in DTC</div>
-          <p>Spotted the early trend of Japanese stationery. By <strong>curating high-quality items</strong> and unifying the visual display, I created a distinct brand vibe at a flea market — and learned that aesthetics is a growth lever.</p>
-          <div class="stt-imgs">
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt=""><figcaption>Trend curation</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa98149e08.webp" alt=""><figcaption>Visual merchandising</figcaption></figure>
-          </div>
-        </div>
-      </div>
-
-      <!-- Wavy dashed connector -->
-      <div style="max-width:900px;margin:0 auto;padding:0 5%;position:relative;z-index:1;">
-        <svg class="snode-wave" width="24" height="60" viewBox="0 0 24 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-left:calc(96px - 12px);">
-          <path d="M12,0 C18,10 6,20 12,30 C18,40 6,50 12,60" stroke="#2997FF" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round" fill="none" opacity=".45"/>
-        </svg>
-      </div>
-
-      <!-- NODE 2022 -->
-      <div class="snode reveal" data-story="s2022">
-        <div class="snode-dot"></div>
-        <div class="snode-trigger">
-        <div class="snode-img-wrap">
-          <img src="https://picui.ogmua.cn/s1/2026/03/09/69aee89aee031.webp" alt="2022">
-          <div class="snode-img-overlay"></div>
-        </div>
-        <div class="snode-label">
-          <span class="snode-year">2022</span>
-          <span class="snode-title">Campus O2O</span>
-          <span class="snode-hint">Tap to read →</span>
-        </div>
-        <div class="snode-tooltip">
-          <button class="snode-tooltip-close">✕</button>
-          <div class="stt-year">2022 · O2O · Entrepreneurship</div>
-          <div class="stt-title">Architecting a Campus O2O Network</div>
-          <p>Built campus-wide O2O from scratch — online ordering, offline delivery, CRM, pop-up partnerships. <strong>400+ MAU</strong>, <strong>80% repurchase</strong>, &lt;5% waste.</p>
-          <div class="stt-imgs">
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt=""><figcaption>Shelf system</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt=""><figcaption>Order data</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt=""><figcaption>UI</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt=""><figcaption>CRM</figcaption></figure>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bridge to O2O card -->
-      <div class="story-bridge">
-        <div class="bridge-line"></div>
-        <div class="bridge-label">↓ Full Case Study</div>
-      </div>
-
-    </div><!-- /inner -->
-
-    <!-- O2O card (full width inside story, outside inner container) -->
-    <div style="max-width:900px;margin:0 auto;padding:0 5% 4rem;">
-      <div class="o2o-trigger reveal" id="o2o-trigger">
-        <div class="o2o-inner">
-          <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa31d4774d.webp" alt="O2O" class="o2o-icon">
-          <div class="o2o-text">
-            <p class="label" style="margin-bottom:.3rem;">Phase 2 (2022) · Flagship Deep Dive</p>
-            <h3 class="heading" style="font-size:1.5rem;">Architecting a Campus O2O Network</h3>
-            <p style="color:var(--muted);font-size:.92rem;margin-top:.3rem;line-height:1.6;">400+ MAU · 80% repurchase · &lt;5% waste · 1,000+ private-domain users</p>
-          </div>
-          <div class="o2o-open-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            Explore Case Study
+      <div class="snode-expansion">
+        <div class="snode-expansion-inner">
+          <div class="snode-detail-card">
+            <p>When my grandma's garden had a surplus, I took the bio vegetables to the rural market. Reducing cognitive load with <strong>direct copywriting</strong> — my very first A/B test on a cardboard sign. The earliest lesson in consumer psychology: clarity beats cleverness.</p>
+            <div class="snode-gallery">
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt=""><figcaption>Fresh harvest</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt=""><figcaption>First A/B test</figcaption></figure>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-  </section><!-- /#story -->
+    <div class="snode-wave-container">
+        <svg width="2" height="30" viewBox="0 0 2 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1,0 L1,30" stroke="#2997FF" stroke-width="2" stroke-dasharray="4,4" opacity=".45"/>
+        </svg>
+    </div>
 
-<!-- ===== DRAWER: O2O detail ===== -->
+    <div class="snode reveal delay-1" id="node-2015">
+      <div class="snode-dot"></div>
+      
+      <div class="snode-trigger" onclick="toggleSnode('node-2015')">
+        <div class="snode-icon">
+          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
+        </div>
+        <div class="snode-info">
+          <span class="snode-year">2015 · Brand Positioning</span>
+          <h3 class="snode-title">DTC Stationery</h3>
+          <span class="snode-hint">Click to expand</span>
+        </div>
+      </div>
+
+      <div class="snode-expansion">
+        <div class="snode-expansion-inner">
+          <div class="snode-detail-card">
+            <p>Spotted the early trend of Japanese stationery. By <strong>curating high-quality items</strong> and unifying the visual display, I created a distinct brand vibe at a flea market. I learned that aesthetics is a growth lever — and that the experience around the product is the product.</p>
+            <div class="snode-gallery">
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt=""><figcaption>Trend curation</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa98149e08.webp" alt=""><figcaption>Visual merchandising</figcaption></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-bridge-v2 reveal">
+      <div class="sbv-line"></div>
+      <div class="sbv-label">Flagship project ↓</div>
+    </div>
+
+  </div>
+
+  <div class="o2o-trigger reveal" id="o2o-trigger">
+    <div class="o2o-inner">
+      <img src="https://picui.ogmua.cn/s1/2026/03/11/69b173d32086c.webp" alt="O2O" class="o2o-icon" style="object-fit:cover;">
+      <div class="o2o-text">
+        <p class="label" style="margin-bottom:.3rem;">2022 · Flagship Deep Dive</p>
+        <h3 class="heading" style="font-size:1.6rem; margin-bottom:.4rem;">Architecting a Campus O2O Network</h3>
+        <p style="color:var(--muted);font-size:.9rem;line-height:1.5;">400+ MAU · 80% repurchase · &lt;5% waste · 1,000+ private-domain users</p>
+      </div>
+      <div class="o2o-open-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        Case Study
+      </div>
+    </div>
+  </div>
+
+</section>
+
 <div class="drawer-overlay" id="drawer-overlay"></div>
 <div class="drawer" id="o2o-drawer">
   <button class="drawer-close" id="drawer-close">✕</button>
   <p class="label">Phase 2 (2022) · Campus Startup</p>
   <h3>Architecting a Campus O2O Network</h3>
-  <p style="color:var(--muted);font-size:.97rem;line-height:1.75;margin-bottom:1rem;">
+  <p style="color:var(--text);font-size:.95rem;line-height:1.7;margin-bottom:1rem;">
     Founded a new digital business ecosystem with online ordering and offline delivery — from a blank page to a thriving campus brand.
   </p>
   <div class="kpi-row">
@@ -1111,28 +653,24 @@ footer {
   </div>
 </div>
 
-<!-- ===== TRANSITION SCATTER ===== -->
-<div data-theme="theme-dark" class="theme-trigger"></div>
 <div class="transition-band" id="trans-band">
   <div class="transition-words">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
   <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:340px;height:240px;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:270px;height:340px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:350px;height:250px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:280px;height:350px;">
 </div>
-<div data-theme="theme-light" class="theme-trigger"></div>
 
-<!-- ===== PROFESSIONAL ARSENAL — ACCORDION ===== -->
-<section id="arsenal" class="section-full" style="padding-bottom:5rem;">
-  <div style="max-width:1280px;margin:0 auto;padding:0 5%;">
-    <div class="section-title-block reveal" style="text-align:center;margin-bottom:3.5rem;">
-      <p class="label" style="margin-bottom:.5rem;">Experience</p>
-      <h2 class="display" style="font-size:clamp(2.4rem,4.5vw,3.8rem);font-style:italic;line-height:1.1;">Sharpening the<br><em style="color:var(--accent);">Professional Arsenal</em></h2>
-    </div>
+<div class="arsenal-header reveal" id="arsenal">
+    <p class="label" style="margin-bottom:.4rem;">Experience</p>
+    <h2 class="display">Sharpening the<br><em style="color:var(--accent);">Professional Arsenal</em></h2>
+</div>
 
-    <div class="accordion-container">
+<section class="section-wrapper" style="padding-top:0; padding-bottom:5rem;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566379bac.webp" class="doodle-sticker" style="top:5%; left:2%; width:200px;" alt="Doodle">
 
-      <!-- WL -->
-      <div class="accordion-item" data-acc="wl">
+  <div class="accordion-container">
+
+      <div class="accordion-item reveal">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
           <div class="acc-meta">
@@ -1145,7 +683,7 @@ footer {
         <div class="accordion-body">
           <div class="accordion-inner">
             <ul class="acc-bullets">
-              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong> by synchronizing offline events with livestreaming.</li>
+              <li><strong>Orchestrated</strong> complex <strong>offline marathon activations</strong> (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and <strong>€41k in sales</strong>.</li>
               <li><strong>Managed</strong> 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with <strong>online live-streaming</strong> (50k+ viewers).</li>
               <li><strong>Elevated</strong> Marketing ROI from <strong>0.2 to 1.0+</strong> through rigorous audience-content matching on Douyin (TikTok).</li>
             </ul>
@@ -1159,8 +697,7 @@ footer {
         </div>
       </div>
 
-      <!-- MMA -->
-      <div class="accordion-item" data-acc="mma">
+      <div class="accordion-item reveal delay-1">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
           <div class="acc-meta">
@@ -1174,7 +711,7 @@ footer {
           <div class="accordion-inner">
             <ul class="acc-bullets">
               <li><strong>Accelerated</strong> the debut of <strong>10+ new SKUs</strong> on Amazon, applying data methodologies comparable to Panel Analysis (Nielsen/IRI).</li>
-              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong> (~€13k/year).</li>
+              <li><strong>Streamlined</strong> supply chain operations, directing negotiations with 15+ suppliers to achieve a <strong>20–40% reduction in logistics costs</strong>.</li>
             </ul>
             <div class="acc-gallery">
               <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
@@ -1183,8 +720,7 @@ footer {
         </div>
       </div>
 
-      <!-- TAL -->
-      <div class="accordion-item" data-acc="tal">
+      <div class="accordion-item reveal">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
           <div class="acc-meta">
@@ -1209,9 +745,8 @@ footer {
           </div>
         </div>
       </div>
-
-      <!-- ACE -->
-      <div class="accordion-item" data-acc="ace">
+      
+      <div class="accordion-item reveal delay-1">
         <div class="accordion-header">
           <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
           <div class="acc-meta">
@@ -1237,14 +772,12 @@ footer {
         </div>
       </div>
 
-    </div><!-- end accordion-container -->
   </div>
 </section>
-</div><!-- /.spine-wrap -->
 
-<!-- ===== AI DEMO ===== -->
-<section id="demo" class="section reveal">
+<section id="demo" class="section-wrapper reveal">
   <div class="ai-card">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566301faa.webp" class="demo-doodle" alt="Coding Doodle">
     <div>
       <p class="label">Current Exploration · Agile Prototyping</p>
       <h3>Building the<br>Skincare Copilot</h3>
@@ -1263,16 +796,16 @@ footer {
   </div>
 </section>
 
-<!-- ===== HOBBIES ===== -->
-<section id="hobbies" class="section reveal" style="position:relative;overflow:visible;">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle" style="top:5%;left:0;width:150px;transform:rotate(10deg);" alt="">
-  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle" style="bottom:10%;right:0;width:140px;transform:rotate(-12deg);" alt="">
-  <div class="section-title-block" style="text-align:center;">
+<section id="hobbies" class="section-wrapper reveal hobbies-section">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle-sticker" style="top:5%;left:2%;width:150px;transform:rotate(10deg);" alt="">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle-sticker" style="bottom:10%;right:2%;width:140px;transform:rotate(-12deg);" alt="">
+  
+  <div class="section-title-block" style="text-align:center; padding-top: 0; margin-bottom: 2rem;">
     <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">When I'm not in front of my laptop...</h2>
     <p>Maintaining the "hardware" and optimizing the "flow state".</p>
   </div>
   <div class="hobby-stack">
-    <div class="hobby-card" id="hc1">
+    <div class="hobby-card">
       <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing" class="hobby-img">
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
@@ -1280,7 +813,7 @@ footer {
         <p>That pure magic of perfect team sync. And when I'm solo? Just me, a boat, chasing the wind.</p>
       </div>
     </div>
-    <div class="hobby-card" id="hc2">
+    <div class="hobby-card">
       <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" class="hobby-img" style="object-position:top;">
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
@@ -1288,7 +821,7 @@ footer {
         <p>Scrambling up rocky trails for that one epic view. Leg burn? Yes. Worth it? Always.</p>
       </div>
     </div>
-    <div class="hobby-card" id="hc3">
+    <div class="hobby-card">
       <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming" class="hobby-img">
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
@@ -1299,7 +832,6 @@ footer {
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
 <footer>
   <div class="footer-contact">
     <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
@@ -1307,33 +839,54 @@ footer {
       liyi.gao.dm@gmail.com
     </a>
     <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
-    <div class="cv-dropdown footer-cv">
-      <button class="btn btn-ghost">↓ Download CV ▾</button>
-      <div class="cv-menu">
-        <a href="Liyi_GAO_Product_assistant.pdf" download>🇬🇧 English CV</a>
-        <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>🇫🇷 CV en Français</a>
-      </div>
-    </div>
   </div>
-  <p class="footer-copy">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
+  <p class="footer-copy" style="margin-top: 1rem;">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
 </footer>
-
-<!-- ===== THEME TRIGGER (invisible, for scroll-based theme swap) ===== -->
-<div data-theme="theme-light" class="theme-trigger" style="position:absolute;top:0;height:1px;"></div>
 
 <script>
 /* ================================================================
-   1. REVEAL ON SCROLL
+   1. PAGE INTRO — Fixed Accordion Strip Reveal (Anti-Lock)
+   ================================================================ */
+(function(){
+  var intro = document.getElementById('page-intro');
+  var brand = document.getElementById('intro-brand');
+  if(!intro) return;
+  
+  // Prevent scrolling during the intro
+  document.body.style.overflow = 'hidden';
+
+  function startIntro(){
+    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
+    setTimeout(function(){ intro.classList.add('done'); }, 1000);
+    setTimeout(function(){
+      intro.classList.add('gone');
+      document.body.style.overflow = '';
+      
+      // Force trigger scroll reveals immediately after intro
+      document.querySelectorAll('.will-reveal').forEach(function(el){
+        if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
+      });
+    }, 2000);
+  }
+
+  // Ensure it fires even if load event misses
+  if(document.readyState === 'complete'){
+    startIntro();
+  } else {
+    window.addEventListener('load', startIntro);
+    setTimeout(startIntro, 2000); // Fail-safe fallback
+  }
+})();
+
+/* ================================================================
+   2. REVEAL ON SCROLL
    ================================================================ */
 (function(){
   function init(){
-    document.querySelectorAll('.reveal').forEach(function(el){
-      el.classList.add('will-reveal');
-    });
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('will-reveal'); });
     function check(){
       document.querySelectorAll('.will-reveal').forEach(function(el){
-        if(el.getBoundingClientRect().top < window.innerHeight - 60)
-          el.classList.add('active');
+        if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
       });
     }
     window.addEventListener('scroll', check, {passive:true});
@@ -1344,41 +897,64 @@ footer {
 })();
 
 /* ================================================================
-   2. DIARY PARALLAX — fade in once, stay visible
+   3. DIARY PARALLAX — Empathy Animation (Slower, smoother slide up)
    ================================================================ */
 (function(){
   var diaryCont = document.getElementById('diary-container');
   var diaryTxt  = document.getElementById('diary-text');
-  var locked = false;
+  
   function update(){
-    if(!diaryCont||!diaryTxt||locked) return;
+    if(!diaryCont||!diaryTxt) return;
     var rect = diaryCont.getBoundingClientRect();
     var wh   = window.innerHeight;
     var total = rect.height - wh;
-    if(total <= 0) { lock(); return; }
+    
+    // Safely clamp progress between 0 and 1
     var p = Math.max(0, Math.min(1, -rect.top / total));
-    var opacity = Math.min(1, p / 0.18);
-    var scale   = 0.65 + Math.pow(p, .5) * 0.42;
-    diaryTxt.style.opacity   = opacity;
-    diaryTxt.style.transform = 'scale('+Math.min(scale,1.05)+')';
-    if(p >= 0.22) lock();
+    
+    // Smooth slide up & mild scale (max 1.05)
+    var translateY = 50 * (1 - p*2); 
+    if (translateY < 0) translateY = 0;
+    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; 
+    
+    // Opacity Curve: smooth entry -> long hold -> slow exit
+    var opacity = 0;
+    if (p < 0.25) {
+        opacity = p * 4; // fade in 0-25%
+    } else if (p < 0.8) {
+        opacity = 1; // hold 25-80%
+    } else {
+        opacity = 1 - (p - 0.8) * 5; // fade out 80-100%
+    }
+
+    diaryTxt.style.opacity   = Math.max(opacity, 0);
+    diaryTxt.style.transform = `translateY(${translateY}px) scale(${scale})`;
   }
-  function lock(){
-    locked = true;
-    diaryTxt.style.opacity   = '1';
-    diaryTxt.style.transform = 'scale(1)';
-    diaryTxt.style.willChange = 'auto';
-    diaryTxt.style.transition = 'none';
-  }
+  
   window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('load',   update);
   update();
-  // Safety net: force visible after 2s in case scroll never fires
-  setTimeout(function(){ if(!locked) lock(); }, 2500);
 })();
 
 /* ================================================================
-   3. SCATTER BAND
+   4. INLINE STORY ACCORDION TOGGLE (For 2013 & 2015 nodes)
+   ================================================================ */
+function toggleSnode(id) {
+    const node = document.getElementById(id);
+    if (!node) return;
+    
+    const wasOpen = node.classList.contains('open');
+    
+    // Close all other story nodes
+    document.querySelectorAll('.snode').forEach(n => n.classList.remove('open'));
+    
+    // Open this one if it wasn't already open
+    if (!wasOpen) {
+        node.classList.add('open');
+    }
+}
+
+/* ================================================================
+   5. SCATTER BAND
    ================================================================ */
 (function(){
   var transBand = document.getElementById('trans-band');
@@ -1396,14 +972,11 @@ footer {
     if(si3) si3.style.transform='translate(calc(-50% + '+(155-p*95)+'px),calc(-50% + '+(35-p*55)+'px)) rotate('+(12-p*12)+'deg)';
   }
   window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('load', update);
   update();
-  // Fallback: fire again after images load
-  setTimeout(update, 800);
 })();
 
 /* ================================================================
-   4. ACCORDION — independent toggle (multiple can be open)
+   6. ACCORDION (Professional Arsenal)
    ================================================================ */
 document.querySelectorAll('.accordion-header').forEach(function(header){
   header.addEventListener('click', function(){
@@ -1412,7 +985,7 @@ document.querySelectorAll('.accordion-header').forEach(function(header){
 });
 
 /* ================================================================
-   5. DRAWER — O2O
+   7. O2O DRAWER
    ================================================================ */
 (function(){
   var overlay = document.getElementById('drawer-overlay');
@@ -1428,85 +1001,7 @@ document.querySelectorAll('.accordion-header').forEach(function(header){
 })();
 
 /* ================================================================
-   6. STORY NODES — tooltip toggle
-   Clicks on .snode-trigger (left side) toggle the panel.
-   Clicks inside .snode-tooltip (right panel) are absorbed.
-   ================================================================ */
-(function(){
-  function setActive(node, active){
-    if(active){
-      document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
-      node.classList.add('active');
-    } else {
-      node.classList.remove('active');
-    }
-    // Dim/undim siblings
-    var hasActive = !!document.querySelector('.snode.active');
-    document.querySelectorAll('.snode').forEach(function(n){
-      n.classList.toggle('snode-active-sibling', hasActive && !n.classList.contains('active'));
-    });
-  }
-
-  // Only .snode-trigger (img+label side) triggers toggle
-  document.querySelectorAll('.snode-trigger').forEach(function(trigger){
-    trigger.addEventListener('click', function(e){
-      e.stopPropagation();
-      var node = trigger.closest('.snode');
-      setActive(node, !node.classList.contains('active'));
-    });
-  });
-
-  // Tooltip panel absorbs all clicks — does NOT propagate to document
-  document.querySelectorAll('.snode-tooltip').forEach(function(tip){
-    tip.addEventListener('click', function(e){
-      e.stopPropagation();
-    });
-  });
-
-  // ✕ close button
-  document.querySelectorAll('.snode-tooltip-close').forEach(function(btn){
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      setActive(btn.closest('.snode'), false);
-    });
-  });
-
-  // Click anywhere else → close all
-  document.addEventListener('click', function(){
-    document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
-    document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('snode-active-sibling'); });
-  });
-
-  // ESC key closes panels
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape'){
-      document.querySelectorAll('.snode.active').forEach(function(n){ n.classList.remove('active'); });
-      document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('snode-active-sibling'); });
-    }
-  });
-})();
-
-/* ================================================================
-   7. TIMELINE SPINE — span story section through arsenal
-   ================================================================ */
-(function(){
-  function setSpine(){
-    var spine   = document.getElementById('timeline-spine');
-    var story   = document.getElementById('story');
-    var arsenal = document.getElementById('arsenal');
-    if(!spine||!story||!arsenal) return;
-    var top    = story.getBoundingClientRect().top    + window.scrollY;
-    var bottom = arsenal.getBoundingClientRect().bottom + window.scrollY;
-    spine.style.top    = '0px';
-    spine.style.height = (bottom - top) + 'px';
-  }
-  window.addEventListener('load',   setSpine);
-  window.addEventListener('resize', setSpine);
-  setTimeout(setSpine, 400);
-})();
-
-/* ================================================================
-   8. FLOATING NAV — active section highlight
+   8. FLOATING NAV
    ================================================================ */
 (function(){
   var sections  = ['hero','story','arsenal','demo','hobbies'];
@@ -1532,25 +1027,16 @@ document.querySelectorAll('.accordion-header').forEach(function(header){
     btn.addEventListener('click', function(e){
       e.stopPropagation();
       var dd     = btn.closest('.cv-dropdown');
-      var menu   = dd.querySelector('.cv-menu');
       var isOpen = dd.classList.contains('open');
       document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
-      if(!isOpen){
-        var rect = btn.getBoundingClientRect();
-        menu.style.top  = (rect.bottom+8)+'px';
-        var left = rect.left;
-        if(left+230 > window.innerWidth-16) left = window.innerWidth-246;
-        menu.style.left = left+'px';
-        dd.classList.add('open');
-      }
+      if(!isOpen){ dd.classList.add('open'); }
     });
   });
   document.addEventListener('click',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); });
-  window.addEventListener('scroll',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); },{passive:true});
 })();
 
 /* ================================================================
-   10. HOBBY CARDS — click to toggle active
+   10. HOBBY CARDS
    ================================================================ */
 document.querySelectorAll('.hobby-card').forEach(function(card){
   card.addEventListener('click', function(){
@@ -1559,6 +1045,7 @@ document.querySelectorAll('.hobby-card').forEach(function(card){
     if(!was) card.classList.add('active');
   });
 });
+
 </script>
 </body>
 </html>
