@@ -1191,10 +1191,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       });
     }, 2000);
   }
-  var started = false;
-  function safeStart(){ if(!started){ started=true; startIntro(); } }
-  if(document.readyState === 'complete'){ safeStart(); }
-  else { window.addEventListener('load', safeStart); setTimeout(safeStart, 2500); }
+  if(document.readyState === 'complete'){ startIntro(); }
+  else { window.addEventListener('load', startIntro); setTimeout(startIntro, 2000); }
 })();
 
 /* ================================================================
