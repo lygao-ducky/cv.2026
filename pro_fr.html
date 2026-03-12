@@ -1377,4 +1377,15 @@ function openCVLight(lang) {
   document.body.style.overflow = 'hidden';
 }
 function closeCVLight() {
-  var lb = doc
+  var lb = document.getElementById('cv-lightbox');
+  if(lb) lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+(function(){
+  var lbi = document.getElementById('cv-lightbox-img');
+  if(lbi) lbi.addEventListener('click', function(e){ e.stopPropagation(); });
+})();
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCVLight(); });
+</script>
+</body>
+</html>
