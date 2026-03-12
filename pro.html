@@ -21,6 +21,7 @@
   --accent-glow: rgba(41,151,255,0.15);
   --accent-dk:   #0071E3;
   --accent-lt:   rgba(41,151,255,0.06);
+  --timeline-bg: rgba(0,0,0,0.10);
   --surface2:    #F2F2F7;
   --nav-bg:      rgba(248,247,245,0.85);
 }
@@ -28,7 +29,7 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 *:focus { outline: none; }
 
-/* 锁定基准字号，移除会导致滚动的 100vw */
+/* 锁定基准字号 */
 html { scroll-behavior: smooth; font-size: 15px; width: 100%; height: 100%; } 
 
 body {
@@ -75,92 +76,29 @@ strong { font-weight:600; color:var(--accent); }
 .btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.3); } }
 
-/* 全局涂鸦贴纸：作为极淡的水印背景 */
+/* 全局涂鸦贴纸：极淡水印 */
 .doodle-sticker { 
   position: absolute; height: auto; 
   z-index: -1; pointer-events: none; 
-  mix-blend-mode: multiply; opacity: 0.06; 
+  mix-blend-mode: multiply; opacity: 0.05; 
   filter: grayscale(100%);
 }
 
-.section-wrapper { padding: 4rem 5%; max-width: 1040px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
+.section-wrapper { padding: 4rem 5%; max-width: 1280px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
 p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
-
-/* 防止页面撑破的基础设置 */
-.overflow-protector {
-    max-width: 100vw;
-    overflow-x: hidden;
-}
 
 /* 全屏跑马灯 */
 .marquee-bg {
-  position: fixed; top: 40%; left: 0; width: 200%; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
+  position: fixed; top: 40%; left: 0; width: 100vw; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
 }
 @keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-/* ============================================================
-   TOP NAV
-   ============================================================ */
-.top-nav {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1.2rem 5%; 
-  position: sticky; top: 0; 
-  z-index: 2000; 
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  background:var(--nav-bg); border-bottom:1px solid var(--border);
-}
-.nav-brand { display:flex; align-items:center; gap:.8rem; }
-.nav-brand img { height:26px; object-fit:contain; }
-.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
-.nav-right { display:flex; align-items:center; gap:.7rem; }
-
-/* 语言切换 */
-.lang-switcher {
-  display:flex; align-items:center;
-  border:1.5px solid var(--border); border-radius:40px;
-  overflow:hidden; background:var(--card-bg);
-}
-.lang-btn {
-  padding:.35rem .8rem; font-size:.78rem; font-weight:600;
-  color:var(--muted); text-decoration:none;
-  transition:background .2s, color .2s;
-}
-.lang-btn:hover { color:var(--accent); }
-.lang-btn.active { background:var(--accent); color:#fff; border-radius:40px; }
-
-/* CV dropdown */
-.cv-dropdown { position:relative; }
-.cv-menu {
-  position:absolute; top:calc(100% + 10px); right:0;
-  background:var(--card-bg); border:1px solid var(--border);
-  border-radius:12px; overflow:hidden;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
-  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
-  pointer-events:none; transition:all .22s; z-index:9999;
-}
-.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
-.cv-menu a { display:flex; align-items:center; gap:.6rem; padding:.8rem 1.2rem; text-decoration:none; color:var(--text); font-size:.85rem; font-weight:500; transition:background .2s; }
-.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
-.cv-menu a + a { border-top:1px solid var(--border); }
-
-/* ============================================================
-   FLOATING BOTTOM NAV
-   ============================================================ */
-.floating-nav {
-  position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:4px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:50px; padding:6px 10px; box-shadow:0 10px 30px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.05);
-}
-.fnav-item {
-  display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.65rem; font-weight:600; transition:all .22s; min-width:52px;
-}
-.fnav-item svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-.fnav-item:hover, .fnav-item.active { color:var(--accent); background:var(--accent-lt); }
 
 /* ============================================================
    PAGE INTRO
    ============================================================ */
 #page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
 .intro-strip { 
-    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
 }
 .intro-strip:nth-child(1){ transition-delay:.00s; }
 .intro-strip:nth-child(2){ transition-delay:.05s; }
@@ -178,40 +116,149 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 @keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
 
 /* ============================================================
+   [🔥 修复] TOP NAV — Pill Design
+   ============================================================ */
+.top-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 5%; position:sticky; top:0; z-index:2000;
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  background:var(--nav-bg);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand { display:flex; align-items:center; gap:.8rem; }
+.nav-brand img { height:26px; object-fit:contain; }
+.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
+.nav-right { display:flex; align-items:center; gap:12px; }
+
+/* Language Pill */
+.lang-switcher {
+  display:flex; align-items:center;
+  background:#FFFFFF; border:1px solid var(--border); border-radius:40px;
+  padding:3px; gap:2px;
+}
+.lang-btn {
+  padding:.35rem .9rem; font-size:.78rem; font-weight:600;
+  color:var(--muted); text-decoration:none;
+  transition:all .2s; border-radius:40px;
+}
+.lang-btn.active { background:var(--accent); color:#fff; }
+
+/* CV Dropdown Pill */
+.cv-dropdown { position:relative; }
+.nav-cv-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:.45rem 1.1rem; font-size:.82rem; font-weight:600;
+  background:#FFFFFF; color:var(--text);
+  border:1px solid var(--border); border-radius:40px;
+  cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif;
+  white-space:nowrap;
+}
+.nav-cv-btn:hover { border-color:var(--muted); background:var(--surface2); }
+.nav-cv-btn svg { opacity:0.6; }
+
+.cv-menu {
+  position:absolute; top:calc(100% + 10px); right:0;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
+  pointer-events:none; transition:all .22s; z-index:9999;
+}
+.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.cv-menu a {
+  display:flex; align-items:center; gap:.6rem;
+  padding:.8rem 1.2rem; text-decoration:none;
+  color:var(--text); font-size:.85rem; font-weight:500;
+  transition:background .2s;
+}
+.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
+.cv-menu a + a { border-top:1px solid var(--border); }
+
+/* LinkedIn Pill */
+.nav-linkedin-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:.45rem 1.1rem; font-size:.82rem; font-weight:600;
+  background:var(--accent); color:#fff;
+  border-radius:40px; border:none; text-decoration:none;
+  transition:all .2s; box-shadow:0 4px 12px var(--accent-glow);
+  font-family:'DM Sans',sans-serif; white-space:nowrap;
+}
+.nav-linkedin-btn:hover { background:var(--accent-dk); transform:translateY(-1px); }
+
+
+/* ============================================================
+   FLOATING BOTTOM NAV
+   ============================================================ */
+.floating-nav {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1.5px solid rgba(0,0,0,0.08); border-radius:50px; padding:8px 12px; box-shadow:0 12px 40px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.07);
+}
+.fnav-item {
+  display:flex; flex-direction:column; align-items:center; gap:3px; padding:.6rem 1.1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.72rem; font-weight:600; transition:all .22s; min-width:56px;
+}
+.fnav-item svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.fnav-item:hover, .fnav-item.active { color:var(--accent); background:rgba(41,151,255,.12); }
+
+/* ============================================================
    HERO SECTION
    ============================================================ */
-.hero { 
-    display:grid; grid-template-columns:1.1fr 1fr; 
-    align-items:center; gap:4rem; 
-    min-height:80vh; padding:4rem 5% 1rem; 
-    max-width:1040px; margin:0 auto; position:relative; z-index:10; 
+.hero {
+  display:grid; grid-template-columns:1fr 1fr;
+  align-items:center; gap:4rem;
+  min-height:92vh; padding:4rem 5% 2rem;
+  max-width:1280px; margin:0 auto; position:relative; z-index:10;
 }
-.hero-left { position:relative; max-width: 540px; }
-.hero-right { position:relative; width: 100%; max-width: 420px; margin-left: auto; }
-        
-.hero-kicker { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:1.2rem; border-left:3px solid var(--accent); padding-left:10px; }
-.hero-h1 { font-size:clamp(2.5rem, 4vw, 3.5rem); margin-bottom:1rem; }
+.avail-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.42rem 1.1rem; border-radius:40px;
+  border:1.5px solid var(--accent); background:var(--accent-lt);
+  color:var(--accent); font-size:.78rem; font-weight:600;
+  letter-spacing:.8px; text-transform:uppercase; margin-bottom:1.6rem;
+}
+.avail-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 1.8s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+.hero-h1 { font-size:clamp(3rem,5.5vw,5.2rem); margin-bottom:1.3rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
-.hero-desc { font-size:1.05rem; color:var(--text); margin-bottom:2rem; line-height:1.7; }
+.hero-desc { font-size:1.05rem; color:var(--text); max-width:560px; margin-bottom:2rem; line-height:1.8; }
 
-.skill-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem;}
-.skill-pill { padding:.3rem .8rem; border:1px solid var(--border); border-radius:6px; font-size:.75rem; font-weight:500; background:var(--card-bg); color:var(--text); transition:border-color .2s; }
-.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow: 0 2px 8px var(--accent-glow);}
+.hero-ctas { display:flex; flex-wrap:wrap; align-items:center; gap:.9rem; margin-bottom:2.4rem; }
 
-.hero-img-wrap { width:100%; height:55vh; max-height: 520px; border-radius:20px; overflow:hidden; clip-path:inset(30% 30% 30% 30% round 20px); animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; box-shadow:0 20px 40px rgba(0,0,0,.08); border: 1px solid var(--border);}
-.hero-img-wrap img { width:100%; height:100%; object-fit:cover; object-position:center 20%; transform:scale(1.15); animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards; }
+.skill-tags { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:2rem;}
+.skill-pill {
+  padding:.38rem .9rem; border:1.5px solid var(--border);
+  border-radius:8px; font-size:.82rem; font-weight:500;
+  background:var(--card-bg); color:var(--text);
+  transition:border-color .2s, color .2s;
+}
+.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow:0 2px 8px var(--accent-glow);}
 
-/* [🔥 修复] 名字加上自然的弥散阴影，保证在任何背景下都清晰，并移除 exclusion */
-.hero-name-overlay { 
-  position:absolute; bottom:-3%; left:-5%; 
-  font-family:'Playfair Display',serif; font-style:italic; 
-  font-size:clamp(2.8rem,5vw,4.5rem); font-weight:800; color:#fff; 
-  z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards; pointer-events:none; 
-  mix-blend-mode: normal; /* 移除 exclusion，否则阴影会变色 */
-  text-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 10px 30px rgba(0,0,0,0.2); 
+.hero-right { position:relative; }
+.hero-img-wrap {
+  width:100%; height:65vh; border-radius:24px; overflow:hidden;
+  clip-path:inset(30% 30% 30% 30% round 24px);
+  animation:expandImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
+  box-shadow:0 32px 64px rgba(0,0,0,.1); border: 1px solid var(--border);
+}
+.hero-img-wrap img {
+  width:100%; height:100%; object-fit:cover; object-position:center 15%;
+  transform:scale(1.18);
+  animation:scaleImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
 }
 
-@keyframes expandImg { to { clip-path:inset(0 0 0 0 round 20px); } }
+/* [🔥 修复] Liyi GAO 名字设计，保留 Exclusion 并使用 drop-shadow 以保清晰度 */
+.hero-name-overlay {
+  position:absolute; bottom:-5%; left:-20%;
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(3.5rem,7vw,6rem); font-weight:800;
+  color:#fff; 
+  mix-blend-mode: exclusion; /* 保留高级反色效果 */
+  /* 使用 SVG drop-shadow 滤镜，它不会被 exclusion 完全吞噬，能维持立体感 */
+  filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.5)) drop-shadow(0px 4px 6px rgba(0,0,0,0.3));
+  z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards;
+  pointer-events:none; white-space:nowrap;
+}
+
+@keyframes expandImg { to { clip-path:inset(0 0 0 0 round 24px); } }
 @keyframes scaleImg  { to { transform:scale(1); } }
 @keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
 
@@ -257,7 +304,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode.open .snode-hint { color: var(--accent); }
 .snode.open .snode-hint::before { transform: rotate(90deg); }
 
-/* Inline Accordion Expansion */
 .snode-expansion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 70px; }
 .snode.open .snode-expansion { grid-template-rows: 1fr; }
 .snode-expansion-inner { overflow: hidden; }
@@ -277,7 +323,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
 .snode-gallery figcaption { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; }
 
-/* Bridge Wavy Line */
 .snode-wave-container { text-align: center; margin: 0; line-height: 0; position: relative; z-index: 1;}
 .snode-wave-container svg { height: 30px; margin-left: calc(96px - 12px); display: block; } 
 
@@ -304,7 +349,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .o2o-text  { flex:1; min-width:0; }
 .o2o-open-hint {
   display:inline-flex; align-items:center; gap:.5rem;
-  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.2rem;
+  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.5rem;
   background:var(--accent); padding:.6rem 1.2rem; border-radius:40px;
   box-shadow:0 4px 12px var(--accent-glow); transition:background .2s, transform .2s;
 }
@@ -317,27 +362,27 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
   position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw);
   background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
   transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
-  overflow-y:auto; padding:3rem; border-radius:24px 0 0 24px;
+  overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
 }
 .drawer.open { transform:translateX(0); }
 .drawer-close {
-  display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%;
-  border:none; background:var(--surface2); cursor:pointer; color:var(--muted); font-size:1.1rem;
+  display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%;
+  border:none; background:var(--surface2); cursor:pointer; color:var(--muted); font-size:1rem;
   margin-bottom:1.5rem; transition:background .2s;
 }
 .drawer-close:hover { background:var(--border); }
-.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:700; margin:.5rem 0 1rem; line-height: 1.2;}
+.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin:.5rem 0 1rem; line-height: 1.2;}
 .drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.2rem 0; }
 .drawer .kpi { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:1rem; }
-.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:800; color:var(--accent); line-height:1; }
+.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:800; color:var(--accent); line-height:1; }
 .drawer .kpi-label { font-size:.75rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
 .kpi-badge { display:inline-block; padding:.5rem 1rem; background:var(--accent-lt); color:var(--accent); border-radius:8px; font-weight:600; font-size:.85rem; margin:.8rem 0; border: 1px solid rgba(41, 151, 255, 0.15);}
 
 .drawer-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; }
 .drawer-bullets li { margin-bottom:.6rem; line-height:1.6; }
-.drawer-gallery { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:2rem; }
+.drawer-gallery { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:1.5rem; }
 .drawer-gallery figure { margin:0; }
-.drawer-gallery img { width:100%; height:140px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
+.drawer-gallery img { width:100%; height:130px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
 .drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center;}
 
 /* ============================================================
@@ -404,10 +449,10 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center;}
 
 /* ============================================================
-   AI DEMO & [🔥 修复] CODE PIPELINE FOR NOTION PROJECT
+   AI DEMO 1: Skincare & [🔥 修复] 2: Code Pipeline
    ============================================================ */
 #demo { background:var(--bg); position:relative;}
-.ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3rem; position:relative; overflow:hidden; isolation:isolate; max-width:1040px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
+.ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3.5rem; position:relative; overflow:hidden; isolation:isolate; max-width:1100px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
 .ai-card::before { content:''; position:absolute; top:-30%; right:-5%; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events:none; }
 .demo-doodle { position:absolute; bottom:15px; right:20px; width:100px; z-index:-1; opacity:0.06; mix-blend-mode:multiply; transform:rotate(10deg); filter:grayscale(100%); pointer-events: none;}
 
@@ -422,29 +467,57 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .b-dot:nth-child(1){background:#ff5f56} .b-dot:nth-child(2){background:#ffbd2e} .b-dot:nth-child(3){background:#27c93f}
 .browser iframe { width:100%; height:360px; border:none; display:block; background:#fff; }
 
-/* 专门用于 Notion 项目的工作流节点样式 */
-.code-pipeline { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; margin: 1.5rem 0; font-family: 'Space Grotesk', monospace; font-size: 0.85rem; }
-.cp-step { display: flex; align-items: flex-start; gap: 0.8rem; }
-.cp-tag { color: var(--accent); font-weight: 700; width: 70px; flex-shrink: 0; letter-spacing: 0.5px; }
-.cp-text { color: var(--muted); line-height: 1.5; }
-.cp-highlight { color: var(--text); font-weight: 600; }
-.cp-line { border-left: 1.5px dashed var(--muted); height: 1.2rem; margin-left: 36px; opacity: 0.3; margin-top: 4px; margin-bottom: 4px; }
+/* [🔥 修复] 流程图节点样式 (无 Emoji) */
+.pipeline-diagram {
+    display: flex; flex-direction: column; gap: 1rem;
+    margin: 1.5rem 0; padding: 1.5rem; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 12px;
+}
+.pl-node {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 0.8rem 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    position: relative;
+}
+.pl-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--accent-lt);
+    display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
+}
+.pl-text { flex: 1; }
+.pl-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text); }
+.pl-desc { font-size: 0.75rem; color: var(--muted); margin-top: 2px;}
+
+.pl-connector {
+    width: 2px; height: 16px; background: var(--accent); opacity: 0.3;
+    margin: -1rem 0 -1rem 26px; /* 对齐圆心 */
+}
 
 
 /* ============================================================
-   [🔥 修复] MANIFESTO (职业心声 Option A)
+   [🔥 修复] 职业心声 MANIFESTO (图文并排高级排版)
    ============================================================ */
-#manifesto { background:var(--bg); padding-bottom: 4rem;}
-.manifesto-card {
-  max-width: 860px; margin: 0 auto; background: var(--card-bg); border: 1px solid var(--border); 
-  border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.03); padding: 4rem; 
-  position: relative; overflow: hidden; text-align: left;
+#manifesto { background:var(--bg); padding-bottom: 5rem; padding-top: 2rem;}
+.manifesto-container {
+    display: grid; grid-template-columns: 1.3fr 1fr; gap: 4rem; align-items: center;
+    max-width: 1040px; margin: 0 auto; background: var(--card-bg);
+    border: 1px solid var(--border); border-radius: 24px; padding: 4rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.03); position: relative; overflow: hidden;
 }
-/* 边缘点缀 */
-.manifesto-card::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
-  background: linear-gradient(to bottom, var(--accent), var(--accent-dk));
+.manifesto-container::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-dk));
 }
+.manifesto-text { position: relative; z-index: 2;}
+.manifesto-text p { font-size: 1.1rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem;}
+.manifesto-text strong { color: var(--text); font-weight: 700;}
+
+.manifesto-img-wrap {
+    width: 100%; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08); border: 1px solid var(--border);
+    transform: rotate(2deg); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.manifesto-container:hover .manifesto-img-wrap { transform: rotate(0deg) scale(1.02); }
+.manifesto-img-wrap img { width: 100%; display: block; object-fit: cover;}
 
 /* ============================================================
    HOBBIES
@@ -461,7 +534,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .hobby-body h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .hobby-body p { font-size:.85rem; line-height:1.5; opacity:0; transform:translateY(8px); transition:opacity .4s .1s, transform .4s .1s; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; color:rgba(255,255,255,0.9);}
 .hobby-stack .hobby-card:hover .hobby-body p { opacity:1; transform:translateY(0); }
-
 
 /* ============================================================
    CV FLIP SECTION
@@ -491,7 +563,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 /* ============================================================
    FOOTER
    ============================================================ */
-footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:1040px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
+footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
 .footer-contact { display:flex; flex-wrap:wrap; justify-content:center; gap:.8rem; }
 .footer-copy { font-size:.8rem; color:var(--muted); text-align:center; }
 
@@ -502,6 +574,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   .hero { grid-template-columns:1fr; gap:2rem; padding:2rem 5% 1.5rem; min-height:auto; }
   .hero-right { order:-1; max-width: 100%; }
   .hero-img-wrap { height:60vw; max-height:none;}
+  .hero-name-overlay { font-size:4rem; left:0; mix-blend-mode:normal; filter:none; text-shadow: 0 4px 15px rgba(0,0,0,0.6); color:#fff; opacity:1; animation:none; }
   
   .snode { padding-left: 50px; margin-bottom: 1.5rem;}
   .timeline-spine { left: calc(5% + 15px); }
@@ -526,13 +599,15 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   .acc-hint { display: none;} 
   .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
   .acc-logo { width:44px; height:44px; }
+  
+  .manifesto-container { grid-template-columns: 1fr; padding: 2.5rem; gap: 2rem;}
+  .manifesto-img-wrap { max-width: 300px; margin: 0 auto;}
+
   .hobby-stack { flex-direction:column; height:auto; }
   .hobby-card { flex:none; height:180px; }
   .hobby-stack:hover .hobby-card { flex:none; height:180px; }
   .hobby-stack:hover .hobby-card:hover { flex:none; height:240px; }
   .hobby-body p { opacity:.9; transform:none; }
-  
-  .manifesto-card { padding: 2rem 1.5rem; }
 }
 </style>
 </head>
@@ -755,9 +830,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
   </div>
   <div class="kpi-badge">Designed materials driving engagement across <strong>1,000+ private-domain users</strong></div>
   <ul class="drawer-bullets" style="margin-top:1.2rem;">
-    <li><strong>Founded</strong> a new digital business ecosystem with online ordering and offline delivery, initially focusing on fresh fruit and successfully scaling to high-margin fruit by-products.</li>
-    <li><strong>Directed</strong> end-to-end operations, taking full ownership of procurement, SKU selection, team coordination, and daily customer service management.</li>
-    <li><strong>Forged</strong> strategic partnerships with student clubs and local coffee shops, effectively securing offline pop-up spaces and co-hosting promotional events.</li>
+    <li><strong>Founded</strong> a completely new digital business ecosystem driven by online ordering and offline delivery, scaling from fresh produce to <strong>high-margin products</strong> without relying on a traditional physical storefront.</li>
+    <li><strong>Directed</strong> end-to-end supply chain operations and SKU selection, delivering consistent customer service that drove an <strong>80% repurchase rate</strong> among 400+ Monthly Active Users.</li>
+    <li><strong>Cultivated</strong> an engaged brand community by designing targeted CRM materials, effectively reaching <strong>1,000+ private-domain users</strong> while keeping perishable waste strictly <strong>under 5%</strong>.</li>
   </ul>
   <div class="drawer-gallery">
     <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt=""><figcaption>Dorm-level shelf system</figcaption></figure>
@@ -849,7 +924,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="acc-bullets">
-            <li><strong>Delivered</strong> high-stakes live presentations to large audiences, translating complex logic into engaging content to achieve the <strong>#1 performance ranking</strong> among new hires.</li>
+            <li><strong>Delivered</strong> high-stakes live presentations to large audiences, translating complex logic into engaging content to achieve the <strong>#1 performance ranking</strong> among new instructors.</li>
             <li><strong>Maintained</strong> a <strong>100% client renewal rate</strong> by establishing proactive CRM strategies and building strong consumer relationships.</li>
           </ul>
           <div class="acc-gallery">
@@ -896,8 +971,12 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
     <div>
       <p class="label">Current Exploration · Agile Prototyping</p>
       <h3 class="display">Building the<br>Skincare Copilot</h3>
-      <p>I treat AI as a strategic co-pilot. By translating my consumer intuition into structured logic, I rapidly coded and deployed this functional web application.</p>
-      <p>Designed to solve the real pain point of overwhelming skincare choices — providing personalized routine analysis and reducing cognitive load for beauty consumers.</p>
+      <p style="color:var(--text); font-size:.95rem; line-height:1.7;">
+        I treat AI as a strategic co-pilot. By translating my <strong>consumer intuition</strong> into structured logic, I <strong>rapidly coded and deployed</strong> this functional web application.
+      </p>
+      <p style="margin-top:.6rem; color:var(--text); font-size:.95rem; line-height:1.7;">
+        Designed to solve the real pain point of <strong>overwhelming skincare choices</strong> — providing personalized routine analysis and <strong>reducing cognitive load</strong> for beauty consumers.
+      </p>
       <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
         Experience the Live Prototype ↗
       </a>
@@ -921,20 +1000,37 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
         To solve this, I engineered a fully automated data pipeline using <strong>Coze</strong> to bypass extraction barriers, translate, and sync structured assets directly to a <strong>Notion Database</strong>.
       </p>
       
-      <div class="code-pipeline">
-        <div class="cp-step">
-          <span class="cp-tag">[INPUT]</span>
-          <span class="cp-text">Complex Social & Video URLs</span>
+      <div class="pipeline-diagram">
+        <div class="pl-node">
+          <div class="pl-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          </div>
+          <div class="pl-text">
+            <div class="pl-title">Source Input</div>
+            <div class="pl-desc">Complex Social & Video URLs</div>
+          </div>
         </div>
-        <div class="cp-line"></div>
-        <div class="cp-step">
-          <span class="cp-tag">[PROCESS]</span>
-          <span class="cp-text">Custom Plugins + <span class="cp-highlight">LLM Translation & Synthesis</span></span>
+        <div class="pl-connector"></div>
+        
+        <div class="pl-node" style="border-color: var(--accent);">
+          <div class="pl-icon" style="background: var(--accent); color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+          </div>
+          <div class="pl-text">
+            <div class="pl-title">AI Processing</div>
+            <div class="pl-desc">Bypass Barriers + LLM Synthesis</div>
+          </div>
         </div>
-        <div class="cp-line"></div>
-        <div class="cp-step">
-          <span class="cp-tag">[OUTPUT]</span>
-          <span class="cp-text">Auto-sync to structured <span class="cp-highlight">Notion Database</span></span>
+        <div class="pl-connector"></div>
+        
+        <div class="pl-node">
+          <div class="pl-icon" style="background: var(--text); color: var(--bg);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div class="pl-text">
+            <div class="pl-title">Notion Output</div>
+            <div class="pl-desc">Auto-sync to structured Database</div>
+          </div>
         </div>
       </div>
     </div>
@@ -949,20 +1045,18 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 </section>
 
 <section id="manifesto" class="section-wrapper reveal" style="padding-top: 2rem; padding-bottom: 6rem;">
-  <div class="manifesto-card">
-    <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--accent), var(--accent-dk));"></div>
-    
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5; margin-bottom: 1.5rem;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-    
-    <p style="font-size: 1.15rem; color: var(--text); line-height: 1.8; margin-bottom: 1.5rem;">
-      "From vibe coding to vibe marketing, I genuinely love exploring across different disciplines. I use AI every day—it optimizes my workflows and does the heavy lifting in execution. But the more I rely on it, the clearer one thing becomes: AI can give us speed, but <strong style="font-size: 1.25rem;">judgment is what defines a brand.</strong>"
-    </p>
-    <p style="font-size: 1.05rem; color: var(--muted); line-height: 1.8;">
-      Tools can generate content, but they can't replicate human taste or intuition. Right now, my biggest drive is to throw myself into the trenches of real-world markets, get my hands dirty, and relentlessly sharpen that judgment.
-    </p>
-    
-    <div style="margin-top: 2.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent);">
-      — Liyi's Career Vision
+  <div class="manifesto-container">
+    <div class="manifesto-text">
+        <p class="label" style="margin-bottom: 1rem;">A Note on the AI Era</p>
+        <p>
+          "From vibe coding to vibe marketing, I genuinely love exploring across different disciplines. I use AI every day—it optimizes my workflows and does the heavy lifting in execution. But the more I rely on it, the clearer one thing becomes: AI can give us speed, but <strong style="font-size: 1.25rem;">human judgment is what truly defines a brand.</strong>"
+        </p>
+        <p>
+          Tools can generate content, but they can't replicate human taste or intuition. Right now, my biggest drive is to <strong>immerse myself in the trenches</strong> of real-world markets, get my hands dirty, and relentlessly sharpen that judgment.
+        </p>
+    </div>
+    <div class="manifesto-img-wrap">
+        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b20a775e8ad.webp" alt="Career Vision">
     </div>
   </div>
 </section>
@@ -1106,30 +1200,29 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:104
 (function(){
   var diaryCont = document.getElementById('diary-container');
   var diaryTxt  = document.getElementById('diary-text');
-  
+  var locked = false;
   function update(){
-    if(!diaryCont||!diaryTxt) return;
+    if(!diaryCont||!diaryTxt||locked) return;
     var rect = diaryCont.getBoundingClientRect();
     var wh   = window.innerHeight;
     var total = rect.height - wh;
-    
     var p = Math.max(0, Math.min(1, -rect.top / total));
-    
-    var translateY = 0;
-    if (p > 0.8) { translateY = (p - 0.8) * 100 * -1; }
-    
-    var scale = 0.9 + Math.pow(p, 0.6) * 0.15; 
-    var opacity = 0;
-    if (p < 0.25) { opacity = p * 4; } 
-    else if (p < 0.8) { opacity = 1; } 
-    else { opacity = 1 - (p - 0.8) * 5; }
-
-    diaryTxt.style.opacity   = Math.max(opacity, 0);
-    diaryTxt.style.transform = `translateY(${translateY}px) scale(${scale})`;
+    var translateY = Math.max(0, 50 * (1 - p*2));
+    var scale = 0.9 + Math.pow(p, 0.6) * 0.15;
+    var opacity = p < 0.25 ? p * 4 : 1;
+    diaryTxt.style.opacity   = opacity;
+    diaryTxt.style.transform = 'translateY('+translateY+'px) scale('+scale+')';
+    if(p >= 0.25){ locked = true; }
   }
-  
   window.addEventListener('scroll', update, {passive:true});
   update();
+  setTimeout(function(){
+    if(!locked && diaryTxt){
+      diaryTxt.style.opacity = '1';
+      diaryTxt.style.transform = 'translateY(0px) scale(1)';
+      locked = true;
+    }
+  }, 3000);
 })();
 
 /* ================================================================
