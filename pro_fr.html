@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liyi Gao | Brand Builder & Product Manager</title>
+<title>Liyi Gao | Architecte de Marque & Chef de Projets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -130,7 +130,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
 .nav-right { display:flex; align-items:center; gap:12px; }
 
-/* Language Pill */
 .lang-switcher {
   display:flex; align-items:center;
   background:#FFFFFF; border:1px solid var(--border); border-radius:40px;
@@ -143,7 +142,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 }
 .lang-btn.active { background:var(--accent); color:#fff; }
 
-/* CV Dropdown Pill */
 .cv-dropdown { position:relative; }
 .nav-cv-btn {
   display:inline-flex; align-items:center; gap:6px;
@@ -174,7 +172,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
 .cv-menu a + a { border-top:1px solid var(--border); }
 
-/* LinkedIn Pill */
 .nav-linkedin-btn {
   display:inline-flex; align-items:center; gap:6px;
   padding:.45rem 1.1rem; font-size:.82rem; font-weight:600;
@@ -184,7 +181,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
   font-family:'DM Sans',sans-serif; white-space:nowrap;
 }
 .nav-linkedin-btn:hover { background:var(--accent-dk); transform:translateY(-1px); }
-
 
 /* ============================================================
    FLOATING BOTTOM NAV
@@ -219,22 +215,22 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
 .hero-h1 { font-size:clamp(3rem,5.5vw,5.2rem); margin-bottom:1.3rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
-.hero-desc { font-size:1.05rem; color:var(--text); max-width:560px; margin-bottom:2rem; line-height:1.8; }
+.hero-desc { font-size:1.05rem; color:var(--muted); max-width:560px; margin-bottom:2rem; line-height:1.8; }
 
 .hero-ctas { display:flex; flex-wrap:wrap; align-items:center; gap:.9rem; margin-bottom:2.4rem; }
 
-.skill-tags { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:2rem;}
+.skill-tags { display:flex; flex-wrap:wrap; gap:.6rem; }
 .skill-pill {
   padding:.38rem .9rem; border:1.5px solid var(--border);
   border-radius:8px; font-size:.82rem; font-weight:500;
   background:var(--card-bg); color:var(--text);
   transition:border-color .2s, color .2s;
 }
-.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow:0 2px 8px var(--accent-glow);}
+.skill-pill:hover { border-color:var(--accent); color:var(--accent); }
 
 .hero-right { position:relative; }
 .hero-img-wrap {
-  width:100%; height:65vh; border-radius:24px; overflow:hidden;
+  width:100%; height:72vh; border-radius:24px; overflow:hidden;
   clip-path:inset(30% 30% 30% 30% round 24px);
   animation:expandImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
   box-shadow:0 32px 64px rgba(0,0,0,.1); border: 1px solid var(--border);
@@ -246,7 +242,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 }
 
 .hero-name-overlay {
-  position:absolute; bottom:-5%; left:-20%;
+  position:absolute; bottom:-2%; left:-6%;
   font-family:'Playfair Display',serif; font-style:italic;
   font-size:clamp(3.5rem,7vw,6rem); font-weight:800;
   color:#fff; 
@@ -261,7 +257,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 @keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
 
 /* ============================================================
-   DIARY PARALLAX (Empathy)
+   DIARY PARALLAX
    ============================================================ */
 .diary-container { height:150vh; position:relative; z-index:15; margin-bottom: -5vh;}
 .diary-sticky { position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
@@ -272,7 +268,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 }
 
 /* ============================================================
-   STORY SECTION: INLINE EXPANSION 
+   STORY SECTION
    ============================================================ */
 #story  { background:var(--bg); padding-bottom: 4rem; position: relative;}
 
@@ -353,7 +349,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 }
 .o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(5px); }
 
-/* Drawer */
 .drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
 .drawer-overlay.open { opacity:1; pointer-events:all; }
 .drawer {
@@ -384,7 +379,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center;}
 
 /* ============================================================
-   TRANSITION SCATTER BAND & BIG TITLE
+   TRANSITION SCATTER BAND
    ============================================================ */
 .transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); width: 100vw; margin-left: calc(-50vw + 50%);}
 .transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
@@ -417,7 +412,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .accordion-item.open::after { opacity:0; }
 
 .accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; position:relative; z-index:2;}
-
 .acc-logo { width:50px; height:50px; object-fit:contain; background:var(--bg); padding:5px; border-radius:12px; border:1px solid var(--border); flex-shrink:0; }
 .acc-meta { flex:1; min-width:0; }
 .acc-period  { font-size:.75rem; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:.2rem; }
@@ -464,7 +458,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .b-dot:nth-child(1){background:#ff5f56} .b-dot:nth-child(2){background:#ffbd2e} .b-dot:nth-child(3){background:#27c93f}
 .browser iframe { width:100%; height:360px; border:none; display:block; background:#fff; }
 
-/* 流程图节点样式 */
 .pipeline-diagram { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; padding: 1.5rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; }
 .pl-node { display: flex; align-items: center; gap: 1rem; background: var(--card-bg); border: 1px solid var(--border); padding: 0.8rem 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); position: relative; }
 .pl-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--accent-lt); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
@@ -472,50 +465,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .pl-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text); }
 .pl-desc { font-size: 0.75rem; color: var(--muted); margin-top: 2px;}
 .pl-connector { width: 2px; height: 16px; background: var(--accent); opacity: 0.3; margin: -1rem 0 -1rem 26px; }
-
-/* ============================================================
-   MANIFESTO (毛玻璃排版)
-   ============================================================ */
-#manifesto { background:var(--bg); padding-bottom: 3rem; padding-top: 2rem;}
-.manifesto-container {
-    position: relative; max-width: 860px; margin: 0 auto;
-    border-radius: 20px; overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
-    min-height: 260px;
-}
-.manifesto-bg-img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; object-position: center 40%;
-    display: block; z-index: 0;
-}
-.manifesto-glass {
-    position: relative; z-index: 2;
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(18px) saturate(1.4);
-    -webkit-backdrop-filter: blur(18px) saturate(1.4);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 20px;
-    padding: 2.8rem 3rem;
-    display: flex; flex-direction: column; justify-content: center;
-}
-.manifesto-glass::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    border-radius: 20px 0 0 20px;
-    background: linear-gradient(to bottom, var(--accent), var(--accent-dk));
-}
-.manifesto-quote-mark {
-    font-family:'Playfair Display',serif; font-size:3.5rem; line-height:.8;
-    color:#fff; opacity:.4; margin-bottom:.4rem;
-}
-.manifesto-label {
-    font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
-    color:rgba(255,255,255,0.6); margin-bottom:.7rem;
-}
-.manifesto-text {
-    font-size:1rem; color:#fff; line-height:1.8; max-width:580px;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.25);
-}
-.manifesto-text strong { color:#fff; font-weight:700; } 
 
 /* ============================================================
    HOBBIES
@@ -532,7 +481,6 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 .hobby-body h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .hobby-body p { font-size:.85rem; line-height:1.5; opacity:0; transform:translateY(8px); transition:opacity .4s .1s, transform .4s .1s; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; color:rgba(255,255,255,0.9);}
 .hobby-stack .hobby-card:hover .hobby-body p { opacity:1; transform:translateY(0); }
-
 
 /* ============================================================
    CV FLIP SECTION
@@ -599,8 +547,49 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
   .acc-logo { width:44px; height:44px; }
   
-  .manifesto-container { grid-template-columns: 1fr; padding: 2.5rem; gap: 2rem;}
-  .manifesto-img-wrap { max-width: 300px; margin: 0 auto; transform: none;}
+ /* ============================================================
+   MANIFESTO (毛玻璃排版)
+   ============================================================ */
+#manifesto { background:var(--bg); padding-bottom: 3rem; padding-top: 2rem;}
+.manifesto-container {
+    position: relative; max-width: 860px; margin: 0 auto;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    min-height: 260px;
+}
+.manifesto-bg-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 40%;
+    display: block; z-index: 0;
+}
+.manifesto-glass {
+    position: relative; z-index: 2;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 2.8rem 3rem;
+    display: flex; flex-direction: column; justify-content: center;
+}
+.manifesto-glass::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    border-radius: 20px 0 0 20px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-dk));
+}
+.manifesto-quote-mark {
+    font-family:'Playfair Display',serif; font-size:3.5rem; line-height:.8;
+    color:#fff; opacity:.4; margin-bottom:.4rem;
+}
+.manifesto-label {
+    font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    color:rgba(255,255,255,0.6); margin-bottom:.7rem;
+}
+.manifesto-text {
+    font-size:1rem; color:#fff; line-height:1.8; max-width:580px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+}
+.manifesto-text strong { color:#fff; font-weight:700; }
 
   .hobby-stack { flex-direction:column; height:auto; }
   .hobby-card { flex:none; height:180px; }
@@ -622,7 +611,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 </div>
 <div class="intro-brand" id="intro-brand">
   <div class="intro-name display">Liyi GAO</div>
-  <div class="intro-role">Brand Builder &amp; Product Manager</div>
+  <div class="intro-role">Architecte de Marque &amp; Chef de Projets</div>
 </div>
 
 <div class="overflow-protector">
@@ -634,14 +623,14 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   </div>
   <div class="nav-right">
     <div class="lang-switcher">
-      <a href="pro.html"    class="lang-btn active" data-lang="en">EN</a>
-      <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
+      <a href="pro.html"    class="lang-btn"        data-lang="en">EN</a>
+      <a href="pro_fr.html" class="lang-btn active"  data-lang="fr">FR</a>
       <a href="pro_zh.html" class="lang-btn"        data-lang="zh">中文</a>
     </div>
     
     <div class="cv-dropdown" id="nav-cv">
       <button class="nav-cv-btn">
-        Download CV 
+        Télécharger CV 
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
       </button>
       <div class="cv-menu">
@@ -659,48 +648,45 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 <nav class="floating-nav" id="floating-nav">
   <a class="fnav-item active" href="#hero">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-    <span>Home</span>
+    <span>Accueil</span>
   </a>
   <a class="fnav-item" href="#story">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
-    <span>Story</span>
+    <span>Histoire</span>
   </a>
   <a class="fnav-item" href="#arsenal">
     <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-    <span>Work</span>
+    <span>Expérience</span>
   </a>
   <a class="fnav-item" href="#demo">
     <svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
-    <span>Project</span>
+    <span>Projets</span>
   </a>
   <a class="fnav-item" href="#hobbies">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
-    <span>Life</span>
+    <span>Vie</span>
   </a>
 </nav>
 
 <section id="hero" class="section-wrapper">
   <div class="hero">
     <div class="hero-left reveal">
-      <div class="avail-badge">
-        <span class="avail-dot"></span>
-        Audencia PGE &nbsp;·&nbsp; Internship from July 2026
-      </div>
-      <h1 class="display hero-h1">The Evolution<br>of a <em>Brand Builder.</em></h1>
+     <div class="avail-badge"><span class="avail-dot"></span>Audencia PGE &nbsp;·&nbsp; Stage à partir de juillet 2026</div>
+      <h1 class="display hero-h1">L'Évolution<br>d'une <em>Architecte de Marque.</em></h1>
       <p class="hero-desc reveal delay-1">
-        Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
+        Passionnée par la transformation des <strong>insights consommateurs</strong> en stratégies <strong>Go-To-Market</strong> percutantes. Mon ambition : construire des marques FMCG et beauté avec du fond et du style, en faisant le lien entre l'innovation produit et la narration de marque.
       </p>
       
       <div class="hero-ctas reveal delay-2">
-        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-          liyi.gao.dm@gmail.com
-        </a>
-      </div>
+  <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+    liyi.gao.dm@gmail.com
+  </a>
+</div>
       <div class="skill-tags reveal delay-2">
         <div class="skill-pill">🇨🇳 Mandarin</div>
-        <div class="skill-pill">🇫🇷 French C1</div>
-        <div class="skill-pill">🇬🇧 English C2</div>
+        <div class="skill-pill">🇫🇷 Français C1</div>
+        <div class="skill-pill">🇬🇧 Anglais C2</div>
         <div class="skill-pill">SQL</div>
         <div class="skill-pill">Google Analytics</div>
         <div class="skill-pill">Microsoft Office</div>
@@ -718,7 +704,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 
 <div class="diary-container" id="diary-container">
   <div class="diary-sticky">
-    <h2 class="diary-text display" id="diary-text">IT ALL STARTED<br>WITH EMPATHY.</h2>
+    <h2 class="diary-text display" id="diary-text">TOUT A COMMENCÉ<br>PAR L'EMPATHIE.</h2>
   </div>
 </div>
 
@@ -727,9 +713,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="">
 
   <div class="story-header reveal">
-    <p class="st-eyebrow">Journey</p>
-    <h2>Self-Growth &amp; Entrepreneurial Journey</h2>
-    <p class="st-sub">Click each chapter to expand the story.</p>
+    <p class="st-eyebrow">Parcours</p>
+    <h2>Développement personnel &amp; esprit entrepreneurial</h2>
+    <p class="st-sub">Cliquez sur chaque chapitre pour en découvrir l'histoire.</p>
   </div>
 
   <div class="timeline-wrapper">
@@ -742,20 +728,22 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e78d031.webp" alt="2013">
         </div>
         <div class="snode-info">
-          <span class="snode-year">2013 · Consumer Insights</span>
-          <h3 class="snode-title heading">Grandma's Stall</h3>
-          <span class="snode-hint">Click to expand</span>
+          <span class="snode-year">2013 · Insights Consommateurs</span>
+          <h3 class="snode-title heading">L'Étal de Grand-Mère : ma première leçon en storytelling</h3>
+          <span class="snode-hint">Cliquer pour développer</span>
         </div>
       </div>
       <div class="snode-expansion">
         <div class="snode-expansion-inner">
           <div class="snode-detail-card">
-            <p>When my grandma's garden had a surplus, I took the bio vegetables to the rural market. Reducing cognitive load with <strong>direct copywriting</strong> — my very first A/B test on a cardboard sign. The earliest lesson in consumer psychology: clarity beats cleverness.</p>
-            <div class="snode-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt=""><figcaption>Fresh harvest</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt=""><figcaption>First A/B test</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt=""><figcaption>Direct connection</figcaption></figure>
-            </div>
+            <p>Bien avant de connaître l'existence de la « proposition de valeur unique », je n'étais qu'une gamine cherchant à aider ma grand-mère à écouler ses surplus de légumes. J'ai décidé de les proposer sur le marché local — pas avec de beaux discours commerciaux, mais en griffonnant sur un bout de carton des faits simples et honnêtes : <strong>« engrais naturel à base de résidu de soja », « 100 % naturel » et « fraîchement cueilli ».</strong></p>
+
+<p>Résultat : ça a marché. Les gens faisaient confiance à cette honnêteté. C'était ma toute première leçon, involontaire, en psychologie du consommateur : <strong>une narration authentique et une communication claire</strong> créent toujours un lien plus fort que n'importe quelle astuce marketing.</p>            
+<div class="snode-gallery">
+        <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt=""><figcaption>La récolte de grand-mère</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt=""><figcaption>Copywriting honnête</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt=""><figcaption>Construire la confiance</figcaption></figure>
+                 </div>
           </div>
         </div>
       </div>
@@ -774,20 +762,22 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
           <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
         </div>
         <div class="snode-info">
-          <span class="snode-year">2015 · Brand Positioning</span>
-          <h3 class="snode-title heading">The Flea Market Pop-Up</h3>
-          <span class="snode-hint">Click to expand</span>
+          <span class="snode-year">2015 · Positionnement de Marque</span>
+          <h3 class="snode-title heading">Le Pop-Up au Marché aux Puces</h3>
+          <span class="snode-hint">Cliquer pour développer</span>
         </div>
       </div>
       <div class="snode-expansion">
         <div class="snode-expansion-inner">
           <div class="snode-detail-card">
-            <p>Who knew a flea market stall could be a masterclass in DTC branding? By <strong>curating trending Japanese stationery</strong> and elevating the visual merchandising, I successfully validated premium pricing in a highly price-sensitive crowd. A playful but powerful lesson: <strong>aesthetics is a legitimate growth lever</strong>.</p>
-            <div class="snode-gallery">
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt=""><figcaption>Brand identity</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt=""><figcaption>Trend curation</figcaption></figure>
-              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp" alt=""><figcaption>Visual merchandising</figcaption></figure>
-            </div>
+            <p>Qui aurait cru qu'un marché aux puces de week-end pouvait se transformer en master class de positionnement de marque ? En surfant très tôt sur la vague des articles de papeterie japonais, je ne vendais pas n'importe quoi. J'ai <strong>sélectionné des produits avec une esthétique parfaitement cohérente</strong> et créé un espace visuel immersif qui faisait d'une simple table pliante un concept store de niche.</p>
+
+<p>La singularité du stand ressortait si nettement du reste du marché que les acheteurs venaient naturellement vers moi. Le résultat ? J'ai pu <strong>vendre à prix premium et tout écouler à une vitesse folle</strong>. C'était la première preuve concrète que <strong>une esthétique cohérente et un positionnement clair sont de vrais leviers de croissance.</strong></p>
+             <div class="snode-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/12/69b1eba1761a0.webp" alt=""><figcaption>Sélection curatée</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt=""><figcaption>Ambiance boutique</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/12/69b1eb9d9b3d2.webp" alt=""><figcaption>Le marché aux puces</figcaption></figure>
+                 </div>
           </div>
         </div>
       </div>
@@ -795,7 +785,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 
     <div class="story-bridge-v2 reveal">
       <div class="sbv-line"></div>
-      <div class="sbv-label">Flagship project ↓</div>
+      <div class="sbv-label">Projet phare ↓</div>
     </div>
 
   </div>
@@ -804,13 +794,13 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
     <div class="o2o-inner">
       <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa31d4774d.webp" alt="O2O" class="o2o-icon" style="object-fit:contain;">
       <div class="o2o-text">
-        <p class="label" style="margin-bottom:.3rem;">2022 · First Entrepreneurial Venture</p>
-        <h3 class="heading" style="font-size:1.6rem; margin-bottom:.4rem;">Building a Campus O2O Retail Network</h3>
-        <p style="color:var(--muted);font-size:.9rem;line-height:1.5;">400+ MAU · 80% repurchase · &lt;5% waste · 1,000+ private-domain users</p>
+        <p class="label" style="margin-bottom:.3rem;">2022 · Première Aventure Entrepreneuriale</p>
+        <h3 class="heading" style="font-size:1.6rem; margin-bottom:.4rem;">Création d'un réseau de distribution O2O sur le campus</h3>
+        <p style="color:var(--muted);font-size:.9rem;line-height:1.5;">400+ MAU · 80% de réachat · &lt;5% de déchets · 1 000+ utilisateurs en domaine privé</p>
       </div>
       <div class="o2o-open-hint">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        Case Study
+        Étude de cas
       </div>
     </div>
   </div>
@@ -820,27 +810,27 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 <div class="drawer-overlay" id="drawer-overlay"></div>
 <div class="drawer" id="o2o-drawer">
   <button class="drawer-close" id="drawer-close">✕</button>
-  <p class="label">Phase 2 (2022) · First Entrepreneurial Venture</p>
-  <h3 class="heading">Building a Campus O2O Retail Network</h3>
+  <p class="label">Phase 2 (2022) · Première Aventure Entrepreneuriale</p>
+  <h3 class="heading">Création d'un réseau de distribution O2O sur le campus</h3>
   <p style="color:var(--text);font-size:.95rem;line-height:1.7;margin-bottom:1rem;">
-    Founded a new digital business ecosystem with online ordering and offline delivery — from a blank page to a thriving campus brand.
+    Lancement d'un écosystème commercial entièrement digital, avec commandes en ligne et livraison en présentiel — de zéro à une marque campus qui tourne.
   </p>
   <div class="kpi-row">
-    <div class="kpi"><div class="kpi-num heading">400+</div><div class="kpi-label">Monthly Active Users</div></div>
-    <div class="kpi"><div class="kpi-num heading">80%</div><div class="kpi-label">Repurchase Rate</div></div>
-    <div class="kpi"><div class="kpi-num heading">&lt;5%</div><div class="kpi-label">Perishable Waste</div></div>
+    <div class="kpi"><div class="kpi-num heading">400+</div><div class="kpi-label">Utilisateurs actifs mensuels</div></div>
+    <div class="kpi"><div class="kpi-num heading">80%</div><div class="kpi-label">Taux de réachat</div></div>
+    <div class="kpi"><div class="kpi-num heading">&lt;5%</div><div class="kpi-label">Déchets périssables</div></div>
   </div>
-  <div class="kpi-badge">Designed materials driving engagement across <strong>1,000+ private-domain users</strong></div>
+  <div class="kpi-badge">Matériaux engageant <strong>1 000+ utilisateurs en domaine privé</strong></div>
   <ul class="drawer-bullets" style="margin-top:1.2rem;">
-    <li><strong>Founded</strong> a completely new digital business ecosystem driven by online ordering and offline delivery, scaling from fresh produce to <strong>high-margin products</strong> without relying on a traditional physical storefront.</li>
-    <li><strong>Directed</strong> end-to-end supply chain operations and SKU selection, delivering consistent customer service that drove an <strong>80% repurchase rate</strong> among 400+ Monthly Active Users.</li>
-    <li><strong>Cultivated</strong> an engaged brand community by designing targeted CRM materials, effectively reaching <strong>1,000+ private-domain users</strong> while keeping perishable waste strictly <strong>under 5%</strong>.</li>
+    <li><strong>Fondé</strong> un écosystème commercial digital inédit, alliant commandes en ligne et livraison physique, en montant progressivement en gamme — des produits frais aux <strong>articles à forte marge</strong> — sans dépendre d'un point de vente traditionnel.</li>
+    <li><strong>Piloté</strong> l'ensemble de la chaîne d'approvisionnement et la sélection des SKU, assurant une qualité de service constante qui a généré un <strong>taux de réachat de 80 %</strong> auprès de 400+ utilisateurs actifs mensuels.</li>
+    <li><strong>Développé</strong> une communauté de marque engagée grâce à des supports CRM ciblés, touchant efficacement <strong>1 000+ utilisateurs en domaine privé</strong>, tout en maintenant les pertes alimentaires <strong>sous les 5 %</strong>.</li>
   </ul>
   <div class="drawer-gallery">
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt=""><figcaption>Dorm-level shelf system</figcaption></figure>
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt=""><figcaption>Data-driven orders</figcaption></figure>
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt=""><figcaption>Frictionless UI</figcaption></figure>
-    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt=""><figcaption>High-retention CRM</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt=""><figcaption>Système d'étagères en résidence</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt=""><figcaption>Commandes pilotées par la data</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt=""><figcaption>UX sans friction</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt=""><figcaption>CRM haute rétention</figcaption></figure>
   </div>
 </div>
 
@@ -852,8 +842,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 </div>
 
 <div class="arsenal-header reveal" id="arsenal">
-  <p class="label" style="margin-bottom:.4rem;">Experience</p>
-  <h2 class="display">Sharpening My Senses:<br><em style="color:var(--accent);">Professional Experience</em></h2>
+  <p class="label" style="margin-bottom:.4rem;">Expérience</p>
+  <h2 class="display">Affûter mes Sens :<br><em style="color:var(--accent);">Expérience Professionnelle</em></h2>
 </div>
 
 <section class="section-wrapper" style="padding-top:0; padding-bottom:5rem;">
@@ -864,25 +854,25 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       <div class="accordion-header">
         <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
         <div class="acc-meta">
-          <div class="acc-period">Canton, China · Mar 2025 – Jun 2025</div>
+          <div class="acc-period">Canton, Chine · Mar 2025 – Juin 2025</div>
           <div class="acc-company heading">Wealthfields Lohmann (FMCG)</div>
-          <div class="acc-focus">360° Brand Partnerships &amp; Go-to-Market</div>
+          <div class="acc-focus">Partenariats de marque 360° &amp; Go-to-Market</div>
         </div>
-        <span class="acc-hint">Click to expand ▾</span>
+        <span class="acc-hint">Cliquer pour développer ▾</span>
         <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
       </div>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="acc-bullets">
-            <li><strong>Orchestrated</strong> 360° offline marathon activations (Qingdao Marathon, HHI), generating <strong>4.19M impressions</strong> and €41k in direct sales.</li>
-            <li><strong>Coordinated</strong> influencer marketing campaigns by managing 20+ MCN agencies and 100+ KOLs, synchronizing on-the-ground events with online live-streaming to engage <strong>50k+ concurrent viewers</strong>.</li>
-            <li><strong>Increased</strong> Marketing ROI from 0.2 to 1.0+ by implementing rigorous audience-content matching strategies on Douyin (TikTok).</li>
+            <li><strong>Piloté</strong> des activations 360° hors-média autour de marathons (Marathon de Qingdao, HHI), générant <strong>4,19 millions d'impressions</strong> et 41 000 € de ventes directes.</li>
+            <li><strong>Coordonné</strong> des campagnes d'influence en supervisant 20+ agences MCN et 100+ KOLs, synchronisant les événements terrain avec les live-streams en ligne pour toucher <strong>50 000+ spectateurs simultanés</strong>.</li>
+            <li><strong>Amélioré</strong> le ROI marketing de 0,2 à 1,0+ grâce à des stratégies rigoureuses de ciblage contenu-audience sur Douyin (TikTok).</li>
           </ul>
           <div class="acc-gallery">
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>Marathon Live</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>50k+ Stream</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>Event Setup</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>Offline Sales</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>Live Marathon</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>50k+ spectateurs</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>Installation événementielle</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>Ventes physiques</figcaption></figure>
           </div>
         </div>
       </div>
@@ -892,21 +882,21 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       <div class="accordion-header">
         <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
         <div class="acc-meta">
-          <div class="acc-period">Canton, China · Jan 2023 – Aug 2023</div>
+          <div class="acc-period">Canton, Chine · Jan 2023 – Août 2023</div>
           <div class="acc-company heading">MMA Brand Services Pte. Ltd.</div>
-          <div class="acc-focus">Product Lifecycle Management &amp; E-Commerce Strategy</div>
+          <div class="acc-focus">Gestion du cycle de vie produit &amp; Stratégie e-commerce</div>
         </div>
-        <span class="acc-hint">Click to expand ▾</span>
+        <span class="acc-hint">Cliquer pour développer ▾</span>
         <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
       </div>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="acc-bullets">
-            <li><strong>Accelerated</strong> the market entry of 10+ new SKUs on Amazon, utilizing data methodologies equivalent to FMCG Panel Analysis (Nielsen/IRI) to identify and capture emerging consumer trends.</li>
-            <li><strong>Optimized</strong> the supply chain ecosystem by directly negotiating with 15+ vendors, reducing logistics costs by <strong>20–40%</strong> to improve overall product margins.</li>
+            <li><strong>Accéléré</strong> l'entrée en marché de 10+ nouveaux SKUs sur Amazon, en mobilisant des méthodologies analytiques équivalentes aux panels FMCG (Nielsen/IRI) pour identifier et capter les tendances consommateurs émergentes.</li>
+            <li><strong>Optimisé</strong> l'écosystème logistique en négociant directement avec 15+ fournisseurs, réduisant les coûts de transport de <strong>20 à 40 %</strong> et améliorant les marges produits.</li>
           </ul>
           <div class="acc-gallery">
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Supply Chain Team</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>Équipe Supply Chain</figcaption></figure>
           </div>
         </div>
       </div>
@@ -916,22 +906,22 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       <div class="accordion-header">
         <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
         <div class="acc-meta">
-          <div class="acc-period">Guangzhou, China · Nov 2023 – Jun 2024</div>
+          <div class="acc-period">Guangzhou, Chine · Nov 2023 – Juin 2024</div>
           <div class="acc-company heading">TAL Education Group</div>
-          <div class="acc-focus">EdTech &amp; Audience Engagement</div>
+          <div class="acc-focus">EdTech &amp; Engagement des Audiences</div>
         </div>
-        <span class="acc-hint">Click to expand ▾</span>
+        <span class="acc-hint">Cliquer pour développer ▾</span>
         <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
       </div>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="acc-bullets">
-            <li><strong>Delivered</strong> high-stakes live presentations to large audiences, translating complex logic into engaging content to achieve the <strong>#1 performance ranking</strong> among new instructors.</li>
-            <li><strong>Maintained</strong> a <strong>100% client renewal rate</strong> by establishing proactive CRM strategies and building strong consumer relationships.</li>
+            <li><strong>Animé</strong> des présentations en direct à forts enjeux devant de larges audiences, en traduisant des concepts complexes en contenus captivants pour décrocher le <strong>classement n°1</strong> parmi les nouveaux formateurs.</li>
+            <li><strong>Maintenu</strong> un <strong>taux de renouvellement clients de 100 %</strong> grâce à des stratégies CRM proactives et au soin apporté à la relation consommateur.</li>
           </ul>
           <div class="acc-gallery">
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>Top Performance</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>Live Presentation</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>Top performance</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>Présentation en direct</figcaption></figure>
             <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>Engagement</figcaption></figure>
           </div>
         </div>
@@ -942,24 +932,24 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       <div class="accordion-header">
         <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
         <div class="acc-meta">
-          <div class="acc-period">Nantes, France · Ongoing</div>
+          <div class="acc-period">Nantes, France · En cours</div>
           <div class="acc-company heading">Audencia Entrepreneur Club (ACE)</div>
-          <div class="acc-focus">PR, External Communication &amp; Event</div>
+          <div class="acc-focus">Relations publiques, communication externe &amp; événementiel</div>
         </div>
-        <span class="acc-hint">Click to expand ▾</span>
+        <span class="acc-hint">Cliquer pour développer ▾</span>
         <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
       </div>
       <div class="accordion-body">
         <div class="accordion-inner">
           <ul class="acc-bullets">
-            <li><strong>Conceptualized</strong> and pitched the "DARE+" initiative, refined the comprehensive event flow, and <strong>introduced a gamified competition</strong> where participants competed for exclusive "booster packs."</li>
-            <li><strong>Secured</strong> vital institutional sponsorships (including CVEC and GFA) and invited industry experts to feature as guest speakers, expanding the event's professional network.</li>
-            <li><strong>Managed</strong> on-site event execution and cross-departmental coordination, ensuring a smooth brand experience from the initial teaser campaign to the final closing remarks.</li>
+            <li><strong>Conceptualisé</strong> et pitché l'initiative « DARE+ », affiné le déroulé complet de l'événement et <strong>introduit un mécanisme de gamification</strong> où les participants s'affrontaient pour remporter des « booster packs » exclusifs.</li>
+            <li><strong>Obtenu</strong> des soutiens institutionnels clés (CVEC, GFA) et convié des experts sectoriels comme intervenants, élargissant ainsi le réseau professionnel de l'événement.</li>
+            <li><strong>Assuré</strong> la coordination sur site et inter-départements, garantissant une expérience de marque fluide de la campagne teaser jusqu'au mot de clôture.</li>
           </ul>
           <div class="acc-gallery">
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Event Planning</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>Organisation de l'événement</figcaption></figure>
             <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>Coordination</figcaption></figure>
-            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE Execution</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>Exécution DARE</figcaption></figure>
           </div>
         </div>
       </div>
@@ -971,35 +961,35 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 <section id="demo" class="section-wrapper reveal">
   <div class="ai-card">
     <div>
-      <p class="label">Current Exploration · Agile Prototyping</p>
-      <h3 class="display">Building the<br>Skincare Copilot</h3>
+      <p class="label">Exploration actuelle · Prototypage agile</p>
+      <h3 class="display">Création du<br>Copilote Skincare</h3>
       <p style="color:var(--text); font-size:.95rem; line-height:1.7;">
-        I treat AI as a strategic co-pilot. By translating my <strong>consumer intuition</strong> into structured logic, I <strong>rapidly coded and deployed</strong> this functional web application.
+        Je considère l'IA comme un co-pilote stratégique. En traduisant mon <strong>intuition consommateur</strong> en logique structurée, j'ai <strong>rapidement codé et déployé</strong> cette application web fonctionnelle.
       </p>
       <p style="margin-top:.6rem; color:var(--text); font-size:.95rem; line-height:1.7;">
-        Designed to solve the real pain point of <strong>overwhelming skincare choices</strong> — providing personalized routine analysis and <strong>reducing cognitive load</strong> for beauty consumers.
+        Conçue pour résoudre le vrai problème de <strong>l'excès de choix en skincare</strong> — en proposant une analyse de routine personnalisée et en <strong>réduisant la charge cognitive</strong> des consommatrices beauté.
       </p>
       <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
-        Experience the Live Prototype ↗
+        Tester le prototype live ↗
       </a>
     </div>
     <div class="browser">
       <div class="browser-bar">
         <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
       </div>
-      <iframe src="https://lygao-ducky.github.io/skincare_assistant/index.html" title="Skincare Copilot"></iframe>
+      <iframe src="https://lygao-ducky.github.io/skincare_assistant/index.html" title="Copilote Skincare"></iframe>
     </div>
   </div>
 
   <div class="ai-card" style="margin-top: 4rem;">
     <div>
-      <p class="label">Workflow Automation · AI Pipeline</p>
-      <h3 class="display">AI Knowledge<br>Extraction Engine</h3>
+      <p class="label">Automatisation · Pipeline IA</p>
+      <h3 class="display">Moteur d'Extraction<br>de Connaissances par IA</h3>
       <p style="color:var(--text); font-size:.95rem; line-height:1.7;">
-        Previously, curating industry notes meant endless manual copy-pasting. More critically, standard LLMs struggle to directly read links from Chinese social media and video platforms due to anti-scraping barriers.
+        Auparavant, constituer une veille sectorielle impliquait des heures de copier-coller manuel. Mais surtout, les LLMs classiques peinent à lire directement les liens issus des réseaux sociaux chinois en raison des barrières anti-scraping.
       </p>
       <p style="margin-top:.6rem; color:var(--text); font-size:.95rem; line-height:1.7;">
-        To solve this, I engineered a fully automated data pipeline using <strong>Coze</strong> to bypass extraction barriers, translate, and sync structured assets directly to a <strong>Notion Database</strong>.
+        Pour résoudre ce problème, j'ai conçu un pipeline entièrement automatisé avec <strong>Coze</strong> pour contourner ces barrières, traduire et synchroniser les contenus structurés directement dans une <strong>base de données Notion</strong>.
       </p>
       
       <div class="pipeline-diagram">
@@ -1008,8 +998,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           </div>
           <div class="pl-text">
-            <div class="pl-title">Source Input</div>
-            <div class="pl-desc">Complex Social & Video URLs</div>
+            <div class="pl-title">Source d'entrée</div>
+            <div class="pl-desc">URLs complexes (réseaux sociaux &amp; vidéos)</div>
           </div>
         </div>
         <div class="pl-connector"></div>
@@ -1019,8 +1009,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
           </div>
           <div class="pl-text">
-            <div class="pl-title">AI Processing</div>
-            <div class="pl-desc">Bypass Barriers + LLM Synthesis</div>
+            <div class="pl-title">Traitement IA</div>
+            <div class="pl-desc">Contournement des barrières + synthèse LLM</div>
           </div>
         </div>
         <div class="pl-connector"></div>
@@ -1030,8 +1020,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
           </div>
           <div class="pl-text">
-            <div class="pl-title">Notion Output</div>
-            <div class="pl-desc">Auto-sync to structured Database</div>
+            <div class="pl-title">Sortie Notion</div>
+            <div class="pl-desc">Synchronisation automatique vers la base de données</div>
           </div>
         </div>
       </div>
@@ -1041,24 +1031,20 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       <div class="browser-bar">
         <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
       </div>
-      <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1f86835a6b.webp" alt="Notion Database" style="width:100%; display:block; object-fit: cover;">
+      <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1f86835a6b.webp" alt="Base de données Notion" style="width:100%; display:block; object-fit: cover;">
     </div>
   </div>
 </section>
 
-<section id="manifesto" class="section-wrapper reveal" style="padding-top: 2rem; padding-bottom: 5rem;">
+<section id="manifesto" class="section-wrapper reveal" style="padding-top: 1rem; padding-bottom: 3rem;">
   <div class="manifesto-container">
-    <div class="manifesto-text">
-        <p class="label">A Note on the AI Era</p>
-        <p>
-          "From vibe coding to vibe marketing, I genuinely love exploring across different disciplines. I use AI every day—it optimizes my workflows and does the heavy lifting in execution. But the more I rely on it, the clearer one thing becomes: AI can give us speed, but <strong style="font-size: 1.25rem;">human judgment is what truly defines a brand.</strong>"
-        </p>
-        <p>
-          Tools can generate content, but they can't replicate human taste or intuition. Right now, my biggest drive is to <strong>immerse myself in the trenches</strong> of real-world markets, get my hands dirty, and relentlessly sharpen that judgment.
-        </p>
-    </div>
-    <div class="manifesto-img-wrap">
-        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b20a775e8ad.webp" alt="Career Vision">
+    <img src="https://picui.ogmua.cn/s1/2026/03/12/69b2ba34efe47.webp" class="manifesto-bg-img" alt="">
+    <div class="manifesto-glass">
+      <div class="manifesto-quote-mark">"</div>
+      <p class="manifesto-label">Réflexion sur l'ère de l'IA</p>
+      <p class="manifesto-text">
+        Du vibe coding au vibe marketing — l'IA optimise mon exécution au quotidien. Mais plus je l'utilise, plus une évidence s'impose : <strong>c'est le jugement humain qui définit vraiment une marque.</strong> Ce qui me motive aujourd'hui, c'est de me confronter au terrain et d'affûter sans relâche cet avantage-là.
+      </p>
     </div>
   </div>
 </section>
@@ -1068,8 +1054,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle-sticker" style="bottom:10%;right:2%;width:140px;transform:rotate(-12deg);" alt="">
   
   <div class="section-title-block" style="text-align:center; padding-top: 0; margin-bottom: 2rem;">
-    <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">When I'm not in front of my laptop...</h2>
-    <p>Maintaining the "hardware" and optimizing the "flow state".</p>
+    <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">Quand je ne suis pas devant mon écran...</h2>
+    <p>Entretenir le « hardware » et optimiser l'état de flow.</p>
   </div>
   <div class="hobby-stack">
     <div class="hobby-card">
@@ -1077,7 +1063,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
         <h4 class="heading">🚣 Aviron</h4>
-        <p>Just me, a boat, chasing the wind.</p>
+        <p>Moi, un bateau, et le vent en face.</p>
       </div>
     </div>
     <div class="hobby-card">
@@ -1085,15 +1071,15 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
         <h4 class="heading">🥾 Randonnée</h4>
-        <p>Leg burn? Yes. Worth it? Always.</p>
+        <p>Les jambes brûlent ? Oui. Ça vaut le coup ? Toujours.</p>
       </div>
     </div>
     <div class="hobby-card">
       <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming" class="hobby-img">
       <div class="hobby-gradient"></div>
       <div class="hobby-body">
-        <h4 class="heading">🏊 Swimming</h4>
-        <p>Honestly, I love it because there's no sweat to wipe away!</p>
+        <h4 class="heading">🏊 Natation</h4>
+        <p>Honnêtement, j'adore ça parce qu'il n'y a aucune transpiration à essuyer !</p>
       </div>
     </div>
   </div>
@@ -1101,13 +1087,13 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 
 <section class="cv-flip-section reveal">
   <div class="cv-flip-header">
-    <p class="label" style="margin-bottom:.6rem;">Download &amp; Preview</p>
-    <h2 class="display">My CV,<br><em style="color:var(--accent);">at a glance</em></h2>
+    <p class="label" style="margin-bottom:.6rem;">Téléchargement &amp; Aperçu</p>
+    <h2 class="display">Mon CV,<br><em style="color:var(--accent);">en un coup d'œil</em></h2>
     <div style="display:inline-flex;align-items:center;gap:.6rem;margin:1.2rem 0 .4rem;padding:.6rem 1.4rem;background:var(--accent-lt);border:1.5px solid rgba(41,151,255,.25);border-radius:40px;">
       <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;display:inline-block;"></span>
-      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">Actively seeking internship · Available from July 2026</span>
+      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">En recherche de stage · Disponible à partir de juillet 2026</span>
     </div>
-    <p style="margin-top:.6rem;">Click to preview full CV · Download below</p>
+    <p style="margin-top:.6rem;">Cliquer pour prévisualiser · Télécharger ci-dessous</p>
   </div>
   <div class="cv-switcher">
     <button class="cv-tab active" data-cv="en" onclick="switchCV('en')">🇬🇧 English</button>
@@ -1116,10 +1102,10 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   <div class="cv-book-wrap">
     <div class="cv-book">
       <div class="cv-page" id="cv-page-en" onclick="openCVLight('en')">
-        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb61b1a.webp" alt="English CV" id="cv-img-en">
+        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb61b1a.webp" alt="CV Anglais" id="cv-img-en">
       </div>
       <div class="cv-page" id="cv-page-fr" style="display:none;" onclick="openCVLight('fr')">
-        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb228bb.webp" alt="French CV" id="cv-img-fr">
+        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb228bb.webp" alt="CV Français" id="cv-img-fr">
       </div>
     </div>
   </div>
@@ -1136,9 +1122,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 </section>
 
 <div class="cv-lightbox" id="cv-lightbox" onclick="closeCVLight()">
-  <img src="" alt="CV Preview" id="cv-lightbox-img">
+  <img src="" alt="Aperçu du CV" id="cv-lightbox-img">
   <button class="cv-lightbox-close" onclick="closeCVLight()">✕</button>
-  <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:.8rem;">Click anywhere to close</div>
+  <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:.8rem;">Cliquer n'importe où pour fermer</div>
 </div>
 
 <footer>
@@ -1149,7 +1135,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
     </a>
     <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
   </div>
-  <p class="footer-copy" style="margin-top:1rem;">Crafted with AI assistance &amp; human intuition. © 2026 Liyi GAO.</p>
+  <p class="footer-copy" style="margin-top:1rem;">Conçu avec l'assistance de l'IA &amp; l'intuition humaine. © 2026 Liyi GAO.</p>
 </footer>
 
 </div>
@@ -1164,15 +1150,15 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   if(!intro) return;
   document.body.style.overflow = 'hidden';
   function startIntro(){
-    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
-    setTimeout(function(){ intro.classList.add('done'); }, 1000);
+    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 700);
+    setTimeout(function(){ intro.classList.add('done'); }, 900);
     setTimeout(function(){
       intro.classList.add('gone');
       document.body.style.overflow = '';
       document.querySelectorAll('.will-reveal').forEach(function(el){
         if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
       });
-    }, 2000);
+    }, 2200);
   }
   if(document.readyState === 'complete'){ startIntro(); }
   else { window.addEventListener('load', startIntro); setTimeout(startIntro, 2000); }
@@ -1252,9 +1238,9 @@ function toggleSnode(id) {
     var p=Math.max(0,Math.min(1,1-r.bottom/(wh+r.height)));
     var o=Math.sin(p*Math.PI);
     [si1,si2,si3].forEach(function(img){ if(img) img.style.opacity=o; });
-    if(si1) si1.style.transform='translate(calc(-50% + '+(-120+p*60)+'px),calc(-50% + '+(40-p*80)+'px)) rotate('+(-10+p*4)+'deg)';
-    if(si2) si2.style.transform='translate(calc(-50% + '+(10-p*30)+'px),calc(-50% + '+(-50+p*50)+'px)) rotate('+(4-p*6)+'deg)';
-    if(si3) si3.style.transform='translate(calc(-50% + '+(130-p*60)+'px),calc(-50% + '+(20-p*40)+'px)) rotate('+(10-p*10)+'deg)';
+    if(si1) si1.style.transform='translate(calc(-50% + '+(-140+p*70)+'px),calc(-50% + '+(50-p*100)+'px)) rotate('+(-10+p*4)+'deg)';
+    if(si2) si2.style.transform='translate(calc(-50% + '+(10-p*30)+'px),calc(-50% + '+(-60+p*60)+'px)) rotate('+(4-p*6)+'deg)';
+    if(si3) si3.style.transform='translate(calc(-50% + '+(140-p*50)+'px),calc(-50% + '+(30-p*50)+'px)) rotate('+(10-p*8)+'deg)';
   }
   window.addEventListener('scroll', update, {passive:true});
   update();
