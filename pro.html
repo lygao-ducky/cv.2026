@@ -207,27 +207,16 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
   min-height:92vh; padding:4rem 5% 2rem;
   max-width:1280px; margin:0 auto; position:relative; z-index:10;
 }
-/* 新的高级 Pill 状态徽章设计 */
-.avail-badge { 
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  padding: 0.45rem 1.2rem; margin-bottom: 1.5rem;
-  border-radius: 40px; background: var(--card-bg);
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-  font-size: 0.75rem; font-weight: 700; text-transform: uppercase; 
-  letter-spacing: 1px; color: var(--text);
+.avail-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.42rem 1.1rem; border-radius:40px;
+  border:1.5px solid var(--accent); background:var(--accent-lt);
+  color:var(--accent); font-size:.78rem; font-weight:600;
+  letter-spacing:.8px; text-transform:uppercase; margin-bottom:1.6rem;
 }
-.avail-dot {
-  width: 8px; height: 8px; border-radius: 50%; 
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-lt);
-  animation: pulse-dot 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
-@keyframes pulse-dot { 
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 var(--accent-glow); } 
-  70% { transform: scale(1); box-shadow: 0 0 0 6px transparent; } 
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 transparent; } 
-}
+.avail-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 1.8s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
 .hero-h1 { font-size:clamp(3rem,5.5vw,5.2rem); margin-bottom:1.3rem; }
 .hero-h1 em { color:var(--accent); font-style:italic; }
 .hero-desc { font-size:1.05rem; color:var(--text); max-width:560px; margin-bottom:2rem; line-height:1.8; }
@@ -709,13 +698,10 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   </a>
 </nav>
 
-<div class="hero-left reveal">
-      
-      <div class="avail-badge">
-        <span class="avail-dot"></span>
-        Audencia PGE | Internship from July 2026
-      </div>
-      
+<section id="hero" class="section-wrapper">
+  <div class="hero">
+    <div class="hero-left reveal">
+      <div class="hero-kicker">Audencia PGE | Internship from July 2026</div>
       <h1 class="display hero-h1">The Evolution<br>of a <em>Brand Builder.</em></h1>
       <p class="hero-desc reveal delay-1">
         Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
@@ -725,9 +711,6 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
         <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
           liyi.gao.dm@gmail.com
-        </a>
-        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost" style="background:#fff;">
-          LinkedIn ↗
         </a>
       </div>
       <div class="skill-tags reveal delay-2">
