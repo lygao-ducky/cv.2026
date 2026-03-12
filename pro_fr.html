@@ -1185,16 +1185,15 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   if(!intro) return;
   document.body.style.overflow = 'hidden';
   function startIntro(){
-    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 700);
-    setTimeout(function(){ intro.classList.add('done'); }, 900);
-    // 百叶窗最后一片 transition: .8s + delay .25s = 1.05s，给足 1.2s 缓冲后再 display:none
+    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
+    setTimeout(function(){ intro.classList.add('done'); }, 1000);
     setTimeout(function(){
       intro.classList.add('gone');
       document.body.style.overflow = '';
       document.querySelectorAll('.will-reveal').forEach(function(el){
         if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
       });
-    }, 2200);
+    }, 2000);
   }
   if(document.readyState === 'complete'){ startIntro(); }
   else { window.addEventListener('load', startIntro); setTimeout(startIntro, 2000); }
