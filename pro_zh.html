@@ -1,890 +1,1397 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高利易 | 品牌建设者 & 产品经理</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- 字体升级：Playfair Display 作为 Display 大标题，DM Sans 作为 Body -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* ==========================================================
-           色彩系统：暖陶土 × 近黑暖棕 × 浅杏
-           ========================================================== */
-        :root {
-            --bg:        #F4F1EC;
-            --bg-warm:   #EDE8E1;
-            --surface:   #FFFFFF;
-            --text:      #1C1A18;
-            --muted:     #7A7571;
-            --border:    rgba(28,26,24,0.10);
-            --accent:    #C28E75;      /* 主品牌色：暖陶土 */
-            --accent-lt: #E8D5C4;     /* 浅杏高光 */
-            --accent-dk: #9B6B54;     /* 深陶棕，hover状态 */
-        }
-        body.theme-light  { --bg:#F4F1EC; --bg-warm:#EDE8E1; --surface:#FFFFFF; --text:#1C1A18; --muted:#7A7571; --border:rgba(28,26,24,0.10); --accent:#C28E75; --accent-lt:#E8D5C4; }
-        body.theme-brand  { --bg:#EAE5DC; --bg-warm:#DED8CE; --surface:#F5F1EB; --text:#2B2622; --muted:#6B6460; --border:rgba(28,26,24,0.12); --accent:#B07D64; --accent-lt:#DEC9B8; }
-        body.theme-dark   { --bg:#1C1A18; --bg-warm:#252220; --surface:#2C2A27; --text:#F4F1EC; --muted:#9A9490; --border:rgba(244,241,236,0.10); --accent:#D9A992; --accent-lt:#4A3328; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liyi Gao | 品牌建设者 & 产品经理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — Warm Silver & Ice Blue System
+   ============================================================ */
+:root {
+  --bg:          #F8F7F5; 
+  --card-bg:     #FFFFFF; 
+  --text:        #2C2C2E; 
+  --muted:       #8E8E93; 
+  --border:      rgba(0,0,0,0.06);
+  --accent:      #2997FF; 
+  --accent-glow: rgba(41,151,255,0.15);
+  --accent-dk:   #0071E3;
+  --accent-lt:   rgba(41,151,255,0.06);
+  --timeline-bg: rgba(0,0,0,0.10);
+  --surface2:    #F2F2F7;
+  --nav-bg:      rgba(248,247,245,0.85);
+}
 
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+*:focus { outline: none; }
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Noto Sans SC', 'DM Sans', sans-serif;
-            line-height: 1.65;
-            overflow-x: hidden;
-            transition: background 0.7s ease, color 0.7s ease;
-        }
+/* 锁定基准字号 */
+html { scroll-behavior: smooth; font-size: 15px; width: 100%; height: 100%; } 
 
-        /* ---- 字体层级 ---- */
-        .display      { font-family:'Playfair Display',serif; font-weight:800; letter-spacing:-1px; line-height:1.05; }
-        .heading      { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.5px; }
-        .subheading   { font-family:'Space Grotesk',sans-serif; font-weight:600; }
-        .label        { font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+}
 
-        strong { font-weight:600; color:var(--accent); }
+/* ---- Type Scale ---- */
+.display   { font-family:'Playfair Display',serif; font-weight:800; letter-spacing:-1px; line-height:1.05; }
+.heading   { font-family:'Space Grotesk',sans-serif; font-weight:700; letter-spacing:-0.5px; }
+.label     { font-size:.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--accent); }
+strong { font-weight:600; color:var(--accent); }
 
-        /* ---- 布局 ---- */
-        .wrap { max-width:1280px; margin:0 auto; padding:0 5%; }
+/* ---- Reveal Animations ---- */
+.reveal { opacity:1; transform:none; }
+#hero, #hero * { animation-play-state:running !important; }
+.will-reveal { opacity:0; transform:translateY(28px); transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
+.will-reveal.active { opacity:1; transform:none; }
+.delay-1 { transition-delay:.1s; }
+.delay-2 { transition-delay:.2s; }
+.delay-3 { transition-delay:.3s; }
 
-        /* ---- 滚入动画 ---- */
-        /* 初始不隐藏，由JS加载后添加 .will-reveal 才触发隐藏，防止JS失效时内容不可见 */
-        .will-reveal             { opacity:0; transform:translateY(36px); transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
-        .will-reveal.active      { opacity:1; transform:translateY(0); }
-        .will-reveal-left        { opacity:0; transform:translateX(-40px); transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
-        .will-reveal-left.active { opacity:1; transform:translateX(0); }
-        .delay-1 { transition-delay:.12s; }
-        .delay-2 { transition-delay:.24s; }
+/* ---- Buttons ---- */
+.btn {
+  display:inline-flex; align-items:center; gap:.45rem;
+  padding:.55rem 1.2rem; border-radius:40px;
+  font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:600;
+  text-decoration:none; cursor:pointer; border:none;
+  transition:all .22s cubic-bezier(.16,1,.3,1);
+  white-space:nowrap;
+}
+.btn:hover { transform:translateY(-2px); }
+.btn-accent  { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
+.btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(41,151,255,.25); }
+.btn-ghost   { border:1.5px solid var(--border); color:var(--text); background:transparent; }
+.btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+.btn-solid   { background:var(--text); color:var(--bg); }
+.btn-solid:hover { background:var(--accent); }
+.btn-pulse { animation: pulse 2.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { box-shadow:0 4px 16px var(--accent-glow); } 50% { box-shadow:0 4px 28px rgba(41,151,255,.3); } }
 
-        /* ---- 跑马灯背景 ---- */
-        .marquee-bg {
-            position:fixed; top:38%; left:0; width:200%;
-            font-family:'Space Grotesk',sans-serif; font-size:13vw; font-weight:800;
-            color:var(--text); opacity:.025; white-space:nowrap;
-            pointer-events:none; z-index:1;
-            animation: marqueeAnim 50s linear infinite;
-        }
-        @keyframes marqueeAnim { to { transform:translateX(-50%); } }
+/* 全局涂鸦贴纸：极淡水印 */
+.doodle-sticker { 
+  position: absolute; height: auto; 
+  z-index: -1; pointer-events: none; 
+  mix-blend-mode: multiply; opacity: 0.05; 
+  filter: grayscale(100%);
+}
 
-        /* ========= NAV ========= */
-        nav {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:1.4rem 5%; border-bottom:1px solid var(--border);
-            position:sticky; top:0; z-index:100;
-            backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-            background:rgba(244,241,236,.85);
-            transition:background .7s, border-color .7s;
-        }
-        body.theme-dark nav { background:rgba(28,26,24,.85); }
-        body.theme-brand nav { background:rgba(234,229,220,.85); }
+.section-wrapper { padding: 4rem 5%; max-width: 1280px; margin: 0 auto; position: relative; z-index: 10; isolation: isolate; }
+p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 
-        .nav-brand { display:flex; align-items:center; gap:.9rem; }
-        .nav-brand img  { height:32px; object-fit:contain; }
-        .nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.88rem; font-weight:600; letter-spacing:.5px; }
-        .nav-ctas { display:flex; align-items:center; gap:.8rem; }
+/* 全屏跑马灯 */
+.marquee-bg {
+  position: fixed; top: 40%; left: 0; width: 100vw; font-size: 10vw; font-family: 'Space Grotesk', sans-serif; font-weight: 800; color: var(--text-main); opacity: 0.03; white-space: nowrap; z-index: 1; pointer-events: none; animation: marqueeAnim 45s linear infinite;
+}
+@keyframes marqueeAnim { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* 导航 CTA 按钮组 */
-        .btn {
-            display:inline-flex; align-items:center; gap:.4rem;
-            padding:.55rem 1.3rem; border-radius:40px;
-            font-family:'DM Sans',sans-serif; font-size:.88rem; font-weight:600;
-            text-decoration:none; transition:transform .25s, box-shadow .25s, background .25s;
-            cursor:pointer; border:none;
-        }
-        .btn:hover { transform:translateY(-2px); }
-        .btn-ghost { border:1.5px solid var(--border); color:var(--text); background:transparent; }
-        .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
-        .btn-solid { background:var(--text); color:var(--bg); box-shadow:0 4px 14px rgba(0,0,0,.12); }
-        .btn-solid:hover { background:var(--accent); box-shadow:0 6px 20px rgba(194,142,117,.35); }
-        .btn-accent { background:var(--accent); color:#fff; box-shadow:0 4px 14px rgba(194,142,117,.3); }
-        .btn-accent:hover { background:var(--accent-dk); box-shadow:0 8px 24px rgba(194,142,117,.45); }
+/* ============================================================
+   PAGE INTRO
+   ============================================================ */
+#page-intro { position:fixed; inset:0; z-index:9999; pointer-events:none; display:flex; flex-direction:column; }
+.intro-strip { 
+    flex:1; background:rgba(180, 180, 188, 0.65); backdrop-filter:blur(24px) saturate(1.2); -webkit-backdrop-filter:blur(24px) saturate(1.2); border-bottom:1px solid rgba(255,255,255,0.3); transform:translateY(0); transition:transform .8s cubic-bezier(.76,0,.24,1); 
+}
+.intro-strip:nth-child(1){ transition-delay:.00s; }
+.intro-strip:nth-child(2){ transition-delay:.05s; }
+.intro-strip:nth-child(3){ transition-delay:.10s; }
+.intro-strip:nth-child(4){ transition-delay:.15s; }
+.intro-strip:nth-child(5){ transition-delay:.20s; }
+.intro-strip:nth-child(6){ transition-delay:.25s; }
+#page-intro.done .intro-strip { transform:translateY(-100%); }
+#page-intro.gone { display:none; }
 
-        /* CV 下拉 */
-        .cv-dropdown { position:relative; }
-        .cv-menu {
-            position:fixed; /* 用 fixed 避免被其他层级遮挡/遮住下方内容 */
-            background:var(--surface); border:1px solid var(--border);
-            border-radius:14px; overflow:hidden;
-            box-shadow:0 16px 40px rgba(0,0,0,.18);
-            min-width:230px; opacity:0; transform:translateY(-8px) scale(.97);
-            pointer-events:none; transition:all .25s cubic-bezier(.16,1,.3,1);
-            z-index:9999;
-        }
-        .cv-dropdown.open .cv-menu {
-            opacity:1; transform:translateY(0) scale(1); pointer-events:all;
-        }
-        .cv-menu a {
-            display:flex; align-items:center; gap:.7rem;
-            padding:1rem 1.4rem; text-decoration:none;
-            color:var(--text); font-size:.9rem; font-weight:500;
-            transition:background .2s;
-        }
-        .cv-menu a:hover { background:var(--accent-lt); color:var(--accent-dk); }
-        .cv-menu a + a { border-top:1px solid var(--border); }
-        .cv-flag { font-size:1.1rem; }
+.intro-brand { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10000; text-align:center; pointer-events:none; opacity:1; transition:opacity .4s ease .2s; width: 100%;}
+.intro-brand.fade { opacity:0; }
+.intro-name { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2.5rem,6vw,4rem); font-weight:800; color:#fff; letter-spacing:-1px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .15s both; }
+.intro-role { font-family:'Space Grotesk',sans-serif; font-size:.9rem; font-weight:600; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-top:8px; opacity:0; animation:introBrandIn .6s cubic-bezier(.16,1,.3,1) .25s both; }
+@keyframes introBrandIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
 
-        /* ========= HERO ========= */
-        .hero {
-            display:grid; grid-template-columns:1fr 1fr;
-            align-items:center; gap:4rem;
-            min-height:90vh; padding:5rem 5%;
-            max-width:1280px; margin:0 auto;
-            position:relative; z-index:10;
-        }
+/* ============================================================
+   [🔥 修复] TOP NAV — Pill Design
+   ============================================================ */
+.top-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 5%; position:sticky; top:0; z-index:2000;
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  background:var(--nav-bg);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand { display:flex; align-items:center; gap:.8rem; }
+.nav-brand img { height:26px; object-fit:contain; }
+.nav-brand span { font-family:'Space Grotesk',sans-serif; font-size:.85rem; font-weight:600; letter-spacing: 0.5px;}
+.nav-right { display:flex; align-items:center; gap:12px; }
 
-        /* 可用状态胶囊 */
-        .avail-badge {
-            display:inline-flex; align-items:center; gap:.5rem;
-            padding:.45rem 1.1rem; border-radius:40px;
-            border:1.5px solid var(--accent); background:rgba(194,142,117,.08);
-            color:var(--accent); font-size:.82rem; font-weight:600;
-            letter-spacing:.8px; text-transform:uppercase; margin-bottom:1.8rem;
-        }
-        .avail-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); animation:blink 1.8s ease-in-out infinite; }
-        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+/* Language Pill */
+.lang-switcher {
+  display:flex; align-items:center;
+  background:#FFFFFF; border:1px solid var(--border); border-radius:40px;
+  padding:3px; gap:2px;
+}
+.lang-btn {
+  padding:.35rem .9rem; font-size:.78rem; font-weight:600;
+  color:var(--muted); text-decoration:none;
+  transition:all .2s; border-radius:40px;
+}
+.lang-btn.active { background:var(--accent); color:#fff; }
 
-        .hero-left h1 {
-            font-size:clamp(3.2rem, 5.2vw, 5rem);
-            margin-bottom:1.4rem;
-        }
-        .hero-left h1 em { font-style:italic; color:var(--accent); }
-        .hero-desc { font-size:1.08rem; color:var(--muted); max-width:580px; margin-bottom:2rem; line-height:1.75; }
+/* CV Dropdown Pill */
+.cv-dropdown { position:relative; }
+.nav-cv-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:.45rem 1.1rem; font-size:.82rem; font-weight:600;
+  background:#FFFFFF; color:var(--text);
+  border:1px solid var(--border); border-radius:40px;
+  cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif;
+  white-space:nowrap;
+}
+.nav-cv-btn:hover { border-color:var(--muted); background:var(--surface2); }
+.nav-cv-btn svg { opacity:0.6; }
 
-        /* Hero CTA 组 */
-        .hero-ctas { display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin-bottom:2.5rem; }
+.cv-menu {
+  position:absolute; top:calc(100% + 10px); right:0;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:12px; overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
+  pointer-events:none; transition:all .22s; z-index:9999;
+}
+.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.cv-menu a {
+  display:flex; align-items:center; gap:.6rem;
+  padding:.8rem 1.2rem; text-decoration:none;
+  color:var(--text); font-size:.85rem; font-weight:500;
+  transition:background .2s;
+}
+.cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
+.cv-menu a + a { border-top:1px solid var(--border); }
 
-        /* 联系邮件按钮 — 呼吸动画 */
-        .btn-pulse {
-            box-shadow:0 0 0 0 rgba(194,142,117,.6);
-            animation:pulse 2.4s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%  { box-shadow:0 0 0 0 rgba(194,142,117,.6); }
-            70% { box-shadow:0 0 0 14px rgba(194,142,117,0); }
-            100%{ box-shadow:0 0 0 0 rgba(194,142,117,0); }
-        }
+/* LinkedIn Pill */
+.nav-linkedin-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:.45rem 1.1rem; font-size:.82rem; font-weight:600;
+  background:var(--accent); color:#fff;
+  border-radius:40px; border:none; text-decoration:none;
+  transition:all .2s; box-shadow:0 4px 12px var(--accent-glow);
+  font-family:'DM Sans',sans-serif; white-space:nowrap;
+}
+.nav-linkedin-btn:hover { background:var(--accent-dk); transform:translateY(-1px); }
 
-        .skill-tags { display:flex; flex-wrap:wrap; gap:.7rem; }
-        .skill-pill {
-            padding:.42rem .95rem; border:1.5px solid var(--border);
-            border-radius:8px; font-size:.87rem; font-weight:500;
-            background:var(--surface); color:var(--text);
-            transition:border-color .2s, color .2s;
-        }
-        .skill-pill:hover { border-color:var(--accent); color:var(--accent); }
 
-        /* 照片容器 */
-        .hero-right { position:relative; }
-        .hero-img-wrap {
-            width:100%; height:72vh; border-radius:20px; overflow:hidden;
-            clip-path:inset(30% 30% 30% 30% round 20px);
-            animation:expandImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards;
-            box-shadow:0 30px 60px rgba(0,0,0,.12);
-        }
-        .hero-img-wrap img {
-            width:100%; height:100%; object-fit:cover; object-position:center 20%;
-            transform:scale(1.25);
-            animation:scaleImg 1.4s cubic-bezier(.16,1,.3,1) .2s forwards;
-        }
-        /* 照片上叠加名字 */
-        .hero-name-overlay {
-            position:absolute; bottom:-3%; left:-8%;
-            font-family:'Playfair Display',serif; font-style:italic;
-            font-size:clamp(3.5rem,7vw,6rem); font-weight:800;
-            color:#fff; mix-blend-mode:exclusion; z-index:10;
-            opacity:0; animation:fadeUp .9s ease 1.2s forwards;
-            pointer-events:none; white-space:nowrap;
-        }
+/* ============================================================
+   FLOATING BOTTOM NAV
+   ============================================================ */
+.floating-nav {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:300; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.92); backdrop-filter:blur(24px); border:1.5px solid rgba(0,0,0,0.08); border-radius:50px; padding:8px 12px; box-shadow:0 12px 40px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.07);
+}
+.fnav-item {
+  display:flex; flex-direction:column; align-items:center; gap:3px; padding:.6rem 1.1rem; border-radius:40px; text-decoration:none; color:var(--muted); font-size:.72rem; font-weight:600; transition:all .22s; min-width:56px;
+}
+.fnav-item svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.fnav-item:hover, .fnav-item.active { color:var(--accent); background:rgba(41,151,255,.12); }
 
-        @keyframes expandImg { to { clip-path:inset(0 0 0 0 round 20px); } }
-        @keyframes scaleImg  { to { transform:scale(1); } }
-        @keyframes fadeUp    { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  display:grid; grid-template-columns:1fr 1fr;
+  align-items:center; gap:4rem;
+  min-height:92vh; padding:4rem 5% 2rem;
+  max-width:1280px; margin:0 auto; position:relative; z-index:10;
+}
+.avail-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.42rem 1.1rem; border-radius:40px;
+  border:1.5px solid var(--accent); background:var(--accent-lt);
+  color:var(--accent); font-size:.78rem; font-weight:600;
+  letter-spacing:.8px; text-transform:uppercase; margin-bottom:1.6rem;
+}
+.avail-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 1.8s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
 
-        /* ========= DIARY 视差文字 ========= */
-        .diary-container { height:140vh; position:relative; z-index:15; }
-        .diary-sticky {
-            position:sticky; top:0; height:100vh;
-            display:flex; align-items:center; justify-content:center; overflow:hidden;
-        }
-        .diary-text {
-            font-size:clamp(2.4rem,5vw,5rem);
-            font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
-            color:var(--text); text-align:center; opacity:0;
-            letter-spacing:-1px; transform:scale(.65);
-            will-change:transform,opacity; line-height:1.2;
-        }
+.hero-h1 { font-size:clamp(3rem,5.5vw,5.2rem); margin-bottom:1.3rem; }
+.hero-h1 em { color:var(--accent); font-style:italic; }
+.hero-desc { font-size:1.05rem; color:var(--text); max-width:560px; margin-bottom:2rem; line-height:1.8; }
 
-        /* ========= 时间轴 ========= */
-        .timeline-wrap { padding:4rem 5%; max-width:1280px; margin:0 auto; }
-        .timeline-inner { position:relative; padding-left:52px; }
-        .tl-line { position:absolute; left:15px; top:0; bottom:0; width:2px; background:var(--border); }
-        .tl-dot {
-            position:absolute; left:-5px; top:0;
-            width:42px; height:42px; border-radius:50%;
-            background-image:url('https://picui.ogmua.cn/s1/2026/03/08/69ad566d762ca.webp');
-            background-size:cover; background-position:center;
-            background-color:#fff; z-index:2;
-            box-shadow:0 4px 14px rgba(0,0,0,.15);
-            transition:top .08s ease-out;
-        }
-        .tl-node { margin-bottom:5rem; position:relative; }
-        .tl-node h3 { font-family:'Space Grotesk',sans-serif; font-size:1.7rem; font-weight:700; margin:.4rem 0 1rem; }
+.hero-ctas { display:flex; flex-wrap:wrap; align-items:center; gap:.9rem; margin-bottom:2.4rem; }
 
-        /* 涂鸦贴纸 */
-        .doodle {
-            position:absolute; pointer-events:none;
-            opacity:.13; mix-blend-mode:multiply; z-index:-1;
-        }
-        body.theme-dark .doodle { filter:invert(1); mix-blend-mode:screen; opacity:.08; }
+.skill-tags { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:2rem;}
+.skill-pill {
+  padding:.38rem .9rem; border:1.5px solid var(--border);
+  border-radius:8px; font-size:.82rem; font-weight:500;
+  background:var(--card-bg); color:var(--text);
+  transition:border-color .2s, color .2s;
+}
+.skill-pill:hover { border-color:var(--accent); color:var(--accent); box-shadow:0 2px 8px var(--accent-glow);}
 
-        /* ---- 统一图片色调 ---- */
-        /* 所有内容图片加暖调滤镜，统一视觉氛围 */
-        .tl-node img:not(.doodle),
-        .pro-card img:not(.pro-logo),
-        .gallery-container img,
-        .polaroid > img {
-            filter: saturate(.88) sepia(.12) brightness(.97);
-            transition: filter .3s ease;
-        }
-        .tl-node img:not(.doodle):hover,
-        .gallery-container img:hover { filter: saturate(1) sepia(0) brightness(1.02); }
+.hero-right { position:relative; }
+.hero-img-wrap {
+  width:100%; height:65vh; border-radius:24px; overflow:hidden;
+  clip-path:inset(30% 30% 30% 30% round 24px);
+  animation:expandImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
+  box-shadow:0 32px 64px rgba(0,0,0,.1); border: 1px solid var(--border);
+}
+.hero-img-wrap img {
+  width:100%; height:100%; object-fit:cover; object-position:center 15%;
+  transform:scale(1.18);
+  animation:scaleImg 1.6s cubic-bezier(.16,1,.3,1) .3s both;
+}
 
-        /* 三列图 */
-        .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:1.8rem; }
-        .grid-3 img { width:100%; height:280px; object-fit:cover; border-radius:14px; }
-        figcaption { margin-top:8px; font-size:.85rem; color:var(--muted); font-style:italic; padding-left:10px; border-left:2px solid var(--accent); line-height:1.4; }
+/* [🔥 修复] Liyi GAO 名字设计，保留 Exclusion 并使用 drop-shadow 以保清晰度 */
+.hero-name-overlay {
+  position:absolute; bottom:-5%; left:-20%;
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(3.5rem,7vw,6rem); font-weight:800;
+  color:#fff; 
+  mix-blend-mode: exclusion; /* 保留高级反色效果 */
+  /* 使用 SVG drop-shadow 滤镜，它不会被 exclusion 完全吞噬，能维持立体感 */
+  filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.5)) drop-shadow(0px 4px 6px rgba(0,0,0,0.3));
+  z-index:10; opacity:0; animation:fadeUp .9s ease 1.2s forwards;
+  pointer-events:none; white-space:nowrap;
+}
 
-        /* 横滑画廊 */
-        .hscroll { display:flex; gap:1.4rem; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:8px; margin-top:1.8rem; }
-        .hscroll::-webkit-scrollbar { display:none; }
-        .hscroll figure { flex:0 0 46%; scroll-snap-align:start; }
-        .hscroll img { width:100%; height:260px; object-fit:cover; border-radius:14px; }
-        @media(min-width:900px) { .hscroll figure { flex:0 0 36%; } }
+@keyframes expandImg { to { clip-path:inset(0 0 0 0 round 24px); } }
+@keyframes scaleImg  { to { transform:scale(1); } }
+@keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
 
-        /* 数据 KPI */
-        .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin:2rem 0; }
-        .kpi { background:var(--surface); border:1.5px solid var(--border); border-radius:16px; padding:1.5rem; transition:border-color .3s; }
-        .kpi:hover { border-color:var(--accent); }
-        .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:3rem; font-weight:800; color:var(--accent); line-height:1; }
-        .kpi-label { font-size:.82rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
-        .kpi-badge {
-            display:inline-block; padding:.7rem 1.2rem;
-            background:var(--accent-lt); color:var(--accent-dk);
-            border-radius:10px; font-weight:600; margin-top:1.2rem;
-            font-size:.95rem;
-        }
-        body.theme-dark .kpi-badge { background:var(--accent-lt); color:#fff; }
+/* ============================================================
+   DIARY PARALLAX (Empathy)
+   ============================================================ */
+.diary-container { height:150vh; position:relative; z-index:15; margin-bottom: -5vh;}
+.diary-sticky { position:sticky; top:0; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.diary-text {
+  font-size:clamp(2rem,4.5vw,4rem); font-family:'Playfair Display',serif; font-style:italic; font-weight:800;
+  color:var(--text); text-align:center; opacity:0; transform:scale(0.9) translateY(20px);
+  letter-spacing:-1px; line-height:1.2; will-change:transform, opacity;
+}
 
-        /* ========= 过渡散落区 ========= */
-        .transition-band {
-            height:160vh; position:relative; overflow:hidden;
-            border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-            margin:4rem 0;
-        }
-        .transition-words {
-            position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-            font-family:'Space Grotesk',sans-serif; font-size:clamp(2.2rem,4.5vw,4.5rem);
-            font-weight:800; color:var(--text); opacity:.07;
-            text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase;
-            white-space:nowrap;
-        }
-        /* 散落图：初始在中心附近，由JS驱动偏移 */
-        .scatter {
-            position:absolute;
-            /* 初始锚点：左50% 上50%，JS用translate偏移 */
-            left:50%; top:50%;
-            border-radius:14px; object-fit:cover;
-            border:4px solid var(--surface);
-            box-shadow:0 20px 40px rgba(0,0,0,.14);
-            opacity:0; z-index:2;
-            transform:translate(-50%,-50%); /* 默认居中 */
-        }
+/* ============================================================
+   STORY SECTION: INLINE EXPANSION 
+   ============================================================ */
+#story  { background:var(--bg); padding-bottom: 4rem; position: relative;}
 
-        /* ========= 职业经历卡片 ========= */
-        .exp-section { padding:0 5% 5rem; max-width:1280px; margin:0 auto; }
-        .exp-title { font-size:clamp(2.8rem,4.5vw,4rem); text-align:center; margin-bottom:3.5rem; font-style:italic; }
+.story-header { text-align: center; margin-bottom: 3rem; }
+.story-header .st-eyebrow { font-size:.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:.6rem; }
+.story-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color:var(--text); }
+.story-header .st-sub { font-size:.9rem; color:var(--muted); margin-top:.5rem; }
 
-        .exp-cards { display:flex; flex-direction:column; gap:2.5rem; }
-        .pro-card {
-            background:var(--surface); padding:3rem;
-            border-radius:24px; border:1.5px solid var(--border);
-            box-shadow:0 12px 32px rgba(0,0,0,.04);
-            transition:transform .3s, border-color .3s, box-shadow .3s;
-        }
-        .pro-card:hover { transform:translateY(-5px); border-color:var(--accent); box-shadow:0 20px 40px rgba(194,142,117,.12); }
+.timeline-wrapper { position: relative; max-width: 800px; margin: 0 auto; padding: 0 5%; }
+.timeline-spine { position: absolute; left: calc(5% + 38px); top: 0; bottom: 0; width: 0; border-left: 2px dashed var(--accent); opacity: 0.25; z-index: 1;}
 
-        .pro-header { display:flex; align-items:flex-start; gap:1.5rem; margin-bottom:1.5rem; }
-        .pro-logo { width:68px; height:68px; object-fit:contain; background:#fff; padding:5px; border-radius:14px; border:1.5px solid var(--border); flex-shrink:0; }
-        .pro-meta { color:var(--accent); font-size:.82rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:.3rem; }
-        .pro-header h4 { font-family:'Space Grotesk',sans-serif; font-size:1.75rem; font-weight:700; line-height:1.2; }
-        .pro-focus { font-size:1rem; font-weight:500; color:var(--muted); margin-bottom:1.4rem; }
+.snode { position: relative; margin-bottom: 2.5rem; z-index: 2; }
+.snode-dot { position: absolute; left: 32px; top: 25px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); z-index: 3; transition: all 0.3s; }
+.snode.open .snode-dot { background: var(--accent); box-shadow: 0 0 0 6px var(--accent-glow); }
 
-        .pro-bullets { padding-left:1.1rem; color:var(--muted); font-size:1rem; }
-        .pro-bullets li { margin-bottom:.75rem; }
+.snode-trigger { display: flex; align-items: center; gap: 1.5rem; padding-left: 70px; cursor: pointer; transition: opacity 0.3s; }
+.snode-trigger:hover { opacity: 0.8; }
+.snode-icon { width: 64px; height: 64px; border-radius: 14px; background: var(--card-bg); border: 1px solid var(--border); box-shadow: 0 8px 16px rgba(0,0,0,0.03); padding: 6px; flex-shrink: 0; transition: transform 0.3s, border-color 0.3s; }
+.snode-icon img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.snode.open .snode-icon { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px var(--accent-glow); }
 
-        /* 画廊 */
-        .gallery-container { display:flex; gap:16px; overflow-x:auto; padding-bottom:16px; scroll-snap-type:x mandatory; margin-top:1.8rem; }
-        .gallery-container::-webkit-scrollbar { height:4px; }
-        .gallery-container::-webkit-scrollbar-track { background:var(--border); border-radius:10px; }
-        .gallery-container::-webkit-scrollbar-thumb { background:var(--accent); border-radius:10px; }
-        .gallery-container figure { flex:0 0 auto; scroll-snap-align:center; }
-        .gallery-container img { height:260px; width:auto; object-fit:cover; border-radius:12px; border:1px solid var(--border); }
+.snode-info { display: flex; flex-direction: column; gap: 2px; }
+.snode-year { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
+.snode-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+.snode-hint { font-size: 0.75rem; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; transition: color 0.3s; margin-top: 2px;}
+.snode-hint::before { content: '→'; transition: transform 0.3s; }
+.snode.open .snode-hint { color: var(--accent); }
+.snode.open .snode-hint::before { transform: rotate(90deg); }
 
-        /* ========= AI DEMO ========= */
-        .demo-section { padding:0 5% 5rem; max-width:1280px; margin:0 auto; position:relative; z-index:10; }
-        .ai-card {
-            display:grid; grid-template-columns:1fr 1.15fr; gap:4rem;
-            align-items:center; background:var(--surface);
-            border:1.5px solid var(--border); border-radius:28px;
-            padding:4rem; box-shadow:0 20px 50px rgba(0,0,0,.06);
-            position:relative; overflow:hidden; isolation:isolate;
-        }
-        .ai-card::before {
-            content:''; position:absolute; top:-40%; right:-10%;
-            width:420px; height:420px; border-radius:50%;
-            background:radial-gradient(circle, var(--accent-lt) 0%, transparent 70%);
-            opacity:.5; pointer-events:none; z-index:0;
-        }
-        .ai-card > * { position:relative; z-index:1; }
-        .ai-card h3 { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:800; margin:.5rem 0 1.2rem; }
-        .ai-card p  { color:var(--muted); font-size:1.05rem; line-height:1.75; }
-        .ai-card p + p { margin-top:.8rem; }
+.snode-expansion { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-left: 70px; }
+.snode.open .snode-expansion { grid-template-rows: 1fr; }
+.snode-expansion-inner { overflow: hidden; }
 
-        /* 浏览器 Mockup — 完全不透明，隔绝背景水印 */
-        .browser {
-            border:1.5px solid var(--border); border-radius:14px; overflow:hidden;
-            box-shadow:0 24px 60px rgba(0,0,0,.14);
-            background:#FFFFFF; /* 纯白，不继承变量，确保不透明 */
-            position:relative; z-index:2;
-        }
-        .browser-bar { height:36px; background:#F0EDEA; display:flex; align-items:center; padding-left:14px; gap:7px; border-bottom:1px solid var(--border); }
-        .b-dot { width:11px; height:11px; border-radius:50%; }
-        .b-dot:nth-child(1){background:#ff5f56;} .b-dot:nth-child(2){background:#ffbd2e;} .b-dot:nth-child(3){background:#27c93f;}
-        .browser iframe { width:100%; height:400px; border:none; display:block; background:#fff; }
+.snode-detail-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.5rem; margin-top: 1rem; margin-bottom: 0.5rem;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.04);
+}
+.snode-detail-card p { font-size: 0.95rem; color: var(--text); line-height: 1.6; margin-bottom: 1.2rem; }
 
-        /* ========= HOBBIES ========= */
-        .hobbies-section { padding:4rem 5%; max-width:1280px; margin:0 auto; position:relative; }
-        .polaroid-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2.4rem; margin-top:3rem; }
-        .polaroid {
-            background:#fff; padding:14px 14px 32px;
-            border-radius:4px; box-shadow:0 10px 24px rgba(0,0,0,.10);
-            transform:rotate(-2deg); transition:transform .4s cubic-bezier(.175,.885,.32,1.275);
-            position:relative;
-        }
-        .polaroid:nth-child(even) { transform:rotate(2.5deg); }
-        .polaroid:hover { transform:scale(1.06) rotate(0); z-index:10; }
-        .polaroid img { width:100%; height:210px; object-fit:cover; margin-bottom:14px; border:1px solid #eee; display:block; }
-        .polaroid h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; color:#111; text-align:center; }
-        .polaroid p  { font-size:.82rem; color:#777; text-align:center; margin-top:5px; }
+.snode-gallery { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+.snode-gallery::-webkit-scrollbar { height: 3px; }
+.snode-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 3px; }
+.snode-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+.snode-gallery figure { flex: 0 0 auto; scroll-snap-align: center; margin: 0; }
+.snode-gallery img { height: 160px; width: auto; max-width: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+.snode-gallery figcaption { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-align: center; }
 
-        /* ========= FOOTER ========= */
-        footer {
-            border-top:1px solid var(--border); padding:4rem 5%;
-            max-width:1280px; margin:0 auto;
-            display:flex; flex-direction:column; align-items:center; gap:2rem;
-        }
-        .footer-contact {
-            display:flex; flex-wrap:wrap; justify-content:center;
-            gap:1rem; margin-bottom:.5rem;
-        }
-        .footer-copy { font-size:.85rem; color:var(--muted); text-align:center; }
+.snode-wave-container { text-align: center; margin: 0; line-height: 0; position: relative; z-index: 1;}
+.snode-wave-container svg { height: 30px; margin-left: calc(96px - 12px); display: block; } 
 
-        /* 语言切换器 */
-        .lang-switcher {
-            display:flex; align-items:center;
-            border:1.5px solid var(--border); border-radius:40px;
-            overflow:hidden; background:var(--surface);
-        }
-        .lang-btn {
-            padding:.4rem .85rem; font-size:.82rem; font-weight:600;
-            font-family:'DM Sans',sans-serif; letter-spacing:.5px;
-            color:var(--muted); text-decoration:none;
-            transition:background .2s, color .2s;
-            white-space:nowrap;
-        }
-        .lang-btn:hover { color:var(--accent); }
-        .lang-btn.active {
-            background:var(--accent); color:#fff; border-radius:40px;
-        }
-        .lang-btn + .lang-btn { border-left:1px solid var(--border); }
-        .lang-btn.active + .lang-btn { border-left:none; }
+.story-bridge-v2 { display:flex; flex-direction:column; align-items:center; gap:.4rem; margin: 1.5rem 0 2rem; opacity:.6; }
+.story-bridge-v2 .sbv-line { width:2px; height:40px; background:linear-gradient(to bottom, rgba(41,151,255,.4), rgba(41,151,255,.0)); }
+.story-bridge-v2 .sbv-label { font-size:.7rem; font-weight:600; letter-spacing:1px; color:var(--accent); text-transform:uppercase; }
 
-        /* ========= RESPONSIVE ========= */
-        @media(max-width:900px) {
-            .hero { grid-template-columns:1fr; gap:2.5rem; padding:3rem 5%; min-height:auto; }
-            .hero-right { order:-1; }
-            .hero-img-wrap { height:55vw; }
-            .hero-name-overlay { font-size:4rem; left:0; mix-blend-mode:normal; color:var(--text); opacity:1; animation:none; }
-            .grid-3 { grid-template-columns:1fr; }
-            .kpi-row { grid-template-columns:1fr; gap:1rem; }
-            .ai-card { grid-template-columns:1fr; padding:2rem 1.5rem; gap:2rem; }
-            .pro-card { padding:2rem 1.5rem; }
-            .pro-header { flex-direction:column; gap:1rem; }
-            .nav-brand span { display:none; }
-            .hero-ctas .btn span { display:none; }
-        }
-    </style>
+/* ============================================================
+   O2O CARD & DRAWER
+   ============================================================ */
+.o2o-trigger {
+  background:var(--card-bg); border:1px solid var(--border); border-radius:20px;
+  padding:2.5rem; cursor:pointer; transition:all .3s cubic-bezier(.16,1,.3,1); position:relative; overflow:hidden;
+  max-width: 900px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+.o2o-trigger::before {
+  content:''; position:absolute; inset:0; border-radius:20px;
+  background:linear-gradient(120deg,var(--accent-lt) 0%,transparent 60%); opacity:0; transition:opacity .3s;
+}
+.o2o-trigger:hover { border-color:var(--accent); transform:translateY(-5px); box-shadow:0 20px 40px var(--accent-glow); }
+.o2o-trigger:hover::before { opacity:1; }
+.o2o-inner { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; position:relative; z-index:1; }
+.o2o-icon  { width:64px; height:64px; object-fit:contain; background:#fff; border-radius:14px; padding:5px; border:1px solid var(--border); flex-shrink:0; }
+.o2o-text  { flex:1; min-width:0; }
+.o2o-open-hint {
+  display:inline-flex; align-items:center; gap:.5rem;
+  color:#fff; font-size:.85rem; font-weight:600; margin-top:1.5rem;
+  background:var(--accent); padding:.6rem 1.2rem; border-radius:40px;
+  box-shadow:0 4px 12px var(--accent-glow); transition:background .2s, transform .2s;
+}
+.o2o-trigger:hover .o2o-open-hint { background:var(--accent-dk); transform:translateX(5px); }
+
+/* Drawer */
+.drawer-overlay { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .35s; }
+.drawer-overlay.open { opacity:1; pointer-events:all; }
+.drawer {
+  position:fixed; top:0; right:0; bottom:0; z-index:401; width:min(720px, 96vw);
+  background:var(--card-bg); box-shadow:-20px 0 60px rgba(0,0,0,.12);
+  transform:translateX(100%); transition:transform .4s cubic-bezier(.16,1,.3,1);
+  overflow-y:auto; padding:2.5rem; border-radius:20px 0 0 20px;
+}
+.drawer.open { transform:translateX(0); }
+.drawer-close {
+  display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%;
+  border:none; background:var(--surface2); cursor:pointer; color:var(--muted); font-size:1rem;
+  margin-bottom:1.5rem; transition:background .2s;
+}
+.drawer-close:hover { background:var(--border); }
+.drawer h3 { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:700; margin:.5rem 0 1rem; line-height: 1.2;}
+.drawer .kpi-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.2rem 0; }
+.drawer .kpi { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:1rem; }
+.drawer .kpi-num { font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:800; color:var(--accent); line-height:1; }
+.drawer .kpi-label { font-size:.75rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
+.kpi-badge { display:inline-block; padding:.5rem 1rem; background:var(--accent-lt); color:var(--accent); border-radius:8px; font-weight:600; font-size:.85rem; margin:.8rem 0; border: 1px solid rgba(41, 151, 255, 0.15);}
+
+.drawer-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; }
+.drawer-bullets li { margin-bottom:.6rem; line-height:1.6; }
+.drawer-gallery { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:1.5rem; }
+.drawer-gallery figure { margin:0; }
+.drawer-gallery img { width:100%; height:130px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
+.drawer-gallery figcaption { margin-top:5px; font-size:.75rem; color:var(--muted); text-align: center;}
+
+/* ============================================================
+   TRANSITION SCATTER BAND & BIG TITLE
+   ============================================================ */
+.transition-band { height:120vh; position:relative; overflow:hidden; border-top:1px solid var(--border); margin:0; background:var(--bg); width: 100vw; margin-left: calc(-50vw + 50%);}
+.transition-words { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:800; color:var(--text); opacity:.04; text-align:center; line-height:1.3; letter-spacing:2px; text-transform:uppercase; white-space:nowrap; z-index:1;}
+.scatter { position:absolute; left:50%; top:50%; border-radius:12px; object-fit:cover; border:5px solid var(--card-bg); box-shadow:0 15px 30px rgba(0,0,0,.08); opacity:0; z-index:2; transform:translate(-50%,-50%); }
+
+.arsenal-header { text-align:center; margin-bottom:2.5rem; padding-top: 3rem; }
+.arsenal-header p.label { margin-bottom:.4rem; }
+.arsenal-header h2 { font-size:clamp(2rem,3.5vw,3rem); font-style:italic; line-height:1.1; font-family:'Playfair Display',serif; font-weight:800; color: var(--text);}
+
+/* ============================================================
+   ACCORDION — Professional Arsenal
+   ============================================================ */
+#arsenal { background:var(--bg); padding-bottom:4rem; }
+.accordion-container { display:flex; flex-direction:column; gap:.8rem; max-width:900px; margin: 0 auto; position:relative;}
+.accordion-item { 
+    background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; 
+    transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s; position:relative; 
+}
+.accordion-item::after { 
+    content:''; position:absolute; inset:0; border-radius:16px; 
+    background:linear-gradient(120deg, var(--accent-lt) 0%, transparent 60%); 
+    opacity:0; transition:opacity .3s; pointer-events: none; 
+}
+.accordion-item:hover { transform:translateY(-4px) scale(1.01); border-color:var(--accent); box-shadow:0 15px 30px var(--accent-glow); }
+.accordion-item:hover::after { opacity:1; }
+
+.accordion-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:linear-gradient(to bottom, var(--accent), var(--accent-dk)); opacity:0; transition:opacity .3s; }
+.accordion-item.open { transform:none; border-color:rgba(41,151,255,.3); box-shadow:0 8px 30px rgba(41,151,255,.06); }
+.accordion-item.open::before { opacity:1; }
+.accordion-item.open::after { opacity:0; }
+
+.accordion-header { display:flex; align-items:center; gap:1rem; padding:1.5rem; cursor:pointer; position:relative; z-index:2;}
+
+.acc-logo { width:50px; height:50px; object-fit:contain; background:var(--bg); padding:5px; border-radius:12px; border:1px solid var(--border); flex-shrink:0; }
+.acc-meta { flex:1; min-width:0; }
+.acc-period  { font-size:.75rem; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:.2rem; }
+.acc-company { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; font-weight:700; line-height:1.2; margin-bottom:.3rem; }
+.acc-focus { display:inline-block; font-size:.75rem; font-weight:600; color:var(--text-muted); background:var(--surface2); border-radius:40px; padding:.2rem .6rem; }
+
+.acc-hint { font-size: 0.75rem; font-weight: 600; color: var(--accent); opacity: 0; transition: opacity 0.3s; padding-right: 1rem;}
+.accordion-item:hover .acc-hint { opacity: 1; }
+.accordion-item.open .acc-hint { opacity: 0; }
+
+.acc-chevron { width:28px; height:28px; border-radius:50%; flex-shrink:0; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; transition:transform .3s; }
+.accordion-item.open .acc-chevron { transform:rotate(180deg); background:var(--accent); border-color:var(--accent); color:#fff;}
+.acc-chevron svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+
+.accordion-body { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.16,1,.3,1); position:relative; z-index:2;}
+.accordion-item.open .accordion-body { max-height:1000px; }
+.accordion-inner { padding:0 1.5rem 2rem calc(1.5rem + 50px + 1rem); }
+.acc-bullets { padding-left:1rem; color:var(--text); font-size:.95rem; margin-bottom:1.2rem; }
+.acc-bullets li { margin-bottom:.6rem; line-height:1.6; }
+
+.acc-gallery { display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
+.acc-gallery::-webkit-scrollbar { height: 4px; }
+.acc-gallery::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
+.acc-gallery::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 4px; }
+.acc-gallery figure { flex:0 0 auto; scroll-snap-align:center; margin:0;}
+.acc-gallery img { height:160px; width:auto; max-width:240px; object-fit:cover; border-radius:10px; border:1px solid var(--border);}
+.acc-gallery figcaption { margin-top:6px; font-size:.75rem; color:var(--muted); text-align:center;}
+
+/* ============================================================
+   AI DEMO 1: Skincare & [🔥 修复] 2: Code Pipeline
+   ============================================================ */
+#demo { background:var(--bg); position:relative;}
+.ai-card { display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:center; background:var(--card-bg); border:1px solid var(--border); border-radius:24px; padding:3.5rem; position:relative; overflow:hidden; isolation:isolate; max-width:1100px; margin:0 auto; box-shadow:0 15px 40px rgba(0,0,0,0.04);}
+.ai-card::before { content:''; position:absolute; top:-30%; right:-5%; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); pointer-events:none; }
+.demo-doodle { position:absolute; bottom:15px; right:20px; width:100px; z-index:-1; opacity:0.06; mix-blend-mode:multiply; transform:rotate(10deg); filter:grayscale(100%); pointer-events: none;}
+
+.ai-card > div { position:relative; z-index:1; }
+.ai-card h3 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; margin:.4rem 0 .8rem; line-height:1.2; }
+.ai-card p  { color:var(--text); font-size:.95rem; line-height:1.7; }
+.ai-card p+p { margin-top:.6rem; }
+
+.browser { border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.08); background:#fff; min-width:0; }
+.browser-bar { height:30px; background:#F2F2F2; display:flex; align-items:center; padding-left:12px; gap:6px; border-bottom:1px solid var(--border); }
+.b-dot { width:10px; height:10px; border-radius:50%; }
+.b-dot:nth-child(1){background:#ff5f56} .b-dot:nth-child(2){background:#ffbd2e} .b-dot:nth-child(3){background:#27c93f}
+.browser iframe { width:100%; height:360px; border:none; display:block; background:#fff; }
+
+/* [🔥 修复] 流程图节点样式 (无 Emoji) */
+.pipeline-diagram {
+    display: flex; flex-direction: column; gap: 1rem;
+    margin: 1.5rem 0; padding: 1.5rem; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 12px;
+}
+.pl-node {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 0.8rem 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    position: relative;
+}
+.pl-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--accent-lt);
+    display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0;
+}
+.pl-text { flex: 1; }
+.pl-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--text); }
+.pl-desc { font-size: 0.75rem; color: var(--muted); margin-top: 2px;}
+
+.pl-connector {
+    width: 2px; height: 16px; background: var(--accent); opacity: 0.3;
+    margin: -1rem 0 -1rem 26px; /* 对齐圆心 */
+}
+
+
+/* ============================================================
+   [🔥 修复] 职业心声 MANIFESTO (图文并排高级排版)
+   ============================================================ */
+#manifesto { background:var(--bg); padding-bottom: 3rem; padding-top: 2rem;}
+.manifesto-container {
+    position: relative; max-width: 860px; margin: 0 auto;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    min-height: 260px;
+}
+.manifesto-bg-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 40%;
+    display: block; z-index: 0;
+}
+.manifesto-glass {
+    position: relative; z-index: 2;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 2.8rem 3rem;
+    display: flex; flex-direction: column; justify-content: center;
+}
+.manifesto-glass::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    border-radius: 20px 0 0 20px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-dk));
+}
+.manifesto-quote-mark {
+    font-family:'Playfair Display',serif; font-size:3.5rem; line-height:.8;
+    color:#fff; opacity:.4; margin-bottom:.4rem;
+}
+.manifesto-label {
+    font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    color:rgba(255,255,255,0.6); margin-bottom:.7rem;
+}
+.manifesto-text {
+    font-size:1rem; color:#fff; line-height:1.8; max-width:580px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+}
+.manifesto-text strong { color:#fff; font-weight:700; }
+
+/* ============================================================
+   HOBBIES
+   ============================================================ */
+#hobbies { background:var(--bg); position:relative; padding-bottom: 5rem;}
+.hobby-stack { display:flex; gap:12px; margin-top:2.5rem; height:380px; align-items:stretch; max-width:1040px; margin: 2.5rem auto 0;}
+.hobby-card { flex:1; border-radius:16px; overflow:hidden; position:relative; cursor:pointer; transition:flex .5s cubic-bezier(.16,1,.3,1), box-shadow .4s; box-shadow:0 8px 24px rgba(0,0,0,.05); min-width:0; border: 1px solid var(--border);}
+.hobby-stack:hover .hobby-card { flex:.4; }
+.hobby-stack:hover .hobby-card:hover { flex:2; box-shadow:0 15px 40px rgba(0,0,0,.1); }
+.hobby-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.16,1,.3,1); }
+.hobby-card:hover .hobby-img { transform:scale(1.05); }
+.hobby-gradient { position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.1) 50%, transparent 100%); transition:opacity .4s; }
+.hobby-body { position:absolute; bottom:0; left:0; right:0; padding:1.2rem; color:#fff; }
+.hobby-body h4 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hobby-body p { font-size:.85rem; line-height:1.5; opacity:0; transform:translateY(8px); transition:opacity .4s .1s, transform .4s .1s; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; color:rgba(255,255,255,0.9);}
+.hobby-stack .hobby-card:hover .hobby-body p { opacity:1; transform:translateY(0); }
+
+/* ============================================================
+   CV FLIP SECTION
+   ============================================================ */
+.cv-flip-section { padding:6rem 5%; max-width:1040px; margin:0 auto; position:relative; }
+.cv-flip-header { text-align:center; margin-bottom:4rem; }
+.cv-flip-header h2 { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(2rem,4vw,3.2rem); font-weight:800; letter-spacing:-1px; line-height:1.1; color: var(--text); }
+.cv-switcher { display:flex; justify-content:center; gap:.5rem; margin-bottom:3rem; }
+.cv-tab { padding:.55rem 1.4rem; border-radius:40px; font-size:.88rem; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:var(--card-bg); color:var(--muted); transition:all .22s; }
+.cv-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 16px var(--accent-glow); }
+.cv-book-wrap { perspective:1800px; display:flex; justify-content:center; align-items:center; }
+.cv-book { position:relative; width:min(560px, 90vw); }
+.cv-page { width:100%; border-radius:12px; overflow:hidden; box-shadow:0 32px 80px rgba(0,0,0,.15), -8px 0 24px rgba(0,0,0,.06); cursor:pointer; transform-origin:left center; transition:transform .6s cubic-bezier(.16,1,.3,1), opacity .4s; position:relative; border: 1px solid var(--border);}
+.cv-page img { width:100%; display:block; border-radius:12px; }
+.cv-page::after { content:''; position:absolute; inset:0; border-radius:12px; background:linear-gradient(to right, rgba(0,0,0,.08) 0%, transparent 15%); pointer-events:none; }
+.cv-page:hover { transform:rotate3d(0,1,0,-8deg); }
+.cv-download-row { display:flex; justify-content:center; gap:1rem; margin-top:3rem; flex-wrap:wrap; }
+
+/* Lightbox */
+.cv-lightbox { position:fixed; inset:0; z-index:2500; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; }
+.cv-lightbox.open { opacity:1; pointer-events:all; }
+.cv-lightbox img { max-width:min(700px,92vw); max-height:90vh; border-radius:12px; box-shadow:0 40px 100px rgba(0,0,0,.5); transition:transform .4s cubic-bezier(.16,1,.3,1); transform:scale(.9); }
+.cv-lightbox.open img { transform:scale(1); }
+.cv-lightbox-close { position:absolute; top:1.5rem; right:1.5rem; width:40px; height:40px; border-radius:50%; border:none; background:rgba(255,255,255,.15); cursor:pointer; color:#fff; font-size:1.2rem; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(8px); transition:background .2s; }
+.cv-lightbox-close:hover { background:rgba(255,255,255,.3); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:1.2rem; }
+.footer-contact { display:flex; flex-wrap:wrap; justify-content:center; gap:.8rem; }
+.footer-copy { font-size:.8rem; color:var(--muted); text-align:center; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:860px) {
+  .hero { grid-template-columns:1fr; gap:2rem; padding:2rem 5% 1.5rem; min-height:auto; }
+  .hero-right { order:-1; max-width: 100%; }
+  .hero-img-wrap { height:60vw; max-height:none;}
+  .hero-name-overlay { font-size:4rem; left:0; mix-blend-mode:normal; filter:none; text-shadow: 0 4px 15px rgba(0,0,0,0.6); color:#fff; opacity:1; animation:none; }
+  
+  .snode { padding-left: 50px; margin-bottom: 1.5rem;}
+  .timeline-spine { left: calc(5% + 15px); }
+  .snode-dot { left: 9px; top: 22px;}
+  .snode-trigger { padding-left: 0; gap: 1rem; }
+  .snode-icon { width: 56px; height: 56px; }
+  .snode-expansion { margin-left: 0; }
+  .snode-detail-card { padding: 1.2rem; }
+  
+  .drawer { width:100vw; border-radius:24px 24px 0 0; top:auto; height:90vh; transform:translateY(100%); }
+  .drawer.open { transform:translateY(0); }
+  .drawer-gallery { grid-template-columns:1fr 1fr; }
+
+  .ai-card { grid-template-columns:1fr; padding:2rem; gap:2rem; }
+  .browser iframe { height:300px; }
+  .nav-brand span { display:none; }
+  .nav-linkedin-btn span { display:none; }
+  .floating-nav { bottom:12px; padding:6px 8px; width:90%; justify-content:space-between;}
+  .fnav-item { padding:.4rem .6rem; font-size:.6rem; min-width:40px;}
+  
+  .accordion-header { padding:1.2rem; gap:.8rem; }
+  .acc-hint { display: none;} 
+  .accordion-inner { padding: 0 1.2rem 2rem 1.2rem; }
+  .acc-logo { width:44px; height:44px; }
+  
+  .manifesto-container { grid-template-columns: 1fr; padding: 2.5rem; gap: 2rem;}
+  .manifesto-img-wrap { max-width: 300px; margin: 0 auto;}
+
+  .hobby-stack { flex-direction:column; height:auto; }
+  .hobby-card { flex:none; height:180px; }
+  .hobby-stack:hover .hobby-card { flex:none; height:180px; }
+  .hobby-stack:hover .hobby-card:hover { flex:none; height:240px; }
+  .hobby-body p { opacity:.9; transform:none; }
+}
+</style>
 </head>
 <body>
 
-<!-- 跑马灯背景 -->
-<div class="marquee-bg" aria-hidden="true">
-    BRAND BUILDER · CONSUMER CENTRIC · GO-TO-MARKET · BRAND BUILDER · CONSUMER CENTRIC · GO-TO-MARKET ·&nbsp;
+<div id="page-intro">
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+  <div class="intro-strip"></div>
+</div>
+<div class="intro-brand" id="intro-brand">
+  <div class="intro-name display">Liyi GAO</div>
+  <div class="intro-role">品牌建设者 &amp; 产品经理</div>
 </div>
 
-<!-- ===== NAV ===== -->
-<nav>
-    <div class="nav-brand">
-        <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
-        <span>Audencia GE Program (PGE)</span>
+<div class="overflow-protector">
+
+<nav class="top-nav">
+  <div class="nav-brand">
+    <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb08d988a.webp" alt="Audencia">
+    <span>Audencia GE Program (PGE)</span>
+  </div>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <a href="pro.html"    class="lang-btn"        data-lang="en">EN</a>
+      <a href="pro_fr.html" class="lang-btn"        data-lang="fr">FR</a>
+      <a href="pro_zh.html" class="lang-btn active" data-lang="zh">中文</a>
     </div>
-    <div class="nav-ctas">
-        <!-- 语言切换 -->
-        <div class="lang-switcher">
-            <a href="pro.html" class="lang-btn" data-lang="en">EN</a>
-            <a href="pro_fr.html" class="lang-btn" data-lang="fr">FR</a>
-            <a href="pro_zh.html" class="lang-btn active" data-lang="zh">中文</a>
-        </div>
-        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-ghost">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-            <span>联系我</span>
-        </a>
-        <!-- CV 下拉菜单 -->
-        <div class="cv-dropdown" id="nav-cv-dropdown">
-            <button class="btn btn-solid" id="cv-toggle-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                下载简历 ▾
-            </button>
-            <div class="cv-menu" id="cv-menu">
-                <a href="Liyi_GAO_Product_assistant.pdf" download>
-                    <span class="cv-flag">🇬🇧</span> 英文简历
-                </a>
-                <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download>
-                    <span class="cv-flag">🇫🇷</span> 法文简历
-                </a>
-            </div>
-        </div>
-        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-accent">LinkedIn</a>
+    
+    <div class="cv-dropdown" id="nav-cv">
+      <button class="nav-cv-btn">
+        下载简历 
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="cv-menu">
+        <a href="./Liyi%20GAO_Product%20assistant.pdf" download>🇬🇧 English CV</a>
+        <a href="./Fr_Liyi%20GAO_Chef%20de%20projets.pdf" download>🇫🇷 CV en Français</a>
+      </div>
     </div>
+    
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="nav-linkedin-btn">
+      LinkedIn <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+    </a>
+  </div>
 </nav>
 
-<div data-theme="theme-light" class="theme-trigger"></div>
+<nav class="floating-nav" id="floating-nav">
+  <a class="fnav-item active" href="#hero">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+    <span>首页</span>
+  </a>
+  <a class="fnav-item" href="#story">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+    <span>故事</span>
+  </a>
+  <a class="fnav-item" href="#arsenal">
+    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+    <span>经历</span>
+  </a>
+  <a class="fnav-item" href="#demo">
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+    <span>项目</span>
+  </a>
+  <a class="fnav-item" href="#hobbies">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+    <span>生活</span>
+  </a>
+</nav>
 
-<!-- ===== HERO ===== -->
-<header class="hero">
-    <div class="hero-left">
-        <!-- 可用状态胶囊 -->
-        <div class="avail-badge reveal">
-            <span class="avail-dot"></span>
-            求职中 · 2026年7月起实习
-        </div>
-
-        <h1 class="display reveal">
-            一位<em>品牌建设者</em><br>的成长之路。
-        </h1>
-        <p class="hero-desc reveal delay-1">
-            致力于将深度<strong>消费者洞察</strong>转化为有力的<strong>上市策略</strong>。我希望以深度与风格打造快消与美妆品牌，在产品创新与品牌叙事之间架起桥梁。
-        </p>
-
-        <!-- Hero CTA 组 -->
-        <div class="hero-ctas reveal delay-2">
-            <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-                liyi.gao.dm@gmail.com
-            </a>
-            <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
-        </div>
-
-        <!-- 技能标签 -->
-        <div class="skill-tags reveal delay-2">
-            <div class="skill-pill">🇨🇳 Mandarin</div>
-            <div class="skill-pill">🇫🇷 French C1</div>
-            <div class="skill-pill">🇬🇧 English C2</div>
-            <div class="skill-pill">SQL</div>
-            <div class="skill-pill">Google Analytics</div>
-            <div class="skill-pill">Microsoft Office</div>
-            <div class="skill-pill">PowerPoint</div>
-        </div>
+<section id="hero" class="section-wrapper">
+  <div class="hero">
+    <div class="hero-left reveal">
+     <div class="avail-badge"><span class="avail-dot"></span>Audencia PGE &nbsp;·&nbsp; 2026年7月起接受实习</div>
+      <h1 class="display hero-h1">一个<em>品牌人</em>的<br>成长轨迹</h1>
+      <p class="hero-desc reveal delay-1">
+        专注于将深度<strong>消费者洞察</strong>转化为有力的<strong>市场进入策略</strong>。我的目标是打造有内涵、有风格的快消与美妆品牌，连接产品创新与品牌叙事之间的那道桥梁。
+      </p>
+      
+      <div class="hero-ctas reveal delay-2">
+  <a href="/cdn-cgi/l/email-protection#d2bebbabbbfcb5b3bdfcb6bf92b5bfb3bbbefcb1bdbf" class="btn btn-accent btn-pulse">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+    <span class="__cf_email__" data-cfemail="b8d4d1c1d196dfd9d796dcd5f8dfd5d9d1d496dbd7d5">[email&#160;protected]</span>
+  </a>
+  <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+    LinkedIn
+  </a>
+</div>
+      <div class="skill-tags reveal delay-2">
+        <div class="skill-pill">🇨🇳 Mandarin</div>
+        <div class="skill-pill">🇫🇷 法语 C1</div>
+        <div class="skill-pill">🇬🇧 英语 C2</div>
+        <div class="skill-pill">SQL</div>
+        <div class="skill-pill">Google Analytics</div>
+        <div class="skill-pill">Microsoft Office</div>
+        <div class="skill-pill">PowerPoint</div>
+      </div>
     </div>
-
-    <div class="hero-right">
-        <div class="hero-img-wrap">
-            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad689ba1d37.webp" alt="Liyi Gao">
-        </div>
-        <div class="hero-name-overlay">Liyi GAO</div>
+    <div class="hero-right reveal delay-2">
+      <div class="hero-img-wrap">
+        <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a37a0f8db.webp" alt="Liyi Gao">
+      </div>
+      <div class="hero-name-overlay display">Liyi GAO</div>
     </div>
-</header>
-
-<!-- ===== DIARY 视差文字 ===== -->
-<section class="diary-container" id="diary-container">
-    <div class="diary-sticky">
-        <h2 class="diary-text" id="diary-text">一切，<br>始于同理心。</h2>
-    </div>
+  </div>
 </section>
 
-<!-- ===== 成长时间轴 ===== -->
-<section class="timeline-wrap">
-    <h2 class="heading reveal" style="font-size:clamp(1.8rem,3.5vw,2.8rem); margin-bottom:2.5rem;">
-        成长历程与创业探索
-    </h2>
-    <div class="timeline-inner" id="tl-inner">
-        <div class="tl-line"></div>
-        <div class="tl-dot" id="tl-dot"></div>
-
-        <!-- Phase 1: 2013 -->
-        <div class="tl-node reveal">
-            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle" style="top:0;right:0;width:130px;transform:rotate(8deg);" alt="">
-            <p class="label">第一阶段（2013） · 消费者洞察与早期验证</p>
-            <h3>终极MVP：奶奶的蔬菜摊</h3>
-            <p>当奶奶的园子蔬菜丰收时，我把有机蔬菜带到集市上卖。我学到：用<strong>直白的文案</strong>降低认知负担，是用户转化的核心。</p>
-            <div class="grid-3">
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt="Veggies"><figcaption>新鲜采摘的蔬菜。</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt="Sign"><figcaption>Bio veggies & cardboard copywriting.</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt="Holding Veggies" style="object-position:top;"><figcaption>与消费者的直接连接。</figcaption></figure>
-            </div>
-        </div>
-
-        <!-- Phase 1: 2015 -->
-        <div class="tl-node reveal">
-            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle" style="top:15%;right:-10px;width:150px;transform:rotate(-6deg);" alt="">
-            <p class="label">第一阶段（2015） · 品牌定位</p>
-            <h3>我的第一堂DTC课</h3>
-            <p>我早早发现了日系文具的趋势红利。通过<strong>精选优质单品</strong>、统一视觉陈列，在跳蚤市场打造出鲜明的品牌调性，成功验证了溢价定价策略。</p>
-            <div class="hscroll">
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980a05c1.webp" alt="Sign"><figcaption>建立品牌识别度。</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt="Curating"><figcaption>趋势筛选与选品。</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa980687c3.webp" alt="Stationery" style="object-position:top;"><figcaption>视觉陈列设计。</figcaption></figure>
-            </div>
-        </div>
-
-        <div data-theme="theme-brand" class="theme-trigger" style="position:absolute;top:55%;"></div>
-
-        <!-- Phase 2: 2022 -->
-        <div class="tl-node reveal">
-            <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa31d4774d.webp" alt="O2O Logo" style="width:72px;height:72px;object-fit:contain;background:#fff;border-radius:14px;padding:5px;margin-bottom:1.5rem;border:1.5px solid var(--border);">
-            <p class="label">第二阶段（2022） · 构建校园O2O零售网络</p>
-            <h3>构建校园O2O零售网络</h3>
-            <ul class="pro-bullets" style="list-style:none;padding:0;">
-                <li><strong>从零创建</strong>了一套线上下单、线下配送的数字商业生态，从鲜果切入，逐步扩展至高毛利衍生品。</li>
-                <li><strong>主导</strong>全链路运营，统筹采购、SKU选品、团队协调与日常客服管理。</li>
-                <li><strong>建立</strong>与学生社团及本地咖啡馆的战略合作，拓展线下快闪空间，联合举办促销活动。</li>
-            </ul>
-            <div class="kpi-badge">Designed high-conversion materials across <strong>1,000+ private-domain users</strong></div>
-            <div class="kpi-row" style="margin-top:1.5rem;">
-                <div class="kpi"><div class="kpi-num">400+</div><div class="kpi-label">月活跃用户</div></div>
-                <div class="kpi"><div class="kpi-num">80%</div><div class="kpi-label">复购率</div></div>
-                <div class="kpi"><div class="kpi-num">&lt;5%</div><div class="kpi-label">生鲜损耗率</div></div>
-            </div>
-            <div class="gallery-container">
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp"><figcaption>宿舍楼层专属货架体系。</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp"><figcaption>数据驱动的订单收集。</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp"><figcaption>无摩擦的用户界面。</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp"><figcaption>高留存率CRM系统。</figcaption></figure>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div data-theme="theme-dark" class="theme-trigger"></div>
-
-<!-- ===== 过渡散落图 ===== -->
-<div class="transition-band" id="trans-band">
-    <div class="transition-words">数据驱动<br>以消费者为中心<br>跨职能协作</div>
-    <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:300px;height:200px;">
-    <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:340px;height:240px;">
-    <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:270px;height:340px;">
+<div class="diary-container" id="diary-container">
+  <div class="diary-sticky">
+    <h2 class="diary-text display" id="diary-text">一切，<br>从共情开始。</h2>
+  </div>
 </div>
 
-<!-- ===== 职业经历 ===== -->
-<section class="exp-section">
-    <h2 class="display exp-title reveal">磨砺<br><em>专业武器库</em></h2>
+<section id="story">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566dc0467.webp" class="doodle-sticker" style="top:5%; right:5%; width:180px; transform:rotate(15deg);" alt="">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566383a3b.webp" class="doodle-sticker" style="top:30%; left:2%; width:200px; transform:rotate(-10deg);" alt="">
 
-    <div class="exp-cards">
+  <div class="story-header reveal">
+    <p class="st-eyebrow">成长历程</p>
+    <h2>自我成长与创业探索</h2>
+    <p class="st-sub">点击每个章节，展开故事。</p>
+  </div>
 
-        <!-- Wealthfields -->
-        <div class="pro-card reveal">
-            <div class="pro-header">
-                <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="pro-logo">
-                <div>
-                    <div class="pro-meta">广州，中国 · 2025年3月 – 2025年6月</div>
-                    <h4>Wealthfields Lohmann (FMCG)</h4>
-                </div>
-            </div>
-            <p class="pro-focus">Focus: 360° Brand Partnerships & Go-to-Market</p>
-            <ul class="pro-bullets">
-                <li><strong>统筹</strong>复杂的<strong>线下马拉松活动</strong>（青岛马拉松、HHI），通过线下活动与直播联动，实现<strong>419万曝光</strong>和<strong>41万元销售额</strong>。</li>
-                <li><strong>管理</strong>20+家MCN机构和100+名KOL，将线下活动与<strong>线上直播</strong>同步联动（50k+观众）。</li>
-                <li>通过抖音精准的受众-内容匹配，将<strong>营销ROI从0.2提升至1.0+</strong>。</li>
-            </ul>
-            <div class="gallery-container">
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>马拉松直播现场</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>5万+直播观众</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>活动搭建</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>线下销售</figcaption></figure>
-            </div>
+  <div class="timeline-wrapper">
+    <div class="timeline-spine"></div>
+
+    <div class="snode reveal" id="node-2013">
+      <div class="snode-dot"></div>
+      <div class="snode-trigger" onclick="toggleSnode('node-2013')">
+        <div class="snode-icon">
+          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e78d031.webp" alt="2013">
         </div>
-
-        <!-- MMA -->
-        <div class="pro-card reveal delay-1">
-            <div class="pro-header">
-                <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="pro-logo">
-                <div>
-                    <div class="pro-meta">广州，中国 · 2023年1月 – 2023年8月</div>
-                    <h4>MMA Brand Services Pte. Ltd.</h4>
-                </div>
-            </div>
-            <p class="pro-focus">Focus: Product Lifecycle Management & E-Commerce Strategy</p>
-            <ul class="pro-bullets">
-                <li><strong>加速推出</strong>10+款Amazon新品，运用媲美尼尔森/IRI面板分析的数据方法论。</li>
-                <li>通过主导与15+家供应商的商务谈判，<strong>优化供应链</strong>，实现物流成本<strong>降低20-40%</strong>（约13万元/年）。</li>
-            </ul>
-            <div class="gallery-container">
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>供应链团队</figcaption></figure>
-            </div>
+        <div class="snode-info">
+          <span class="snode-year">2013 · 消费者洞察</span>
+          <h3 class="snode-title heading">奶奶的菜摊：我的品牌叙事第一课</h3>
+          <span class="snode-hint">点击展开</span>
         </div>
+      </div>
+      <div class="snode-expansion">
+        <div class="snode-expansion-inner">
+          <div class="snode-detail-card">
+            <p>在我还不懂什么叫"独特卖点"的年纪，我只是个想帮奶奶解决积压蔬菜的孩子。我决定把这些纯天然好货拿到市集上卖，没有花哨的推销话术，就在一块硬纸板上写下最直白的事实：<strong>"豆渣沤肥、纯天然、园子里刚摘的。"</strong></p> "Unique Selling Proposition" was, I was just a kid trying to help my grandma deal with her surplus veggies. I decided to share these great BIO products in the local market. Instead of shouting clever sales pitches, I simply scribbled the undeniable facts on a piece of cardboard: <strong>"soybean residue fertilizer," "all-natural," and "fresh from the garden."</strong></p>
 
-        <!-- TAL -->
-        <div class="pro-card reveal">
-            <div class="pro-header">
-                <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="pro-logo">
-                <div>
-                    <div class="pro-meta">广州，中国 · 2023年11月 – 2024年6月</div>
-                    <h4>TAL Education Group</h4>
-                </div>
-            </div>
-            <p class="pro-focus">Focus: EdTech & Audience Engagement</p>
-            <ul class="pro-bullets">
-                <li><strong>公开演讲：</strong>在高压环境下向大规模受众进行直播授课，荣获新讲师中<strong>第一名</strong>。</li>
-                <li><strong>知识转化：</strong>将复杂的奥数逻辑拆解为简洁易懂、引人入胜的内容。</li>
-                <li><strong>CRM & Retention:</strong> Secured a <strong>100% renewal rate</strong> through proactive client relationship management.</li>
-            </ul>
-            <div class="gallery-container">
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>优秀表现认证</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>直播授课</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>课堂互动</figcaption></figure>
-            </div>
+<p>结果出乎意料地奏效了。人们信任这份真诚。这是我人生中第一堂歪打正着的消费者心理课：<strong>真实的故事与清晰的沟通</strong>，永远比花哨的营销手段更有力量。
+
+</p>            <div class="snode-gallery">
+        <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bc750fb.webp" alt=""><figcaption>奶奶的收成</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd58a8b1b8.webp" alt=""><figcaption>诚实的文案</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/05/69a858bcedc55.webp" alt=""><figcaption>建立信任</figcaption></figure>
+                 </div>
+          </div>
         </div>
-
-        <!-- ACE -->
-        <div class="pro-card reveal delay-1">
-            <div class="pro-header">
-                <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="pro-logo">
-                <div>
-                    <div class="pro-meta">南特，法国 · 进行中</div>
-                    <h4>Audencia Entrepreneur Club (ACE)</h4>
-                </div>
-            </div>
-            <p class="pro-focus">Focus: PR, External Communication & Resource Orchestration</p>
-            <ul class="pro-bullets">
-                <li><strong>主导</strong>"DARE"项目的对外传播，成功邀请到<strong>行业高知名度嘉宾演讲者</strong>。</li>
-                <li><strong>统筹</strong>跨部门协作，对齐核心传播口径。</li>
-                <li><strong>制作</strong>高影响力视觉素材，推进整合营销推广。</li>
-            </ul>
-            <div class="gallery-container">
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>活动策划</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>跨部门协调</figcaption></figure>
-                <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE项目执行</figcaption></figure>
-            </div>
-        </div>
-
+      </div>
     </div>
+
+    <div class="snode-wave-container">
+      <svg width="2" height="30" viewBox="0 0 2 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1,0 L1,30" stroke="#2997FF" stroke-width="2" stroke-dasharray="4,4" opacity=".45"/>
+      </svg>
+    </div>
+
+    <div class="snode reveal delay-1" id="node-2015">
+      <div class="snode-dot"></div>
+      <div class="snode-trigger" onclick="toggleSnode('node-2015')">
+        <div class="snode-icon">
+          <img src="https://picui.ogmua.cn/s1/2026/03/11/69b0a2e74964f.webp" alt="2015">
+        </div>
+        <div class="snode-info">
+          <span class="snode-year">2015 · 品牌定位</span>
+          <h3 class="snode-title heading">跳蚤市场快闪摊</h3>
+          <span class="snode-hint">点击展开</span>
+        </div>
+      </div>
+      <div class="snode-expansion">
+        <div class="snode-expansion-inner">
+          <div class="snode-detail-card">
+            <p>谁能想到，一个周末的跳蚤市场，会成为一堂品牌定位实战课？那时日系文具风刚刚兴起，我没有随便摆摊凑热闹，而是<strong>精心筛选风格高度统一的产品</strong>，打造出一个沉浸式的陈列空间，让一张折叠桌看上去像精品买手店。</p>
+
+<p>摊位的风格在周围的杂乱中格外突出，顾客自然而然地被吸引过来。结果呢？<strong>溢价销售，一售而空</strong>。这是我第一次在现实中验证了：<strong>统一的审美与清晰的品牌定位，是强大的增长杠杆。</strong></p>
+             <div class="snode-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/12/69b1eba1761a0.webp" alt=""><figcaption>精选单品</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa9807e141.webp" alt=""><figcaption>买手店氛围</figcaption></figure>
+              <figure><img src="https://picui.ogmua.cn/s1/2026/03/12/69b1eb9d9b3d2.webp" alt=""><figcaption>跳蚤市场</figcaption></figure>
+                 </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-bridge-v2 reveal">
+      <div class="sbv-line"></div>
+      <div class="sbv-label">代表项目 ↓</div>
+    </div>
+
+  </div>
+
+  <div class="o2o-trigger reveal" id="o2o-trigger">
+    <div class="o2o-inner">
+      <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa31d4774d.webp" alt="O2O" class="o2o-icon" style="object-fit:contain;">
+      <div class="o2o-text">
+        <p class="label" style="margin-bottom:.3rem;">2022 · 首次创业实践</p>
+        <h3 class="heading" style="font-size:1.6rem; margin-bottom:.4rem;">打造校园 O2O 零售网络</h3>
+        <p style="color:var(--muted);font-size:.9rem;line-height:1.5;">400+ 月活用户 · 80% 复购率 · &lt;5% 损耗 · 1,000+ 私域用户</p>
+      </div>
+      <div class="o2o-open-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        案例详情
+      </div>
+    </div>
+  </div>
+
 </section>
 
-<!-- ===== AI Demo ===== -->
-<section class="demo-section reveal">
-    <div class="ai-card">
-        <div>
-            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566301faa.webp" class="doodle" style="top:-16px;left:-16px;width:90px;" alt="">
-            <p class="label">当前探索 · 敏捷原型开发</p>
-            <h3>打造<br>护肤助手 Copilot</h3>
-            <p>我将AI视为战略副驾驶。通过将消费者直觉转化为结构化逻辑，我迅速编写并部署了这款功能性Web应用。</p>
-            <p>旨在解决护肤选择过载的真实痛点——为美妆消费者提供个性化护肤程序分析，降低决策认知负担。</p>
-            <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
-                体验在线原型 ↗
-            </a>
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="drawer" id="o2o-drawer">
+  <button class="drawer-close" id="drawer-close">✕</button>
+  <p class="label">第二阶段（2022）· 首次创业实践</p>
+  <h3 class="heading">Building a Campus O2O Retail Network</h3>
+  <p style="color:var(--text);font-size:.95rem;line-height:1.7;margin-bottom:1rem;">
+    从零搭建线上下单、线下配送的数字化经营体系，将一个空白起点发展为校园里活跃的品牌。
+  </p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-num heading">400+</div><div class="kpi-label">月活跃用户</div></div>
+    <div class="kpi"><div class="kpi-num heading">80%</div><div class="kpi-label">复购率</div></div>
+    <div class="kpi"><div class="kpi-num heading">&lt;5%</div><div class="kpi-label">生鲜损耗率</div></div>
+  </div>
+  <div class="kpi-badge">设计运营素材，精准触达 <strong>1,000+ 私域用户</strong></div>
+  <ul class="drawer-bullets" style="margin-top:1.2rem;">
+    <li><strong>从零创建</strong>线上下单、线下配送的数字化经营体系，品类从生鲜延伸至<strong>高毛利产品</strong>，全程无需实体门店。</li>
+    <li><strong>主导</strong>全链路供应链管理与选品策略，以稳定的服务品质驱动 400+ 月活用户中实现 <strong>80% 复购率</strong>。</li>
+    <li><strong>运营</strong>私域品牌社群，设计针对性 CRM 内容，有效触达 <strong>1,000+ 私域用户</strong>，同时将生鲜损耗率严格控制在 <strong>5% 以下</strong>。</li>
+  </ul>
+  <div class="drawer-gallery">
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa32c18309.webp" alt=""><figcaption>宿舍层级货架体系</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa54463452.webp" alt=""><figcaption>数据驱动的订单</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa5482c56e.webp" alt=""><figcaption>无摩擦的用户界面</figcaption></figure>
+    <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaa55a4e555.webp" alt=""><figcaption>高留存的 CRM 运营</figcaption></figure>
+  </div>
+</div>
+
+<div class="transition-band" id="trans-band">
+  <div class="transition-words heading">DATA DRIVEN<br>CONSUMER CENTRIC<br>CROSS-FUNCTIONAL</div>
+  <img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp" class="scatter" id="s1" style="width:260px;height:180px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp" class="scatter" id="s2" style="width:300px;height:200px;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp" class="scatter" id="s3" style="width:240px;height:300px;">
+</div>
+
+<div class="arsenal-header reveal" id="arsenal">
+  <p class="label" style="margin-bottom:.4rem;">职业经历</p>
+  <h2 class="display">磨砺感知：<br><em style="color:var(--accent);">职业经历</em></h2>
+</div>
+
+<section class="section-wrapper" style="padding-top:0; padding-bottom:5rem;">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566379bac.webp" class="doodle-sticker" style="top:5%; left:2%; width:200px;" alt="">
+  <div class="accordion-container">
+
+    <div class="accordion-item reveal">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb263e823.webp" alt="WL" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">广州，中国 · 2025年3月 – 2025年6月</div>
+          <div class="acc-company heading">Wealthfields Lohmann (FMCG)</div>
+          <div class="acc-focus">360° 品牌合作与市场进入</div>
         </div>
-        <div class="browser">
-            <div class="browser-bar">
-                <div class="b-dot"></div>
-                <div class="b-dot"></div>
-                <div class="b-dot"></div>
-            </div>
-            <iframe src="https://lygao-ducky.github.io/skincare_assistant/index.html" title="Skincare Copilot"></iframe>
+        <span class="acc-hint">点击展开 ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>统筹</strong> 360° 线下马拉松品牌活动（青岛马拉松、HHI），创造 <strong>419万次曝光</strong>，直接带动 4.1 万欧元销售额。</li>
+            <li><strong>协调</strong>达人营销投放，统筹 20+ 家 MCN 机构及 100+ 位 KOL，将线下活动与线上直播同步联动，峰值吸引 <strong>5万+ 人在线观看</strong>。</li>
+            <li><strong>通过</strong>在 Douyin（TikTok）上实施精准的人群-内容匹配策略，将营销 ROI 从 0.2 提升至 1.0+。</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3c7db80.webp"><figcaption>马拉松直播现场</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac2f76d0b.webp"><figcaption>5万+同时在线</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac3780c84.webp"><figcaption>活动现场布置</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/06/69aaac4516619.webp"><figcaption>线下销售</figcaption></figure>
+          </div>
         </div>
+      </div>
     </div>
+
+    <div class="accordion-item reveal delay-1">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a0adf8.webp" alt="MMA" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">广州，中国 · 2023年1月 – 2023年8月</div>
+          <div class="acc-company heading">MMA Brand Services Pte. Ltd.</div>
+          <div class="acc-focus">产品全生命周期管理与电商战略</div>
+        </div>
+        <span class="acc-hint">Click to expand ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>加速</strong> 10+ 个新 SKU 上线 Amazon，运用相当于快消品 Panel 分析（Nielsen/IRI）的数据方法论，识别并捕捉新兴消费趋势。</li>
+            <li><strong>优化</strong>供应链体系，直接与 15+ 家供应商谈判，将物流成本降低 <strong>20–40%</strong>，显著提升产品整体利润率。</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc460e1939.webp"><figcaption>供应链团队</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace46132100.webp" alt="TAL" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">广州，中国 · 2023年11月 – 2024年6月</div>
+          <div class="acc-company heading">TAL Education Group</div>
+          <div class="acc-focus">EdTech 与用户深度互动</div>
+        </div>
+        <span class="acc-hint">Click to expand ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>面向</strong>大规模学生群体进行高强度直播授课，将复杂逻辑转化为引人入胜的内容，荣获<strong>新晋讲师综合排名第一</strong>。</li>
+            <li><strong>通过</strong>主动出击的 CRM 策略和扎实的客户关系维护，实现 <strong>100% 续课率</strong>。</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8ad0d1f7.webp"><figcaption>优秀绩效</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc8059fb3d.webp"><figcaption>直播授课</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acc80649ccc.webp"><figcaption>互动现场</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal delay-1">
+      <div class="accordion-header">
+        <img src="https://picui.ogmua.cn/s1/2026/03/08/69acbb4a08a8f.webp" alt="ACE" class="acc-logo">
+        <div class="acc-meta">
+          <div class="acc-period">法国南特 · 进行中</div>
+          <div class="acc-company heading">Audencia Entrepreneur Club (ACE)</div>
+          <div class="acc-focus">公关、对外传播与活动策划</div>
+        </div>
+        <span class="acc-hint">Click to expand ▾</span>
+        <div class="acc-chevron"><svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9"/></svg></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <ul class="acc-bullets">
+            <li><strong>构思并提案</strong> "DARE+" 项目，完善整体活动流程，并<strong>引入游戏化竞技环节</strong>，让参与者角逐专属"加速包"。</li>
+            <li><strong>成功拿下</strong>关键机构赞助（包括 CVEC 和 GFA），并邀请行业专家担任嘉宾演讲，拓展了活动的专业人脉网络。</li>
+            <li><strong>统筹</strong>现场执行与跨部门协作，确保从预热宣传到活动收尾，每个环节都呈现流畅的品牌体验。</li>
+          </ul>
+          <div class="acc-gallery">
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7b9d6766.webp"><figcaption>活动策划</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba00aba.webp"><figcaption>跨部门协作</figcaption></figure>
+            <figure><img src="https://picui.ogmua.cn/s1/2026/03/08/69acd7ba160dd.webp"><figcaption>DARE 活动执行</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<!-- ===== Hobbies ===== -->
-<section class="hobbies-section reveal">
-    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle" style="top:5%;left:2%;width:160px;transform:rotate(10deg);" alt="">
-    <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle" style="bottom:15%;right:3%;width:150px;transform:rotate(-12deg);" alt="">
-
-    <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.6rem);text-align:center;">不坐在电脑前的时候……</h2>
-    <p style="text-align:center;color:var(--muted);margin-top:.8rem;">维护「硬件」，优化「心流状态」。</p>
-
-    <div class="polaroid-grid">
-        <div class="polaroid">
-            <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing">
-            <h4>Aviron</h4>
-            <p>完美团队配合的那种纯粹魔力。单人的时候？就只有我、一条船，和追风的感觉。</p>
-        </div>
-        <div class="polaroid">
-            <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" style="object-position:top;">
-            <h4>Randonnée</h4>
-            <p>攀爬崎岖山路，只为那一刻震撼的风景。腿酸吗？是的。值得吗？绝对。</p>
-        </div>
-        <div class="polaroid">
-            <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming">
-            <h4>Swimming</h4>
-            <p>没有汗水需要擦拭——只有那份纯粹、自由、无拘束的律动之乐。</p>
-        </div>
+<section id="demo" class="section-wrapper reveal">
+  <div class="ai-card">
+    <div>
+      <p class="label">当前探索 · 敏捷原型</p>
+      <h3 class="display">打造<br>护肤智能助手</h3>
+      <p style="color:var(--text); font-size:.95rem; line-height:1.7;">
+        我把 AI 视为战略副驾驶。将<strong>消费者直觉</strong>转化为结构化逻辑，我<strong>快速编写并部署</strong>了这款功能性 Web 应用。
+      </p>
+      <p style="margin-top:.6rem; color:var(--text); font-size:.95rem; line-height:1.7;">
+        专为解决<strong>护肤选择困难</strong>这一真实痛点而设计——为美妆消费者提供个性化护肤方案分析，有效<strong>降低决策负担</strong>。
+      </p>
+      <a href="https://lygao-ducky.github.io/skincare_assistant/index.html" target="_blank" class="btn btn-accent btn-pulse" style="margin-top:2rem;">
+        体验实时原型 ↗
+      </a>
     </div>
+    <div class="browser">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+      </div>
+      <iframe src="https://lygao-ducky.github.io/skincare_assistant/index.html" title="护肤智能助手"></iframe>
+    </div>
+  </div>
+
+  <div class="ai-card" style="margin-top: 4rem;">
+    <div>
+      <p class="label">工作流自动化 · AI 数据管道</p>
+      <h3 class="display">AI 知识<br>提取引擎</h3>
+      <p style="color:var(--text); font-size:.95rem; line-height:1.7;">
+        过去，整理行业笔记意味着无休止的手动复制粘贴。更棘手的是，主流大模型因反爬虫机制，根本无法直接读取国内社交媒体和视频平台的链接内容。
+      </p>
+      <p style="margin-top:.6rem; color:var(--text); font-size:.95rem; line-height:1.7;">
+        为此，我用 <strong>Coze</strong> 搭建了一套全自动数据管道，绕过抓取壁垒，完成翻译处理，并将结构化内容直接同步至 <strong>Notion Database</strong>。
+      </p>
+      
+      <div class="pipeline-diagram">
+        <div class="pl-node">
+          <div class="pl-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          </div>
+          <div class="pl-text">
+            <div class="pl-title">来源输入</div>
+            <div class="pl-desc">社交及视频平台链接</div>
+          </div>
+        </div>
+        <div class="pl-connector"></div>
+        
+        <div class="pl-node" style="border-color: var(--accent);">
+          <div class="pl-icon" style="background: var(--accent); color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+          </div>
+          <div class="pl-text">
+            <div class="pl-title">AI 处理</div>
+            <div class="pl-desc">突破壁垒 + 大模型合成</div>
+          </div>
+        </div>
+        <div class="pl-connector"></div>
+        
+        <div class="pl-node">
+          <div class="pl-icon" style="background: var(--text); color: var(--bg);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+          <div class="pl-text">
+            <div class="pl-title">Notion 输出</div>
+            <div class="pl-desc">自动同步至结构化数据库</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="browser" style="box-shadow: 0 20px 50px rgba(0,0,0,0.12);">
+      <div class="browser-bar">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+      </div>
+      <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1f86835a6b.webp" alt="Notion 知识库" style="width:100%; display:block; object-fit: cover;">
+    </div>
+  </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
+<section id="manifesto" class="section-wrapper reveal" style="padding-top: 1rem; padding-bottom: 3rem;">
+  <div class="manifesto-container">
+    <img src="https://picui.ogmua.cn/s1/2026/03/12/69b2ba34efe47.webp" class="manifesto-bg-img" alt="">
+    <div class="manifesto-glass">
+      <div class="manifesto-quote-mark">"</div>
+      <p class="manifesto-label">关于 AI 时代的思考</p>
+      <p class="manifesto-text">
+        从氛围感编程到氛围感营销——AI 每天都在优化我的执行效率。但用得越多，我越清楚：<strong>真正定义品牌的，是人的判断力。</strong>我现在最大的动力，就是扎进真实世界，把这把刀磨得更锋利。
+      </p>
+    </div>
+  </div>
+</section>
+   
+<section id="hobbies" class="section-wrapper reveal hobbies-section">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle-sticker" style="top:5%;left:2%;width:150px;transform:rotate(10deg);" alt="">
+  <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle-sticker" style="bottom:10%;right:2%;width:140px;transform:rotate(-12deg);" alt="">
+  
+  <div class="section-title-block" style="text-align:center; padding-top: 0; margin-bottom: 2rem;">
+    <h2 class="heading" style="font-size:clamp(1.8rem,3vw,2.5rem);">不坐在电脑前的时候……</h2>
+    <p>保养"硬件"，优化"心流状态"。</p>
+  </div>
+  <div class="hobby-stack">
+    <div class="hobby-card">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd6071b398.webp" alt="Rowing" class="hobby-img">
+      <div class="hobby-gradient"></div>
+      <div class="hobby-body">
+        <h4 class="heading">🚣 Aviron</h4>
+        <p>我、一艘船、追逐着风。</p>
+      </div>
+    </div>
+    <div class="hobby-card">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69ace95122ea4.webp" alt="Hiking" class="hobby-img" style="object-position:top;">
+      <div class="hobby-gradient"></div>
+      <div class="hobby-body">
+        <h4 class="heading">🥾 Randonnée</h4>
+        <p>腿酸吗？酸。值得吗？绝对值。</p>
+      </div>
+    </div>
+    <div class="hobby-card">
+      <img src="https://picui.ogmua.cn/s1/2026/03/08/69acd61bb0b34.webp" alt="Swimming" class="hobby-img">
+      <div class="hobby-gradient"></div>
+      <div class="hobby-body">
+        <h4 class="heading">🏊 Swimming</h4>
+        <p>说真的，爱游泳就是因为——不用擦汗！</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cv-flip-section reveal">
+  <div class="cv-flip-header">
+    <p class="label" style="margin-bottom:.6rem;">下载 &amp; 预览</p>
+    <h2 class="display">我的简历，<br><em style="color:var(--accent);">一眼尽览</em></h2>
+    <div style="display:inline-flex;align-items:center;gap:.6rem;margin:1.2rem 0 .4rem;padding:.6rem 1.4rem;background:var(--accent-lt);border:1.5px solid rgba(41,151,255,.25);border-radius:40px;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;display:inline-block;"></span>
+      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">正在寻找实习机会 · 2026年7月起可入职</span>
+    </div>
+    <p style="margin-top:.6rem;">点击预览完整简历 · 在下方下载</p>
+  </div>
+  <div class="cv-switcher">
+    <button class="cv-tab active" data-cv="en" onclick="switchCV('en')">🇬🇧 英文版</button>
+    <button class="cv-tab" data-cv="fr" onclick="switchCV('fr')">🇫🇷 法文版</button>
+  </div>
+  <div class="cv-book-wrap">
+    <div class="cv-book">
+      <div class="cv-page" id="cv-page-en" onclick="openCVLight('en')">
+        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb61b1a.webp" alt="英文简历" id="cv-img-en">
+      </div>
+      <div class="cv-page" id="cv-page-fr" style="display:none;" onclick="openCVLight('fr')">
+        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb228bb.webp" alt="法文简历" id="cv-img-fr">
+      </div>
+    </div>
+  </div>
+  <div class="cv-download-row">
+    <a href="./Liyi%20GAO_Product%20assistant.pdf" download class="btn btn-accent">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      下载英文简历
+    </a>
+    <a href="./Fr_Liyi%20GAO_Chef%20de%20projets.pdf" download class="btn btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      下载法文简历
+    </a>
+  </div>
+</section>
+
+<div class="cv-lightbox" id="cv-lightbox" onclick="closeCVLight()">
+  <img src="" alt="简历预览" id="cv-lightbox-img">
+  <button class="cv-lightbox-close" onclick="closeCVLight()">✕</button>
+  <div style="position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:.8rem;">点击任意处关闭</div>
+</div>
+
 <footer>
-    <div class="footer-contact">
-        <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-            liyi.gao.dm@gmail.com
-        </a>
-        <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
-        <div class="cv-dropdown footer-cv">
-            <button class="btn btn-ghost">↓ 下载简历 ▾</button>
-            <div class="cv-menu">
-                <a href="Liyi_GAO_Product_assistant.pdf" download><span class="cv-flag">🇬🇧</span> 英文简历</a>
-                <a href="Fr_Liyi_GAO_Chef_de_projets.pdf" download><span class="cv-flag">🇫🇷</span> 法文简历</a>
-            </div>
-        </div>
-    </div>
-    <p class="footer-copy">Crafted with AI assistance & human intuition. © 2026 Liyi GAO.</p>
+  <div class="footer-contact">
+    <a href="/cdn-cgi/l/email-protection#80ece9f9e9aee7e1efaee4edc0e7ede1e9ecaee3efed" class="btn btn-accent btn-pulse">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+      <span class="__cf_email__" data-cfemail="315d5848581f56505e1f555c71565c50585d1f525e5c">[email&#160;protected]</span>
+    </a>
+    <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
+  </div>
+  <p class="footer-copy" style="margin-top:1rem;">由 AI 辅助与人类直觉共同打造。© 2026 Liyi GAO.</p>
 </footer>
 
-<script>
-// ---- 1. Reveal 动画（JS控制隐藏，防止内容空白）----
-function initReveal() {
-    // 先让所有 .reveal 元素可见（默认状态）
-    // 然后由JS标记为待动画状态
-    document.querySelectorAll('.reveal').forEach(function(el) {
-        el.classList.add('will-reveal');
-    });
-    document.querySelectorAll('.reveal-left').forEach(function(el) {
-        el.classList.add('will-reveal-left');
-    });
+</div>
 
-    function checkReveal() {
-        document.querySelectorAll('.will-reveal, .will-reveal-left').forEach(function(el) {
-            if (el.getBoundingClientRect().top < window.innerHeight - 60) {
-                el.classList.add('active');
-            }
-        });
-    }
-    window.addEventListener('scroll', checkReveal, { passive: true });
-    checkReveal(); // 立即检查首屏
-}
-
-// DOM加载完成后再初始化，确保元素存在
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initReveal);
-} else {
-    initReveal();
-}
-
-// ---- 2. Diary 视差文字 ----
-const diaryCont = document.getElementById('diary-container');
-const diaryTxt  = document.getElementById('diary-text');
-window.addEventListener('scroll', () => {
-    if (!diaryCont || !diaryTxt) return;
-    const rect = diaryCont.getBoundingClientRect();
-    const wh   = window.innerHeight;
-    let p = Math.max(0, Math.min(1, -rect.top / (rect.height - wh)));
-    let scale   = 0.65 + Math.pow(p, .5) * 0.4;
-    let opacity = p < 0.15 ? p / 0.15 : p < 0.82 ? 1 : 1 - (p - 0.82) / 0.18;
-    diaryTxt.style.opacity   = Math.max(0, Math.min(1, opacity));
-    diaryTxt.style.transform = `scale(${scale})`;
-}, { passive:true });
-
-// ---- 3. 散落图特效（居中偏移，不飞出屏幕） ----
-const transBand = document.getElementById('trans-band');
-const si1 = document.getElementById('s1');
-const si2 = document.getElementById('s2');
-const si3 = document.getElementById('s3');
-window.addEventListener('scroll', () => {
-    if (!transBand) return;
-    const r = transBand.getBoundingClientRect();
-    const wh = window.innerHeight;
-    let p = Math.max(0, Math.min(1, 1 - r.bottom / (wh + r.height)));
-    let o = Math.sin(p * Math.PI);
-    [si1,si2,si3].forEach(img => { if(img) img.style.opacity = o; });
-    // 以中心为原点做小幅偏移（单位px），不会飞出屏幕
-    if(si1) si1.style.transform = `translate(calc(-50% + ${(-180 + p*120)}px), calc(-50% + ${(60 - p*120)}px)) rotate(${-12+p*4}deg)`;
-    if(si2) si2.style.transform = `translate(calc(-50% + ${(20 - p*60)}px), calc(-50% + ${(-80 + p*80)}px)) rotate(${4-p*8}deg)`;
-    if(si3) si3.style.transform = `translate(calc(-50% + ${(160 - p*100)}px), calc(-50% + ${(40 - p*60)}px)) rotate(${12-p*12}deg)`;
-}, { passive:true });
-
-// ---- 4. 主题切换 ----
-const themeObs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) document.body.className = e.target.dataset.theme; });
-}, { rootMargin:'-50% 0px -50% 0px' });
-document.querySelectorAll('.theme-trigger').forEach(t => themeObs.observe(t));
-
-// ---- 5. 时间轴圆点跟随 ----
-const tlInner = document.getElementById('tl-inner');
-const tlDot   = document.getElementById('tl-dot');
-window.addEventListener('scroll', () => {
-    if (!tlInner || !tlDot) return;
-    const r = tlInner.getBoundingClientRect();
-    let pct = (window.innerHeight / 2 - r.top) / r.height;
-    tlDot.style.top = (Math.min(Math.max(pct,0),1) * 100) + '%';
-}, { passive:true });
-
-// ---- 6. CV 下拉 — 统一事件绑定，无冲突 ----
-(function() {
-    // 给所有 cv-dropdown 的 button 绑定点击
-    document.querySelectorAll('.cv-dropdown button').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            var dropdown = btn.closest('.cv-dropdown');
-            var menu = dropdown.querySelector('.cv-menu');
-            var isOpen = dropdown.classList.contains('open');
-
-            // 先关闭所有
-            document.querySelectorAll('.cv-dropdown.open').forEach(function(d) {
-                d.classList.remove('open');
-            });
-
-            if (!isOpen) {
-                // 计算定位（fixed 模式）
-                var btnRect = btn.getBoundingClientRect();
-                menu.style.top  = (btnRect.bottom + 8) + 'px';
-                var left = btnRect.left;
-                var menuW = 230;
-                if (left + menuW > window.innerWidth - 16) {
-                    left = window.innerWidth - menuW - 16;
-                }
-                menu.style.left = left + 'px';
-                dropdown.classList.add('open');
-            }
-        });
-    });
-
-    // 点击其他地方关闭
-    document.addEventListener('click', function() {
-        document.querySelectorAll('.cv-dropdown.open').forEach(function(d) {
-            d.classList.remove('open');
-        });
-    });
-
-    // 滚动时关闭
-    window.addEventListener('scroll', function() {
-        document.querySelectorAll('.cv-dropdown.open').forEach(function(d) {
-            d.classList.remove('open');
-        });
-    }, { passive: true });
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ================================================================
+   1. PAGE INTRO
+   ================================================================ */
+(function(){
+  var intro = document.getElementById('page-intro');
+  var brand = document.getElementById('intro-brand');
+  if(!intro) return;
+  document.body.style.overflow = 'hidden';
+  function startIntro(){
+    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
+    setTimeout(function(){ intro.classList.add('done'); }, 1000);
+    setTimeout(function(){
+      intro.classList.add('gone');
+      document.body.style.overflow = '';
+      document.querySelectorAll('.will-reveal').forEach(function(el){
+        if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
+      });
+    }, 2000);
+  }
+  var started = false;
+  function safeStart(){ if(!started){ started=true; startIntro(); } }
+  if(document.readyState === 'complete'){ safeStart(); }
+  else { window.addEventListener('load', safeStart); setTimeout(safeStart, 2500); }
 })();
+
+/* ================================================================
+   2. REVEAL ON SCROLL
+   ================================================================ */
+(function(){
+  function init(){
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('will-reveal'); });
+    function check(){
+      document.querySelectorAll('.will-reveal').forEach(function(el){
+        if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
+      });
+    }
+    window.addEventListener('scroll', check, {passive:true});
+    check();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
+})();
+
+/* ================================================================
+   3. DIARY PARALLAX
+   ================================================================ */
+(function(){
+  var diaryCont = document.getElementById('diary-container');
+  var diaryTxt  = document.getElementById('diary-text');
+  var locked = false;
+  function update(){
+    if(!diaryCont||!diaryTxt||locked) return;
+    var rect = diaryCont.getBoundingClientRect();
+    var wh   = window.innerHeight;
+    var total = rect.height - wh;
+    var p = Math.max(0, Math.min(1, -rect.top / total));
+    var translateY = Math.max(0, 50 * (1 - p*2));
+    var scale = 0.9 + Math.pow(p, 0.6) * 0.15;
+    var opacity = p < 0.25 ? p * 4 : 1;
+    diaryTxt.style.opacity   = opacity;
+    diaryTxt.style.transform = 'translateY('+translateY+'px) scale('+scale+')';
+    if(p >= 0.25){ locked = true; }
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+  setTimeout(function(){
+    if(!locked && diaryTxt){
+      diaryTxt.style.opacity = '1';
+      diaryTxt.style.transform = 'translateY(0px) scale(1)';
+      locked = true;
+    }
+  }, 3000);
+})();
+
+/* ================================================================
+   4. INLINE STORY ACCORDION TOGGLE
+   ================================================================ */
+function toggleSnode(id) {
+  var node = document.getElementById(id);
+  if(!node) return;
+  var wasOpen = node.classList.contains('open');
+  document.querySelectorAll('.snode').forEach(function(n){ n.classList.remove('open'); });
+  if(!wasOpen) node.classList.add('open');
+}
+
+/* ================================================================
+   5. SCATTER BAND
+   ================================================================ */
+(function(){
+  var transBand = document.getElementById('trans-band');
+  var si1=document.getElementById('s1'),
+      si2=document.getElementById('s2'),
+      si3=document.getElementById('s3');
+  function update(){
+    if(!transBand) return;
+    var r=transBand.getBoundingClientRect(), wh=window.innerHeight;
+    var p=Math.max(0,Math.min(1,1-r.bottom/(wh+r.height)));
+    var o=Math.sin(p*Math.PI);
+    [si1,si2,si3].forEach(function(img){ if(img) img.style.opacity=o; });
+    if(si1) si1.style.transform='translate(calc(-50% + '+(-120+p*60)+'px),calc(-50% + '+(40-p*80)+'px)) rotate('+(-10+p*4)+'deg)';
+    if(si2) si2.style.transform='translate(calc(-50% + '+(10-p*30)+'px),calc(-50% + '+(-50+p*50)+'px)) rotate('+(4-p*6)+'deg)';
+    if(si3) si3.style.transform='translate(calc(-50% + '+(130-p*60)+'px),calc(-50% + '+(20-p*40)+'px)) rotate('+(10-p*10)+'deg)';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+
+/* ================================================================
+   6. ACCORDION (Professional Arsenal)
+   ================================================================ */
+document.querySelectorAll('.accordion-header').forEach(function(header){
+  header.addEventListener('click', function(){
+    header.closest('.accordion-item').classList.toggle('open');
+  });
+});
+
+/* ================================================================
+   7. O2O DRAWER
+   ================================================================ */
+(function(){
+  var overlay = document.getElementById('drawer-overlay');
+  var drawer  = document.getElementById('o2o-drawer');
+  var close   = document.getElementById('drawer-close');
+  var trigger = document.getElementById('o2o-trigger');
+  function open(){ if(!drawer||!overlay) return; drawer.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow='hidden'; }
+  function shut(){ if(!drawer||!overlay) return; drawer.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow=''; }
+  if(trigger) trigger.addEventListener('click', open);
+  if(close)   close.addEventListener('click', shut);
+  if(overlay) overlay.addEventListener('click', shut);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') shut(); });
+})();
+
+/* ================================================================
+   8. FLOATING NAV
+   ================================================================ */
+(function(){
+  var sections  = ['hero','story','arsenal','demo','hobbies'];
+  var fnavItems = document.querySelectorAll('.fnav-item');
+  window.addEventListener('scroll', function(){
+    var scrollY  = window.scrollY + window.innerHeight/2;
+    var current  = 'hero';
+    sections.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && el.offsetTop <= scrollY) current = id;
+    });
+    fnavItems.forEach(function(item){
+      item.classList.toggle('active', item.getAttribute('href')==='#'+current);
+    });
+  }, {passive:true});
+})();
+
+/* ================================================================
+   9. CV DROPDOWN
+   ================================================================ */
+(function(){
+  document.querySelectorAll('.cv-dropdown button').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var dd     = btn.closest('.cv-dropdown');
+      var isOpen = dd.classList.contains('open');
+      document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
+      if(!isOpen) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); });
+})();
+
+/* ================================================================
+   10. HOBBY CARDS
+   ================================================================ */
+document.querySelectorAll('.hobby-card').forEach(function(card){
+  card.addEventListener('click', function(){
+    var was = card.classList.contains('active');
+    document.querySelectorAll('.hobby-card.active').forEach(function(c){ c.classList.remove('active'); });
+    if(!was) card.classList.add('active');
+  });
+});
+
+/* ================================================================
+   11. CV FLIP — tab switching + lightbox
+   ================================================================ */
+function switchCV(lang) {
+  var enPage = document.getElementById('cv-page-en');
+  var frPage = document.getElementById('cv-page-fr');
+  var tabs   = document.querySelectorAll('.cv-tab');
+  tabs.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-cv') === lang); });
+  if(lang === 'en'){
+    if(enPage) enPage.style.display = '';
+    if(frPage) frPage.style.display = 'none';
+  } else {
+    if(enPage) enPage.style.display = 'none';
+    if(frPage) frPage.style.display = '';
+  }
+}
+
+var _cvCurrentLang = 'en';
+function openCVLight(lang) {
+  _cvCurrentLang = lang || 'en';
+  var imgs = { en:'https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb61b1a.webp', fr:'https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb228bb.webp' };
+  var lb  = document.getElementById('cv-lightbox');
+  var lbi = document.getElementById('cv-lightbox-img');
+  if(!lb || !lbi) return;
+  lbi.src = imgs[_cvCurrentLang] || imgs.en;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCVLight() {
+  var lb = document.getElementById('cv-lightbox');
+  if(lb) lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+(function(){
+  var lbi = document.getElementById('cv-lightbox-img');
+  if(lbi) lbi.addEventListener('click', function(e){ e.stopPropagation(); });
+})();
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeCVLight(); });
 </script>
 </body>
 </html>
