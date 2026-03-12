@@ -164,7 +164,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
   min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
   pointer-events:none; transition:all .22s; z-index:9999;
 }
-.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+.cv-dropdown.open .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
 .cv-menu a {
   display:flex; align-items:center; gap:.6rem;
   padding:.8rem 1.2rem; text-decoration:none;
@@ -708,9 +708,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
       </p>
       
       <div class="hero-ctas reveal delay-2">
-  <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
+  <a href="/cdn-cgi/l/email-protection#f995908090d79e9896d79d94b99e94989095d79a9694" class="btn btn-accent btn-pulse">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-    liyi.gao.dm@gmail.com
+    <span class="__cf_email__" data-cfemail="5834312131763f3937763c35183f35393134763b3735">[email&#160;protected]</span>
   </a>
   <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-ghost">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -1164,9 +1164,9 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 
 <footer>
   <div class="footer-contact">
-    <a href="mailto:liyi.gao.dm@gmail.com" class="btn btn-accent btn-pulse">
+    <a href="/cdn-cgi/l/email-protection#a2cecbdbcb8cc5c3cd8cc6cfe2c5cfc3cbce8cc1cdcf" class="btn btn-accent btn-pulse">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-      liyi.gao.dm@gmail.com
+      <span class="__cf_email__" data-cfemail="f19d988898df96909edf959cb1969c90989ddf929e9c">[email&#160;protected]</span>
     </a>
     <a href="https://www.linkedin.com/in/liyi-gao" target="_blank" class="btn btn-solid">LinkedIn</a>
   </div>
@@ -1175,7 +1175,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ================================================================
    1. PAGE INTRO
    ================================================================ */
@@ -1185,18 +1185,21 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   if(!intro) return;
   document.body.style.overflow = 'hidden';
   function startIntro(){
-    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 800);
-    setTimeout(function(){ intro.classList.add('done'); }, 1000);
+    setTimeout(function(){ if(brand) brand.classList.add('fade'); }, 700);
+    setTimeout(function(){ intro.classList.add('done'); }, 900);
+    // 百叶窗最后一片 transition: .8s + delay .25s = 1.05s，给足 1.2s 缓冲后再 display:none
     setTimeout(function(){
       intro.classList.add('gone');
       document.body.style.overflow = '';
       document.querySelectorAll('.will-reveal').forEach(function(el){
         if(el.getBoundingClientRect().top < window.innerHeight - 60) el.classList.add('active');
       });
-    }, 2000);
+    }, 2200);
   }
-  if(document.readyState === 'complete'){ startIntro(); }
-  else { window.addEventListener('load', startIntro); setTimeout(startIntro, 2000); }
+  var started = false;
+  function safeStart(){ if(!started){ started=true; startIntro(); } }
+  if(document.readyState === 'complete'){ safeStart(); }
+  else { window.addEventListener('load', safeStart); setTimeout(safeStart, 2500); }
 })();
 
 /* ================================================================
