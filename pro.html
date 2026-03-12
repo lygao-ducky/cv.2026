@@ -498,28 +498,44 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
    ============================================================ */
 #manifesto { background:var(--bg); padding-bottom: 3rem; padding-top: 2rem;}
 .manifesto-container {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center;
-    max-width: 860px; margin: 0 auto; background: var(--card-bg);
-    border: 1px solid var(--border); border-radius: 20px; padding: 2.2rem 2.5rem;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.04); position: relative; overflow: hidden;
+    position: relative; max-width: 860px; margin: 0 auto;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    min-height: 260px;
 }
-.manifesto-container::before {
+.manifesto-bg-img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center 40%;
+    display: block; z-index: 0;
+}
+.manifesto-glass {
+    position: relative; z-index: 2;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 2.8rem 3rem;
+    display: flex; flex-direction: column; justify-content: center;
+}
+.manifesto-glass::before {
     content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    border-radius: 20px 0 0 20px;
     background: linear-gradient(to bottom, var(--accent), var(--accent-dk));
 }
-.manifesto-text { position: relative; z-index: 2;}
-.manifesto-quote-mark { font-family:'Playfair Display',serif; font-size:4rem; line-height:.8; color:var(--accent); opacity:.25; margin-bottom:.3rem; }
-.manifesto-text p { font-size: .95rem; color: var(--muted); line-height: 1.75; margin-bottom: 0;}
-.manifesto-text strong { color: var(--text); font-weight: 700;}
-
-.manifesto-img-wrap {
-    width: 100%; border-radius: 12px; overflow: hidden;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.08); border: 1px solid var(--border);
-    transform: rotate(1.5deg); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    max-height: 180px;
+.manifesto-quote-mark {
+    font-family:'Playfair Display',serif; font-size:3.5rem; line-height:.8;
+    color:#fff; opacity:.4; margin-bottom:.4rem;
 }
-.manifesto-container:hover .manifesto-img-wrap { transform: rotate(0deg) scale(1.02); }
-.manifesto-img-wrap img { width: 100%; display: block; object-fit: cover; height: 180px; object-position: center 70%;}
+.manifesto-label {
+    font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    color:rgba(255,255,255,0.6); margin-bottom:.7rem;
+}
+.manifesto-text {
+    font-size:1rem; color:#fff; line-height:1.8; max-width:580px;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.25);
+}
+.manifesto-text strong { color:#fff; font-weight:700; }
 
 /* ============================================================
    HOBBIES
@@ -1053,19 +1069,17 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
 
 <section id="manifesto" class="section-wrapper reveal" style="padding-top: 1rem; padding-bottom: 3rem;">
   <div class="manifesto-container">
-    <div class="manifesto-text">
-        <p class="label" style="margin-bottom: .6rem;">A Note on the AI Era</p>
-        <div class="manifesto-quote-mark">"</div>
-        <p>
-          From vibe coding to vibe marketing — AI optimizes my execution every day. But the more I use it, the clearer it becomes: <strong>human judgment is what truly defines a brand.</strong> My drive right now is to get my hands dirty in the real world, and relentlessly sharpen that edge.
-        </p>
-    </div>
-    <div class="manifesto-img-wrap">
-        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b2ba34efe47.webp" alt="Career Vision">
+    <img src="https://picui.ogmua.cn/s1/2026/03/12/69b2ba34efe47.webp" class="manifesto-bg-img" alt="">
+    <div class="manifesto-glass">
+      <div class="manifesto-quote-mark">"</div>
+      <p class="manifesto-label">A Note on the AI Era</p>
+      <p class="manifesto-text">
+        From vibe coding to vibe marketing — AI optimizes my execution every day. But the more I use it, the clearer it becomes: <strong>human judgment is what truly defines a brand.</strong> My drive right now is to get my hands dirty in the real world, and relentlessly sharpen that edge.
+      </p>
     </div>
   </div>
 </section>
-
+   
 <section id="hobbies" class="section-wrapper reveal hobbies-section">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad56624cfb9.webp" class="doodle-sticker" style="top:5%;left:2%;width:150px;transform:rotate(10deg);" alt="">
   <img src="https://picui.ogmua.cn/s1/2026/03/08/69ad566421611.webp" class="doodle-sticker" style="bottom:10%;right:2%;width:140px;transform:rotate(-12deg);" alt="">
