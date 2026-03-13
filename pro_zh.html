@@ -664,8 +664,8 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
       </button>
       <div class="cv-menu">
-        <a href="./Liyi%20GAO_Product%20assistant.pdf" download>🇬🇧 English CV</a>
-        <a href="./Fr_Liyi%20GAO_Chef%20de%20projets.pdf" download>🇫🇷 CV en Français</a>
+        <a href="./Liyi%20GAO_CV%20ENG_MARKETING.pdf" download>🇬🇧 English CV</a>
+        <a href="./Liyi%20GAO_CV%20Fr_MARKETING.pdf" download>🇫🇷 CV en Français</a>
       </div>
     </div>
     
@@ -735,7 +735,43 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
     </div>
   </div>
 </section>
-
+   
+<section class="cv-flip-section reveal">
+  <div class="cv-flip-header">
+    <p class="label" style="margin-bottom:.6rem;">下载 &amp; 预览</p>
+    <h2 class="display">我的简历，<br><em style="color:var(--accent);">一眼尽览</em></h2>
+    <div style="display:inline-flex;align-items:center;gap:.6rem;margin:1.2rem 0 .4rem;padding:.6rem 1.4rem;background:var(--accent-lt);border:1.5px solid rgba(41,151,255,.25);border-radius:40px;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;display:inline-block;"></span>
+      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">正在寻找实习机会 · 2026年7月起可入职</span>
+    </div>
+    <p style="margin-top:.6rem;">点击预览完整简历 · 在下方下载</p>
+  </div>
+  <div class="cv-switcher">
+    <button class="cv-tab active" data-cv="en" onclick="switchCV('en')">🇬🇧 英文版</button>
+    <button class="cv-tab" data-cv="fr" onclick="switchCV('fr')">🇫🇷 法文版</button>
+  </div>
+  <div class="cv-book-wrap">
+    <div class="cv-book">
+      <div class="cv-page" id="cv-page-en" onclick="openCVLight('en')">
+        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb61b1a.webp" alt="英文简历" id="cv-img-en">
+      </div>
+      <div class="cv-page" id="cv-page-fr" style="display:none;" onclick="openCVLight('fr')">
+        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb228bb.webp" alt="法文简历" id="cv-img-fr">
+      </div>
+    </div>
+  </div>
+  <div class="cv-download-row">
+    <a href="./Liyi%20GAO_CV%20ENG_MARKETING.pdf" download class="btn btn-accent">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      下载英文简历
+    </a>
+    <a href="./Liyi%20GAO_CV%20Fr_MARKETING.pdf" download class="btn btn-ghost">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      下载法文简历
+    </a>
+  </div>
+</section>
+   
 <div class="diary-container" id="diary-container">
   <div class="diary-sticky">
     <h2 class="diary-text display" id="diary-text">一切，<br>从共情开始。</h2>
@@ -1120,41 +1156,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
   </div>
 </section>
 
-<section class="cv-flip-section reveal">
-  <div class="cv-flip-header">
-    <p class="label" style="margin-bottom:.6rem;">下载 &amp; 预览</p>
-    <h2 class="display">我的简历，<br><em style="color:var(--accent);">一眼尽览</em></h2>
-    <div style="display:inline-flex;align-items:center;gap:.6rem;margin:1.2rem 0 .4rem;padding:.6rem 1.4rem;background:var(--accent-lt);border:1.5px solid rgba(41,151,255,.25);border-radius:40px;">
-      <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);animation:blink 1.8s ease-in-out infinite;display:inline-block;"></span>
-      <span style="font-size:.85rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;">正在寻找实习机会 · 2026年7月起可入职</span>
-    </div>
-    <p style="margin-top:.6rem;">点击预览完整简历 · 在下方下载</p>
-  </div>
-  <div class="cv-switcher">
-    <button class="cv-tab active" data-cv="en" onclick="switchCV('en')">🇬🇧 英文版</button>
-    <button class="cv-tab" data-cv="fr" onclick="switchCV('fr')">🇫🇷 法文版</button>
-  </div>
-  <div class="cv-book-wrap">
-    <div class="cv-book">
-      <div class="cv-page" id="cv-page-en" onclick="openCVLight('en')">
-        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb61b1a.webp" alt="英文简历" id="cv-img-en">
-      </div>
-      <div class="cv-page" id="cv-page-fr" style="display:none;" onclick="openCVLight('fr')">
-        <img src="https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb228bb.webp" alt="法文简历" id="cv-img-fr">
-      </div>
-    </div>
-  </div>
-  <div class="cv-download-row">
-    <a href="./Liyi%20GAO_Product%20assistant.pdf" download class="btn btn-accent">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      下载英文简历
-    </a>
-    <a href="./Fr_Liyi%20GAO_Chef%20de%20projets.pdf" download class="btn btn-ghost">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      下载法文简历
-    </a>
-  </div>
-</section>
+
 
 <div class="cv-lightbox" id="cv-lightbox" onclick="closeCVLight()">
   <img src="" alt="简历预览" id="cv-lightbox-img">
@@ -1374,7 +1376,7 @@ function switchCV(lang) {
 var _cvCurrentLang = 'en';
 function openCVLight(lang) {
   _cvCurrentLang = lang || 'en';
-  var imgs = { en:'https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb61b1a.webp', fr:'https://picui.ogmua.cn/s1/2026/03/12/69b1fdbb228bb.webp' };
+  var imgs = { en:'https://picui.ogmua.cn/s1/2026/03/14/69b48608b1e37.webp', fr:'https://picui.ogmua.cn/s1/2026/03/14/69b48608b73e5.webp' };
   var lb  = document.getElementById('cv-lightbox');
   var lbi = document.getElementById('cv-lightbox-img');
   if(!lb || !lbi) return;
