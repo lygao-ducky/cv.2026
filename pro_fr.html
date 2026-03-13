@@ -164,7 +164,7 @@ box-shadow:0 12px 30px rgba(0,0,0,.08);
 min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
 pointer-events:none; transition:all .22s; z-index:9999;
 }
-.cv-dropdown:hover .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+
 .cv-menu a {
 display:flex; align-items:center; gap:.6rem;
 padding:.8rem 1.2rem; text-decoration:none;
@@ -173,7 +173,8 @@ transition:background .2s;
 }
 .cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
 .cv-menu a + a { border-top:1px solid var(--border); }
-
+.cv-dropdown.open .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+  
 /* LinkedIn Pill */
 .nav-linkedin-btn {
 display:inline-flex; align-items:center; gap:6px;
@@ -700,7 +701,7 @@ LinkedIn <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="cur
 <div class="avail-badge"><span class="avail-dot"></span>Audencia PGE &nbsp;·&nbsp; Stage à partir de juillet 2026</div>
 <h1 class="display hero-h1">L'Évolution<br>d'une <em>Architecte de Marque.</em></h1>
 <p class="hero-desc reveal delay-1">
-Passionnée par la transformation des <strong>insights consommateurs</strong> en stratégies <strong>Go-To-Market</strong> percutantes. Mon ambition : construire des marques FMCG et beauté avec du fond et du style, en faisant le lien entre l'innovation produit et la narration de marque.
+Passionnée par la transformation des <strong>insights consommateurs</strong> en stratégies <strong>Go-To-Market</strong> percutantes. Mon ambition : construire des marques luxe et beauté avec du fond et du style, en faisant le lien entre l'innovation produit et la narration de marque.
 </p>
 
 <div class="hero-ctas reveal delay-2">
@@ -1326,16 +1327,19 @@ item.classList.toggle('active', item.getAttribute('href')==='#'+current);
   9. CV DROPDOWN
   ================================================================ */
 (function(){
-document.querySelectorAll('.cv-dropdown button').forEach(function(btn){
-btn.addEventListener('click', function(e){
-e.stopPropagation();
-var dd     = btn.closest('.cv-dropdown');
-var isOpen = dd.classList.contains('open');
-document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
-if(!isOpen) dd.classList.add('open');
-});
-});
-document.addEventListener('click',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); });
+  document.querySelectorAll('.cv-dropdown button').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var dd = btn.closest('.cv-dropdown');
+      dd.classList.toggle('open');
+    });
+  });
+  document.querySelector('.cv-menu') && document.querySelectorAll('.cv-menu a').forEach(function(a){
+    a.addEventListener('click', function(e){ e.stopPropagation(); });
+  });
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
+  });
 })();
 
 /* ================================================================
