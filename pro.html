@@ -164,7 +164,7 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
   min-width:180px; opacity:0; transform:translateY(-8px) scale(.97);
   pointer-events:none; transition:all .22s; z-index:9999;
 }
-.cv-dropdown.open .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+
 .cv-menu a {
   display:flex; align-items:center; gap:.6rem;
   padding:.8rem 1.2rem; text-decoration:none;
@@ -173,7 +173,8 @@ p, h1, h2, h3, h4, li, figcaption { position: relative; z-index: 2; }
 }
 .cv-menu a:hover { background:var(--accent-lt); color:var(--accent); }
 .cv-menu a + a { border-top:1px solid var(--border); }
-
+.cv-dropdown.open .cv-menu { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+   
 /* LinkedIn Pill */
 .nav-linkedin-btn {
   display:inline-flex; align-items:center; gap:6px;
@@ -704,7 +705,7 @@ footer { border-top:1px solid var(--border); padding:3rem 5% 5rem; max-width:128
      <div class="avail-badge"><span class="avail-dot"></span>Audencia PGE &nbsp;·&nbsp; Internship from July 2026</div>
       <h1 class="display hero-h1">The Evolution<br>of a <em>Brand Builder.</em></h1>
       <p class="hero-desc reveal delay-1">
-        Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build FMCG and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
+        Dedicated to translating deep <strong>Consumer Insights</strong> into impactful <strong>Go-To-Market strategies</strong>. I aspire to build luxury and beauty brands with depth and style, bridging the gap between product innovation and brand storytelling.
       </p>
       
      <div class="hero-ctas reveal delay-2">
@@ -1337,15 +1338,17 @@ document.querySelectorAll('.accordion-header').forEach(function(header){
   document.querySelectorAll('.cv-dropdown button').forEach(function(btn){
     btn.addEventListener('click', function(e){
       e.stopPropagation();
-      var dd     = btn.closest('.cv-dropdown');
-      var isOpen = dd.classList.contains('open');
-      document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
-      if(!isOpen) dd.classList.add('open');
+      var dd = btn.closest('.cv-dropdown');
+      dd.classList.toggle('open');
     });
   });
-  document.addEventListener('click',function(){ document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); }); });
+  document.querySelector('.cv-menu') && document.querySelectorAll('.cv-menu a').forEach(function(a){
+    a.addEventListener('click', function(e){ e.stopPropagation(); });
+  });
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.cv-dropdown.open').forEach(function(d){ d.classList.remove('open'); });
+  });
 })();
-
 /* ================================================================
    10. HOBBY CARDS
    ================================================================ */
